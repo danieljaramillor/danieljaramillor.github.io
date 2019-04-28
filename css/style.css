@@ -441,19 +441,19 @@ ol {
 	Social section
 -----------------------*/
 .social-section {
-	background: #40424a;
+	background: #E9E9E9;
 	padding: 80px 0;
 }
 
 .social-section .social-links {
 	display: inline-block;
-	background: #40424a;
+	background: #E9E9E9;
 	position: relative;
 	z-index: 5;
 }
 
 .social-section .social-links a {
-	color: #FFFFFF;
+	color: #40424a;
 	font-size: 36px;
 	margin-right: 40px;
 }
@@ -467,7 +467,7 @@ ol {
 	float: right;
 	font-weight: 400;
 	padding-left: 30px;
-	background: #40424a;
+	background: #E9E9E9;
 	position: relative;
 	z-index: 5;
 }
@@ -487,7 +487,7 @@ ol {
 	Resume section
 ----------------------*/
 .resume-section.with-bg {
-	background-image: url(../img/resume-bg.jpg);
+	background-color:#E9E9E9;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
