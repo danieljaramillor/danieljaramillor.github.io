@@ -441,19 +441,20 @@ ol {
 	Social section
 -----------------------*/
 .social-section {
-	background: #f9f9f9;
+	background: #40424a;
 	padding: 80px 0;
+	text-color: #FFFFFF
 }
 
 .social-section .social-links {
 	display: inline-block;
-	background: #f9f9f9;
+	background: #40424a;
 	position: relative;
 	z-index: 5;
 }
 
 .social-section .social-links a {
-	color: #484848;
+	color: #FFFFFF;
 	font-size: 36px;
 	margin-right: 40px;
 }
@@ -467,7 +468,7 @@ ol {
 	float: right;
 	font-weight: 400;
 	padding-left: 30px;
-	background: #f9f9f9;
+	background: #40424a;
 	position: relative;
 	z-index: 5;
 }
