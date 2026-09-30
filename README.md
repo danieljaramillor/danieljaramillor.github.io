@@ -31,4 +31,4 @@ python3 -m http.server 8000
 
 ## Brand
 
-`brand/` holds the DJ. mark: SVG and PNG wordmarks (`dj-mark-light` for dark backgrounds, `dj-mark-dark` for light ones), the square app icon at every size, a maskable icon and `favicon.ico`. The letters are Archivo Black outlines, so the files need no font installed. Colours: ink `#151515`, night `#111110`, paper `#EDEDE8`, accent `#FF4F00`.
+`brand/` holds the DJ. mark: SVG and PNG wordmarks (`dj-mark-light` for dark backgrounds, `dj-mark-dark` for light ones), the square app icon at every size, a maskable icon and `favicon.ico`. The letters are outlines of Archivo at weight 900, so the files need no font installed. Colours: ink `#151515`, night `#111110`, paper `#EDEDE8`, accent `#FF4F00`.
