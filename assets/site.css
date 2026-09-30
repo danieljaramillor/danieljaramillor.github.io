@@ -102,12 +102,13 @@ mark { background: var(--accent); color: var(--ink); padding: 0 .12em; }
 }
 .layer {
   position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform;
-  --ink-now: var(--ink);
+  --ink-now: #9C9C95;
+  --ink-now: color-mix(in srgb, #A4A49D calc((1 - var(--p)) * 100%), var(--ink));
 }
-/* floating layers read as sheets of tracing paper until they land */
+/* floating layers read as thin sheets of tracing paper until they land */
 .layer:not(.layer--paper) {
-  background: rgba(237, 237, 232, calc(.5 * (1 - var(--p))));
-  outline: 1px solid rgba(237, 237, 232, calc(.6 * (1 - var(--p))));
+  background: rgba(237, 237, 232, calc(.07 * (1 - var(--p))));
+  outline: 1px solid rgba(237, 237, 232, calc(.5 * (1 - var(--p))));
 }
 .layer--paper {
   background-color: var(--paper);
@@ -126,6 +127,19 @@ mark { background: var(--accent); color: var(--ink); padding: 0 .12em; }
 .type__name {
   font-weight: 850; font-size: 112px; line-height: .86; letter-spacing: -.055em; text-transform: uppercase;
 }
+.type__head mark { background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 0 / 100% 100%; }
+.type__tag { margin-top: 26px; max-width: 540px; font-size: 21px; line-height: 1.4; font-weight: 500; letter-spacing: -.005em; }
+.blueprint { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.blueprint line, .blueprint circle { stroke: rgba(237, 237, 232, .09); stroke-width: 1; fill: none; }
+.blueprint .bp-cross line, .blueprint .bp-cross circle { stroke: rgba(255, 79, 0, .55); }
+.shock {
+  position: absolute; left: 50%; top: 50%; width: 240px; height: 240px; margin: -120px 0 0 -120px; border-radius: 50%;
+  border: 2px solid var(--accent); pointer-events: none; opacity: 0; z-index: 2;
+}
+.flash { position: absolute; inset: 0; background: var(--paper); opacity: 0; pointer-events: none; z-index: 2; }
+.hero__log { min-height: 1.5em; color: var(--muted-night); }
+.hero__log .ok { color: var(--accent); }
+.hero__tagm { display: none; }
 .type__head { margin-top: 36px; font-weight: 850; font-size: 52px; line-height: 1; letter-spacing: -.035em; text-transform: uppercase; }
 .chips { position: absolute; left: 72px; top: 560px; display: flex; gap: 10px; }
 .chips span { background: var(--ink); color: var(--paper); padding: 8px 12px; text-transform: uppercase; }
@@ -354,6 +368,8 @@ section { position: relative; }
   .hero__meta { flex-direction: column; gap: 4px; }
   .hero__viewport { inset: 110px 0 240px 0; }
   .hero__foot { grid-template-columns: minmax(0, 1fr); }
+  .hero__tagm { display: block; font-size: 17px; line-height: 1.45; color: #DADAD3; }
+  .type__tag { display: none; }
   .section-head, .archive__head { flex-direction: column; align-items: flex-start; }
   .section-head p, .archive__sub { text-align: left; align-items: flex-start; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
