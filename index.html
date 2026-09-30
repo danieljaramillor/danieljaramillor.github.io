@@ -10,9 +10,10 @@
 <meta property="og:image" content="https://danieljaramillor.github.io/img/daniel.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#111110">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,6 +38,7 @@
     <a class="btn btn--accent nav__cta" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="nav.cta">Work with me →</a>
   </div>
 </header>
+<div class="progress" aria-hidden="true"><span></span></div>
 
 <main id="main">
 
@@ -98,7 +100,7 @@
         <a class="btn btn--accent" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
         <a class="btn btn--ghost" href="#story" data-i18n="hero.cta2">Read the build</a>
       </div>
-      <span class="hero__hint mono" data-i18n="hero.hint">Scroll to assemble ↓</span>
+      <div class="hero__hint mono"><span data-i18n="hero.hint">Scroll ↓</span><button type="button" class="replay mono" id="replay" data-i18n="hero.replay">↺ Explode it again</button></div>
     </div>
   </div>
 </section>
@@ -113,9 +115,11 @@
 
 <!-- ============ MANIFESTO ============ -->
 <section class="manifesto" aria-labelledby="manifesto-title">
+  <div class="manifesto__pin">
   <span class="eyebrow mono" data-i18n="man.eyebrow">Spec note — obra negra (under construction, on purpose)</span>
-  <h2 class="manifesto__title" id="manifesto-title"><span class="split">No borro nada.</span> <span class="split dim">Archivo.</span></h2>
+  <h2 class="manifesto__title" id="manifesto-title"><span class="chars">No borro nada.</span> <span class="chars dim">Archivo.</span></h2>
   <p class="manifesto__lede" data-i18n="man.lede">I don’t delete anything — I archive it, and build on top. The wins, the failures, the parts that hurt. It’s the idea behind everything I write, and the way this page is built: in layers.</p>
+  </div>
   <div class="principles">
     <a class="principle" href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija">
       <span class="mono principle__src" data-i18n="p1.src">I · from “No me pidan que elija”</span>
@@ -142,37 +146,37 @@
     <p class="mono" data-i18n="bom.note">Nothing deleted, everything archived. Every part that went into the build, in the order it was installed.</p>
   </div>
   <ol class="parts">
-    <li class="part">
+    <li class="part" data-n="01">
       <span class="mono part__n">Part 01</span><span class="mono part__y">2019–2021</span>
       <div class="part__t"><h3 data-i18n="b1.t">Founder, stint I — the software factory</h3><span class="mono" data-i18n="b1.w">Monquick · Co-founder &amp; CCO</span></div>
       <p data-i18n="b1.d">Started a software factory in my third semester of university — two curricula, the one they gave me and the one I chose. Design and development for pharma, agritech, retail and fintech; bootstrapped to 12+ people; products used by 5M+.</p>
     </li>
-    <li class="part">
+    <li class="part" data-n="02">
       <span class="mono part__n">Part 02</span><span class="mono part__y">2021–2024</span>
       <div class="part__t"><h3 data-i18n="b2.t">The product builder</h3><span class="mono" data-i18n="b2.w">LARVOL · UX lead → Product</span></div>
       <p data-i18n="b2.d">I came to oncology for a personal reason: to understand what was happening to my grandmother. I stayed. Designed the original interface of CLIN, LARVOL’s “Wikipedia for oncology”, and went on to conceptualize and build most of the products LARVOL sells today.</p>
     </li>
-    <li class="part">
+    <li class="part" data-n="03">
       <span class="mono part__n">Part 03</span><span class="mono part__y">2022–2024</span>
       <div class="part__t"><h3 data-i18n="b3.t">Founder, stint II — the exit</h3><span class="mono" data-i18n="b3.w">RXXO.io · Co-founder &amp; CEO</span></div>
       <p data-i18n="b3.d">Raised $1M+, coined the “Cryptangible” category, launched in Dubai, built a diamond-generation engine that minted 1B assets, and lifted engagement 140% with a UX overhaul. Sold in 2024.</p>
     </li>
-    <li class="part part--dark">
+    <li class="part part--dark" data-n="04">
       <span class="mono part__n">Part 04</span><span class="mono part__y">2023</span>
       <div class="part__t"><h3 data-i18n="b4.t">The hard lesson</h3><span class="mono" data-i18n="b4.w">AI startup, Germany · COO</span></div>
       <p><span data-i18n="b4.d">Moved to Hamburg to build a privacy-first AI startup and hired a team of 40. Then I found the accounts: €305 where €2.5M was supposed to be. I paid 25 salaries out of my own pocket, gathered the evidence, and we sued together — a €4M+ fraud. He went to prison. I came out knowing exactly how little money is worth next to integrity.</span> <a href="https://danieljaramillor.substack.com/p/hace-2-anos-hoy" data-i18n="b4.link">Read the whole story ↗</a></p>
     </li>
-    <li class="part">
+    <li class="part" data-n="05">
       <span class="mono part__n">Part 05</span><span class="mono part__y">2025–2026</span>
       <div class="part__t"><h3 data-i18n="b5.t">Chief of staff, in all but title</h3><span class="mono" data-i18n="b5.w">E3 Group · Early employee</span></div>
       <p data-i18n="b5.d">Built the AI-first pipelines that ran the operation: task flow that kept everyone on time, automated reporting, code review and the occasional front-end. I was the first version of every agent we shipped, and helped win clients with voice agents and identity-verification workflows for truck drivers.</p>
     </li>
-    <li class="part">
+    <li class="part" data-n="06">
       <span class="mono part__n">Part 06</span><span class="mono part__y">2025–now</span>
       <div class="part__t"><h3 data-i18n="b6.t">Into capital</h3><span class="mono" data-i18n="b6.w">Raíz &amp; Co. · Managing Partner</span></div>
       <p data-i18n="b6.d">Joined to sharpen our advisory work and step into investing — putting capital to work in Latin America, and making it work better.</p>
     </li>
-    <li class="part">
+    <li class="part" data-n="07">
       <span class="mono part__n">Part 07</span><span class="mono part__y">2025–now</span>
       <div class="part__t"><h3 data-i18n="b7.t">Selling what I built</h3><span class="mono" data-i18n="b7.w">LARVOL · Head of Sales</span></div>
       <p data-i18n="b7.d">Now I lead sales for the products I conceptualized and built — the same person who designed them is the one who sells them.</p>
