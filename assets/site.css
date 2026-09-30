@@ -112,7 +112,7 @@ mark { background: var(--accent); color: var(--ink); padding: 0 .12em; }
 .hero .btn--ghost { border-color: var(--ink); color: var(--ink); }
 .hero .btn--ghost:hover { background: var(--ink); color: var(--paper); }
 .hero .btn--accent:hover { background: var(--ink); color: var(--paper); }
-.hero__photo { position: relative; margin: 0; height: min(74vh, 780px); transform-style: preserve-3d; }
+.hero__photo { position: relative; margin: 0; justify-self: end; height: min(74vh, 780px); aspect-ratio: 2 / 3; max-width: 100%; transform-style: preserve-3d; box-shadow: 0 30px 60px rgba(21, 21, 21, .14); }
 .hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
 .tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(5, minmax(0, 1fr)); transform-style: preserve-3d; }
 .tile { background-image: url(../img/daniel.jpg); background-repeat: no-repeat; backface-visibility: hidden; }
@@ -308,7 +308,7 @@ section { position: relative; }
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr); align-items: start; }
-  .hero__photo { height: min(62vh, 560px); }
+  .hero__photo { justify-self: start; height: auto; width: min(100%, 440px); }
   .route { display: none; }
   .nav__links { display: none; }
   .part { gap: 12px 24px; }
