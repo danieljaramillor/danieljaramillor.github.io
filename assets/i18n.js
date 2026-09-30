@@ -23,7 +23,8 @@ window.DJ_ES = {
   'hero.lede': 'Te devuelvo un producto afilado, y el equipo para mantenerlo así. Líder de producto fundador: diseñador de formación, fundador a punta de cicatrices.',
   'hero.cta': 'Agendemos una llamada →',
   'hero.cta2': 'Ver cómo se construyó',
-  'hero.hint': 'Bajá para ensamblar ↓',
+  'hero.hint': 'Bajá ↓',
+  'hero.replay': '↺ Desarmarlo otra vez',
 
   'stat.1': 'personas han usado productos que ayudé a lanzar',
   'stat.2': 'levantados en capital de riesgo',
