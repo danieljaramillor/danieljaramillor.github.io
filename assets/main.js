@@ -17,7 +17,8 @@
   const EN = {};
   nodes.forEach((n) => { if (!(n.dataset.i18n in EN)) EN[n.dataset.i18n] = n.innerHTML; });
   Object.assign(EN, EN_EXTRA);
-  let lang = store.get('dj-lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en');
+  const qLang = new URLSearchParams(location.search).get('lang');
+  let lang = (qLang === 'es' || qLang === 'en' ? qLang : null) || store.get('dj-lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en');
   const t = (key) => (lang === 'es' ? ES[key] : EN[key]) ?? EN[key] ?? '';
 
   function applyLang(next) {
@@ -32,10 +33,32 @@
     if (hasGsap) ScrollTrigger.refresh();
   }
   document.querySelectorAll('.lang button').forEach((b) =>
-    b.addEventListener('click', () => { store.set('dj-lang', b.dataset.lang); applyLang(b.dataset.lang); }));
+    b.addEventListener('click', () => {
+      if (b.dataset.lang === lang) return;
+      store.set('dj-lang', b.dataset.lang);
+      if (window.gsap && !reduce) { const u = new URL(location.href); u.searchParams.set('lang', b.dataset.lang); u.hash = ''; location.href = u.toString(); } else applyLang(b.dataset.lang);
+    }));
 
   /* ---------------- essays (from data/essays.json, synced by a GitHub Action) ---------------- */
   const FEATURED = ['hace-2-anos-hoy', 'no-me-pidan-que-elija', 'diecisiete-escalones'];
+  // English titles for the Spanish essays (new essays fall back to their Spanish title)
+  const ESSAYS_EN = {
+    'que-pena': ['So Sorry', 'On the most expensive word in the language, the small change I dodge it with, and a debt I’ve owed for years'],
+    'diecisiete-escalones': ['Seventeen Steps', 'On a coffee ritual that’s never the same, perception as a craft, and everything you climb without counting'],
+    'hacer-facil-lo-dificil': ['Making the Hard Look Easy', 'On the process nobody sees, the value nobody measures, and why playing in the subway is sometimes fine'],
+    'pantalones-grandes': ['Pants Too Big', 'On the anxiety that lives in the calm, the noise that doesn’t need you, and why being enough doesn’t require doing more'],
+    'permiso-para-parar': ['Permission to Stop', 'On the stillness you don’t choose, the noise you do, and what’s left when you switch everything off'],
+    'debajo-de-la-roca': ['Under the Rock', 'On attention that doesn’t stretch far enough, the shells you have to shed, and why it’s fine not to carry everything'],
+    'bailar-sin-coreografia': ['Dancing Without Choreography', 'On choosing yourself, what it costs, and why the goal isn’t to arrive but to be here'],
+    'yo-me-encargo': ['I’ve Got It', 'On expecting nothing, remembering everything, and the shadow left between the two'],
+    'opinar-es-gratis': ['Opinions Are Free', 'On the real price of knowing something, experts who aren’t, and why I’d rather be wrong out loud'],
+    'no-me-pidan-que-elija': ['Don’t Make Me Choose', 'On generalists, pivots and the structure that lets you do whatever you want'],
+    'muy-llevado-de-su-parecer': ['Stubbornly My Own', 'On subcultures, genuine obsessions, and the difference between being absorbed by something and building yourself from within'],
+    'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year living in the capital (more reflections than notes)'],
+    'hace-2-anos-hoy': ['Two Years Ago Today', 'I lost (almost) everything']
+  };
+  const eTitle = (e) => (lang === 'en' && ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][0] : e.title);
+  const eSub = (e) => (lang === 'en' && ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][1] : e.subtitle);
   const FEATURED_EN = {
     'hace-2-anos-hoy': 'I lost (almost) everything. The Germany story, told in full.',
     'no-me-pidan-que-elija': 'On generalists, pivots, and why problems — not industries — are my unit of measure.',
@@ -58,8 +81,8 @@
       a.href = e.url;
       a.append(
         el('span', 'feat__meta mono', `${lang === 'es' ? 'Ensayo' : 'Essay'} ${String(total - i).padStart(2, '0')} · ${fmtDate(e.date)}`),
-        el('span', 'feat__t', e.title),
-        el('span', 'feat__d', lang === 'es' ? e.subtitle : (FEATURED_EN[e.slug] || e.subtitle)),
+        el('span', 'feat__t', eTitle(e)),
+        el('span', 'feat__d', lang === 'es' ? e.subtitle : (FEATURED_EN[e.slug] || eSub(e))),
         el('span', 'feat__go mono', lang === 'es' ? 'Leer ↗' : 'Read (in Spanish) ↗')
       );
       feat.append(a);
@@ -69,10 +92,10 @@
       const a = el('a');
       a.href = e.url;
       a.append(
-        el('span', 'mono', `N.º ${String(total - i).padStart(2, '0')}`),
+        el('span', 'mono', `${lang === 'es' ? 'N.º' : 'No.'} ${String(total - i).padStart(2, '0')}`),
         el('span', 'mono essay__date', fmtDate(e.date)),
-        el('span', 'essay__t', e.title),
-        el('span', 'essay__d', e.subtitle),
+        el('span', 'essay__t', eTitle(e)),
+        el('span', 'essay__d', eSub(e)),
         el('span', 'mono', '↗')
       );
       li.append(a);
@@ -115,13 +138,14 @@
   const stateEl = document.querySelector('.hero__state');
   let fit = 0.8, gap = 150, base = 0.66;
   let mx = 0, my = 0, tmx = 0, tmy = 0, lastState = null;
-  const build = { p: reduce ? 1 : 0, spread: reduce ? 1 : 1.9, spin: reduce ? 0 : 1 };
+  const build = { p: reduce ? 1 : 0, spread: reduce ? 1 : 1.9, spin: reduce ? 0 : 1, shake: 0, pulse: 1 };
+  const drops = layers.map(() => ({ d: reduce ? 0 : 1, o: reduce ? 1 : 0 }));
 
   function measure() {
     const w = viewport.clientWidth, h = viewport.clientHeight;
     fit = Math.min(w / 1100, h / 680) * 0.92;
     gap = w < 700 ? 90 : 150;
-    base = w < 700 ? 0.92 : 0.66;
+    base = w < 700 ? 0.92 : 0.6;
   }
 
   function render() {
@@ -129,12 +153,15 @@
     const e = 1 - p;
     mx += (tmx - mx) * 0.06;
     my += (tmy - my) * 0.06;
-    const s = fit * (base + (1 - base) * p);
+    const s = fit * (base + (1 - base) * p) * build.pulse;
     const rx = 56 * e - my * 10 * e + my * 6 * p;
     const rz = (-32 + mx * 12) * e - 40 * build.spin * e;
     const ry = mx * 8 * p;
-    stage.style.transform = `translateY(${(e * 70).toFixed(1)}px) scale(${s.toFixed(4)}) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg)`;
-    layers.forEach((l, i) => { l.style.transform = `translateZ(${(i * gap * build.spread * e).toFixed(1)}px)`; });
+    stage.style.transform = `translateY(${(e * 130 + build.shake).toFixed(1)}px) scale(${s.toFixed(4)}) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg)`;
+    layers.forEach((l, i) => {
+      l.style.transform = `translateZ(${(i * gap * build.spread * e + drops[i].d * 1600).toFixed(1)}px)`;
+      l.style.opacity = drops[i].o.toFixed(3);
+    });
     hero.style.setProperty('--p', p.toFixed(3));
     const st = p > 0.97 ? 'hero.state.assembled' : 'hero.state.exploded';
     if (st !== lastState) { lastState = st; stateEl.innerHTML = t(st); }
@@ -173,24 +200,78 @@
   /* scroll progress: construction status */
   gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
-  /* the drawing arrives in pieces, drifts, then snaps together on its own */
+  /* ---- the build sequence: blueprint draws, layers land one by one, the stack slams together ---- */
   gsap.ticker.add(render);
-  function assemble(delay) {
-    return gsap.timeline({ delay })
-      .to(build, { spin: 0, spread: 1, duration: 1.6, ease: 'power3.out' })
-      .to(build, { p: 1, duration: 1.9, ease: 'expo.inOut' }, '+=0.5')
-      .fromTo(stage, { filter: 'brightness(1.6)' }, { filter: 'brightness(1)', duration: 0.6, ease: 'power2.out' }, '-=0.15');
+  const logEl = document.getElementById('log');
+  const shock = document.querySelector('.shock');
+  const flash = document.querySelector('.flash');
+  const markEl = document.querySelector('.type__head mark');
+  const bp = document.querySelector('.blueprint');
+
+  function drawBlueprint() {
+    const w = bp.clientWidth, h = bp.clientHeight, cx = w / 2, cy = h / 2, step = w < 700 ? 48 : 80;
+    let lines = '';
+    for (let x = cx % step; x < w; x += step) lines += `<line x1="${x}" y1="${cy}" x2="${x}" y2="${x % (step * 4) < 1 ? 0 : cy}" data-d="${Math.abs(x - cx)}"/><line x1="${x}" y1="${cy}" x2="${x}" y2="${h}" data-d="${Math.abs(x - cx)}"/>`;
+    for (let y = cy % step; y < h; y += step) lines += `<line x1="${cx}" y1="${y}" x2="0" y2="${y}" data-d="${Math.abs(y - cy)}"/><line x1="${cx}" y1="${y}" x2="${w}" y2="${y}" data-d="${Math.abs(y - cy)}"/>`;
+    bp.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    bp.innerHTML = `<g class="bp-grid">${lines}</g><g class="bp-cross"><line x1="${cx - 40}" y1="${cy}" x2="${cx + 40}" y2="${cy}"/><line x1="${cx}" y1="${cy - 40}" x2="${cx}" y2="${cy + 40}"/><circle cx="${cx}" cy="${cy}" r="120"/></g>`;
+    bp.querySelectorAll('line, circle').forEach((l) => { const len = l.getTotalLength ? l.getTotalLength() : 2000; l.style.strokeDasharray = len; l.style.strokeDashoffset = len; });
   }
-  gsap.set(stage, { opacity: 0 });
-  gsap.to(stage, { opacity: 1, duration: 0.8, delay: 0.1 });
-  assemble(0.2);
-  gsap.from('.hero__meta, .hero__foot', { opacity: 0, y: 20, duration: 1, delay: 3.2, stagger: 0.15, ease: 'power2.out' });
+
+  let intro = null;
+  function buildSequence() {
+    if (intro) intro.kill();
+    drawBlueprint();
+    const tags = layers.map((l) => (l.querySelector('.tag') || {}).textContent || '');
+    const log = (txt) => () => { logEl.innerHTML = txt; };
+    build.p = 0; build.spread = 1.9; build.spin = 1;
+    drops.forEach((d) => { d.d = 1; d.o = 0; });
+    gsap.set(markEl, { backgroundSize: '0% 100%' });
+    gsap.set('.type__tag', { opacity: 0, y: 16 });
+    gsap.set(bp, { opacity: 1 });
+    gsap.set(shock, { scale: 0, opacity: 0 });
+    gsap.set(flash, { opacity: 0 });
+    intro = gsap.timeline({ onComplete: () => { logEl.innerHTML = lang === 'es' ? '▸ Obra lista · 5/5 capas <span class="ok">✓</span>' : '▸ Build complete · 5/5 layers <span class="ok">✓</span>'; } });
+    intro
+      .add(log('▸ DWG DJR-001 · ' + (lang === 'es' ? 'iniciando' : 'initializing')))
+      .to(bp.querySelectorAll('.bp-cross *'), { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' })
+      .to([...bp.querySelectorAll('.bp-grid line')].sort((a, b) => a.dataset.d - b.dataset.d), { strokeDashoffset: 0, duration: 0.9, ease: 'power3.out', stagger: 0.008 }, 0.15)
+      .to(build, { spin: 0.35, duration: 3.4, ease: 'sine.inOut' }, 0.5);
+    drops.forEach((d, i) => {
+      const at = 0.7 + i * 0.42;
+      intro
+        .to(d, { o: 1, duration: 0.25, ease: 'none' }, at)
+        .to(d, { d: 0, duration: 0.7, ease: 'back.out(1.15)' }, at)
+        .add(log(`▸ ${String(i + 1).padStart(2, '0')}/05 &nbsp;${tags[i].replace(/^\d+\s—\s/, '')} <span class="ok">✓</span>`), at + 0.45)
+        .fromTo(build, { shake: 0 }, { shake: 7, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, at + 0.55);
+    });
+    intro
+      .add(log('▸ ' + (lang === 'es' ? 'ensamblando…' : 'assembling…')), 3.2)
+      .to(build, { spin: 0, spread: 1, duration: 0.9, ease: 'power2.inOut' }, 3.0)
+      .to(build, { p: 1, duration: 1.15, ease: 'expo.in' }, 3.6)
+      .to(bp, { opacity: 0.25, duration: 0.6 }, 4.4)
+      .fromTo(flash, { opacity: 0.55 }, { opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, 4.75)
+      .fromTo(shock, { scale: 0.2, opacity: 0.9 }, { scale: 7, opacity: 0, duration: 1.3, ease: 'power3.out' }, 4.75)
+      .fromTo(build, { pulse: 1.04 }, { pulse: 1, duration: 0.8, ease: 'elastic.out(1, 0.45)' }, 4.75)
+      .to(markEl, { backgroundSize: '100% 100%', duration: 0.5, ease: 'power3.inOut' }, 5.1)
+      .to('.type__tag', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 5.3)
+      .fromTo('.hero__meta, .hero__actions, .hero__hint', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }, 5.3);
+    return intro;
+  }
+  buildSequence();
+  /* impatient visitors: a click, key or scroll fast-forwards the sequence */
+  const hurry = () => { if (intro && intro.isActive()) intro.timeScale(4); };
+  hero.addEventListener('pointerdown', (ev) => { if (!ev.target.closest('a, button')) hurry(); });
+  window.addEventListener('wheel', hurry, { passive: true });
+  window.addEventListener('keydown', hurry);
+  window.addEventListener('touchmove', hurry, { passive: true });
+  window.addEventListener('resize', () => { if (!intro || !intro.isActive()) { drawBlueprint(); gsap.set(bp.querySelectorAll('line, circle'), { strokeDashoffset: 0 }); } });
 
   document.getElementById('replay').addEventListener('click', () => {
     gsap.timeline()
-      .to(build, { p: 0, spread: 1.9, duration: 1.2, ease: 'expo.inOut' })
-      .to(build, { spin: 1, duration: 0.8, ease: 'power2.inOut' }, '<0.3')
-      .add(assemble(0.4));
+      .to(build, { p: 0, spread: 1.9, spin: 0.6, duration: 1, ease: 'expo.inOut' })
+      .to(drops, { d: 1, o: 0, duration: 0.6, stagger: -0.08, ease: 'power2.in' }, 0.4)
+      .add(() => { buildSequence(); });
   });
 
   hero.addEventListener('pointermove', (ev) => {

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daniel Jaramillo — Give me the mess.</title>
-<meta name="description" content="Daniel Jaramillo — generalist builder, founding product lead and writer from Cali, based in Bogotá. AI-first products, 0→1 startups, oncology, coffee.">
+<meta name="description" content="Daniel Jaramillo — generalist, founder and writer from Cali, based in Bogotá. AI-first products, 0→1 startups, oncology, coffee.">
 <meta property="og:title" content="Daniel Jaramillo — Give me the mess.">
-<meta property="og:description" content="Designer by training, founder by scar tissue. Founding product lead for AI-first teams.">
+<meta property="og:description" content="I’ll hand back a sharp product, and the team to keep it sharp. Designer by training, founder by scar tissue.">
 <meta property="og:image" content="https://danieljaramillor.github.io/img/daniel.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#111110">
@@ -51,6 +51,9 @@
       <span>04°42′N 74°04′W</span>
     </div>
 
+    <svg class="blueprint" aria-hidden="true"></svg>
+    <div class="shock" aria-hidden="true"></div>
+    <div class="flash" aria-hidden="true"></div>
     <div class="hero__viewport">
       <div class="stage" id="stage">
         <div class="layer layer--paper" style="--i:0">
@@ -79,23 +82,25 @@
           <div class="type">
             <h1 class="type__name">Daniel<br>Jaramillo</h1>
             <p class="type__head"><span data-i18n="hero.give">Give me</span> <mark data-i18n="hero.mess">the mess.</mark></p>
+            <p class="type__tag" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
           </div>
           <span class="tag mono" data-i18n="layer.4">04 — Founder ×2 · Monquick, RXXO</span>
         </div>
 
         <div class="layer layer--notes" style="--i:4" aria-hidden="true">
           <div class="chips mono">
-            <span data-i18n="chip.1">5M+ users</span><span data-i18n="chip.2">$1M+ raised</span><span data-i18n="chip.3">1 exit</span><span class="chip--accent">Founding PM</span>
+            <span data-i18n="chip.1">5M+ users</span><span data-i18n="chip.2">$1M+ raised</span><span data-i18n="chip.3">1 exit</span><span class="chip--accent" data-i18n="chip.4">Generalist</span>
           </div>
           <span class="callout mono">A</span>
           <span class="route mono">CALI → BOGOTÁ → SF</span>
-          <span class="tag mono" data-i18n="layer.5">05 — Bogotá · obra negra, still</span>
+          <span class="tag mono" data-i18n="layer.5">05 — Bogotá · still under construction</span>
         </div>
       </div>
     </div>
 
     <div class="hero__foot">
-      <p class="hero__lede" data-i18n="hero.lede">I’ll hand back a sharp product, and the team to keep it sharp. Founding product lead — designer by training, founder by scar tissue.</p>
+      <p class="hero__log mono" id="log" aria-hidden="true"></p>
+      <p class="hero__tagm" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
       <div class="hero__actions">
         <a class="btn btn--accent" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
         <a class="btn btn--ghost" href="#story" data-i18n="hero.cta2">Read the build</a>
@@ -116,24 +121,24 @@
 <!-- ============ MANIFESTO ============ -->
 <section class="manifesto" aria-labelledby="manifesto-title">
   <div class="manifesto__pin">
-  <span class="eyebrow mono" data-i18n="man.eyebrow">Spec note — obra negra (under construction, on purpose)</span>
-  <h2 class="manifesto__title" id="manifesto-title"><span class="chars">No borro nada.</span> <span class="chars dim">Archivo.</span></h2>
+  <span class="eyebrow mono" data-i18n="man.eyebrow">Spec note — under construction, on purpose</span>
+  <h2 class="manifesto__title" id="manifesto-title"><span class="chars" data-i18n="man.t1">I delete nothing.</span> <span class="chars dim" data-i18n="man.t2">I archive.</span></h2>
   <p class="manifesto__lede" data-i18n="man.lede">I don’t delete anything — I archive it, and build on top. The wins, the failures, the parts that hurt. It’s the idea behind everything I write, and the way this page is built: in layers.</p>
   </div>
   <div class="principles">
     <a class="principle" href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija">
-      <span class="mono principle__src" data-i18n="p1.src">I · from “No me pidan que elija”</span>
-      <span class="principle__es">Sigo sin caber en una oración.</span>
+      <span class="mono principle__src" data-i18n="p1.src">I · from “Don’t make me choose”</span>
+      <span class="principle__es" data-i18n="p1.q">I still don’t fit in one sentence.</span>
       <span class="principle__en" data-i18n="p1.en">Problems — not industries — are my unit of measure. The industry is the façade; the process is the structure.</span>
     </a>
     <a class="principle" href="https://danieljaramillor.substack.com/p/opinar-es-gratis">
-      <span class="mono principle__src" data-i18n="p2.src">II · from “Opinar es gratis”</span>
-      <span class="principle__es">“No sé”, pero sé cómo averiguarlo.</span>
+      <span class="mono principle__src" data-i18n="p2.src">II · from “Opinions are free”</span>
+      <span class="principle__es" data-i18n="p2.q">“I don’t know” — but I know how to find out.</span>
       <span class="principle__en" data-i18n="p2.en">Strong opinions, loosely held. The most expensive ones are the ones I paid for by being wrong.</span>
     </a>
     <a class="principle" href="https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil">
-      <span class="mono principle__src" data-i18n="p3.src">III · from “Hacer fácil lo difícil”</span>
-      <span class="principle__es">El buen diseño es invisible.</span>
+      <span class="mono principle__src" data-i18n="p3.src">III · from “Making the hard look easy”</span>
+      <span class="principle__es" data-i18n="p3.q">Good design is invisible.</span>
       <span class="principle__en" data-i18n="p3.en">I swallow the complexity so the next person doesn’t have to. Good work erases its own fingerprints.</span>
     </a>
   </div>
@@ -240,8 +245,8 @@
 <section class="coffee" id="coffee" aria-labelledby="coffee-title">
   <div class="coffee__copy">
     <span class="eyebrow mono" data-i18n="cof.eyebrow">Fig. 7 — Off the clock · roast profile</span>
-    <h2 id="coffee-title" data-i18n="cof.title">Best<br>roastery<br>in Colombia.</h2>
-    <p data-i18n="cof.d">I co-own Coffea Project, a micro-roastery that won Best Roastery in Colombia and took us to the World Coffee Roasting Championship. Café hecho para los muchos. Every morning still starts with ten slow minutes and a scale — “el café no es el concierto, es la afinación.”</p>
+    <h2 id="coffee-title" data-i18n="cof.title">Coffee<br>for the<br>many.</h2>
+    <p data-i18n="cof.d">I co-own Coffea Project, a micro-roastery, with Colombia’s Best Roaster — my business partner, who took Coffea to the World Coffee Roasting Championship. Every morning still starts with ten slow minutes and a scale: coffee isn’t the concert, it’s the tuning.</p>
     <a class="btn btn--cream" href="https://coffeaproject.com" data-i18n="cof.cta">Visit Coffea Project ↗</a>
   </div>
   <div class="coffee__viz">
@@ -274,7 +279,7 @@
     <a class="btn btn--ink" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hire.cta">Let’s talk →</a>
   </div>
   <ul class="offers">
-    <li><span class="mono">A</span><div><h3 data-i18n="o1.t">Founding PM / Product lead</h3><p data-i18n="o1.d">The first product hire who can design it, build it and sell it — for teams shipping AI-first products at speed.</p></div></li>
+    <li><span class="mono">A</span><div><h3 data-i18n="o1.t">The generalist, full-time</h3><p data-i18n="o1.d">The person who can design it, build it and sell it — for teams building AI-first products at speed.</p></div></li>
     <li><span class="mono">B</span><div><h3 data-i18n="o2.t">Speaking</h3><p data-i18n="o2.d">Designer to founder to operator: building AI products, selling them, and what a failed startup teaches you.</p></div></li>
     <li><span class="mono">C</span><div><h3 data-i18n="o3.t">Advising</h3><p data-i18n="o3.d">Product, go-to-market and team design for early-stage founders.</p></div></li>
   </ul>
@@ -284,8 +289,8 @@
 <section class="archive" id="archive" aria-labelledby="archive-title">
   <div class="archive__head">
     <div>
-      <span class="eyebrow mono accent" data-i18n="arc.eyebrow">The archive — essays in Spanish</span>
-      <h2 id="archive-title">Archivismo<br>como filosofía<br>de vida.</h2>
+      <span class="eyebrow mono accent" data-i18n="arc.eyebrow">The archive — essays (written in Spanish)</span>
+      <h2 id="archive-title" data-i18n="arc.title">Archivism<br>as a philosophy<br>of life.</h2>
     </div>
     <div class="archive__sub">
       <p data-i18n="arc.d">A series on building a life by accumulation: failure, coffee, attention, generalism, and the words we spend too easily.</p>
@@ -306,7 +311,7 @@
     <a href="https://www.instagram.com/danieljaramillor">Instagram ↗</a>
     <a href="https://x.com/one_interrobang">X ↗</a>
     <a href="https://open.spotify.com/user/12127493494">Spotify ↗</a>
-    <a href="mailto:danieljaramillor@gmail.com" data-i18n="foot.mail">Say hola ↗</a>
+    <a href="mailto:danieljaramillor@gmail.com" data-i18n="foot.mail">Say hello ↗</a>
   </nav>
   <div class="foot__base mono">
     <span>© <span id="year">2026</span> Daniel Jaramillo</span>
