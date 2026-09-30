@@ -8,7 +8,7 @@ window.DJ_ES = {
   'nav.cta': 'Trabajemos →',
 
   'hero.dwg': 'Plano N.º DJR-001 · La arquitectura de la acumulación',
-  'hero.state.exploded': 'Estado: despiece · 5 capas',
+  'hero.state.exploded': 'Estado: un desorden',
   'hero.state.assembled': 'Estado: ensamblado',
   'layer.1': '01 — Cali · código de origen',
   'layer.2': '02 — Diseño industrial · el lenguaje',
@@ -25,7 +25,7 @@ window.DJ_ES = {
   'hero.cta': 'Agendemos una llamada →',
   'hero.cta2': 'Ver cómo se construyó',
   'hero.hint': 'Bajá ↓',
-  'hero.replay': '↺ Desarmarlo otra vez',
+  'hero.replay': '↺ Desordenarlo otra vez',
 
   'stat.1': 'personas han usado productos que ayudé a lanzar',
   'stat.2': 'levantados en capital de riesgo',

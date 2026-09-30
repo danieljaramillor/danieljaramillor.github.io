@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
+<script>document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3000);</script>
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
@@ -42,71 +43,37 @@
 
 <main id="main">
 
-<!-- ============ HERO: exploded view ============ -->
+<!-- ============ HERO: the mess assembles itself ============ -->
 <section class="hero" id="top" aria-label="Introduction">
-  <div class="hero__sticky">
-    <div class="hero__meta mono">
-      <span data-i18n="hero.dwg">DWG No. DJR-001 · The architecture of accumulation</span>
-      <span class="hero__state" data-i18n="hero.state.exploded">State: exploded · 5 layers</span>
-      <span>04°42′N 74°04′W</span>
-    </div>
+  <svg class="hero__lines" aria-hidden="true"></svg>
 
-    <svg class="blueprint" aria-hidden="true"></svg>
-    <div class="shock" aria-hidden="true"></div>
-    <div class="flash" aria-hidden="true"></div>
-    <div class="hero__viewport">
-      <div class="stage" id="stage">
-        <div class="layer layer--paper" style="--i:0">
-          <span class="tag mono" data-i18n="layer.1">01 — Cali · source code</span>
-        </div>
-
-        <div class="layer layer--lines" style="--i:1" aria-hidden="true">
-          <svg viewBox="0 0 1100 680" preserveAspectRatio="none">
-            <g class="ink-stroke" fill="none" stroke-width="1.2">
-              <line x1="0" y1="60" x2="1100" y2="60"/><line x1="0" y1="620" x2="1100" y2="620"/>
-              <line x1="40" y1="0" x2="40" y2="680"/><line x1="660" y1="0" x2="660" y2="680"/>
-              <line x1="640" y1="80" x2="640" y2="600"/><line x1="632" y1="80" x2="648" y2="80"/><line x1="632" y1="600" x2="648" y2="600"/>
-              <path d="M700 620 L1060 60"/>
-            </g>
-            <circle cx="880" cy="200" r="120" fill="none" stroke="#FF4F00" stroke-width="2"/>
-          </svg>
-          <span class="tag mono" data-i18n="layer.2">02 — Industrial design · the language</span>
-        </div>
-
-        <div class="layer layer--photo" style="--i:2">
-          <img src="img/daniel.jpg" alt="Daniel Jaramillo in Times Square, holding his sunglasses" width="854" height="1280">
-          <span class="tag mono" data-i18n="layer.3">03 — Germany · the lesson</span>
-        </div>
-
-        <div class="layer layer--type" style="--i:3">
-          <div class="type">
-            <h1 class="type__name">Daniel<br>Jaramillo</h1>
-            <p class="type__head"><span data-i18n="hero.give">Give me</span> <mark data-i18n="hero.mess">the mess.</mark></p>
-            <p class="type__tag" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
-          </div>
-          <span class="tag mono" data-i18n="layer.4">04 — Founder ×2 · Monquick, RXXO</span>
-        </div>
-
-        <div class="layer layer--notes" style="--i:4" aria-hidden="true">
-          <div class="chips mono">
-            <span data-i18n="chip.1">5M+ users</span><span data-i18n="chip.2">$1M+ raised</span><span data-i18n="chip.3">1 exit</span><span class="chip--accent" data-i18n="chip.4">Generalist</span>
-          </div>
-          <span class="callout mono">A</span>
-          <span class="route mono">CALI → BOGOTÁ → SF</span>
-          <span class="tag mono" data-i18n="layer.5">05 — Bogotá · still under construction</span>
-        </div>
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="hero__meta mono piece"><span data-i18n="hero.dwg">DWG No. DJR-001 · The architecture of accumulation</span></p>
+      <h1 class="hero__name"><span class="scatter">Daniel</span><br><span class="scatter">Jaramillo</span></h1>
+      <p class="hero__head"><span class="piece" data-i18n="hero.give">Give me</span> <mark class="piece" data-i18n="hero.mess">the mess.</mark></p>
+      <p class="hero__tag piece" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
+      <div class="hero__chips mono">
+        <span class="piece" data-i18n="chip.1">5M+ users</span><span class="piece" data-i18n="chip.2">$1M+ raised</span><span class="piece" data-i18n="chip.3">1 exit</span><span class="piece chip--accent" data-i18n="chip.4">Generalist</span>
       </div>
-    </div>
-
-    <div class="hero__foot">
-      <p class="hero__log mono" id="log" aria-hidden="true"></p>
-      <p class="hero__tagm" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
       <div class="hero__actions">
-        <a class="btn btn--accent" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
-        <a class="btn btn--ghost" href="#story" data-i18n="hero.cta2">Read the build</a>
+        <a class="btn btn--accent piece" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
+        <a class="btn btn--ghost piece" href="#story" data-i18n="hero.cta2">Read the build</a>
       </div>
-      <div class="hero__hint mono"><span data-i18n="hero.hint">Scroll ↓</span><button type="button" class="replay mono" id="replay" data-i18n="hero.replay">↺ Explode it again</button></div>
     </div>
+
+    <figure class="hero__photo">
+      <img class="hero__img" src="img/daniel.jpg" alt="Daniel Jaramillo in Times Square, holding his sunglasses" width="854" height="1280">
+      <div class="tiles" aria-hidden="true"></div>
+      <span class="callout mono piece" aria-hidden="true">A</span>
+      <span class="route mono piece" aria-hidden="true">CALI → BOGOTÁ → SF</span>
+    </figure>
+  </div>
+
+  <div class="hero__base mono">
+    <span class="piece">04°42′N 74°04′W</span>
+    <span class="hero__state piece" data-i18n="hero.state.exploded">State: a mess</span>
+    <span class="hero__hint"><span data-i18n="hero.hint">Scroll ↓</span><button type="button" class="replay mono" id="replay" data-i18n="hero.replay">↺ Make a mess again</button></span>
   </div>
 </section>
 

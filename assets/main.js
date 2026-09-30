@@ -130,50 +130,75 @@
       card.addEventListener('pointerleave', () => { card.style.transform = ''; });
     });
   }
-  /* ---------------- hero: exploded view that assembles itself ---------------- */
+  /* ---------------- hero: a mess of pieces that assembles itself ---------------- */
   const hero = document.querySelector('.hero');
-  const stage = document.getElementById('stage');
-  const viewport = document.querySelector('.hero__viewport');
-  const layers = [...stage.querySelectorAll('.layer')];
-  const stateEl = document.querySelector('.hero__state');
-  let fit = 0.8, gap = 150, base = 0.66;
-  let mx = 0, my = 0, tmx = 0, tmy = 0, lastState = null;
-  const build = { p: reduce ? 1 : 0, spread: reduce ? 1 : 1.9, spin: reduce ? 0 : 1, shake: 0, pulse: 1 };
-  const drops = layers.map(() => ({ d: reduce ? 0 : 1, o: reduce ? 1 : 0 }));
+  const tilesEl = hero.querySelector('.tiles');
+  const heroImg = hero.querySelector('.hero__img');
+  const linesEl = hero.querySelector('.hero__lines');
+  const stateEl = hero.querySelector('.hero__state');
+  let lastState = null;
+  const COLS = 4, ROWS = 5, IMG_W = 854, IMG_H = 1280;
 
-  function measure() {
-    const w = viewport.clientWidth, h = viewport.clientHeight;
-    fit = Math.min(w / 1100, h / 680) * 0.92;
-    gap = w < 700 ? 90 : 150;
-    base = w < 700 ? 0.92 : 0.6;
+  // the portrait, cut into tiles that can fly apart and lock back together
+  const tiles = [];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const d = document.createElement('div');
+    d.className = 'tile';
+    d.dataset.c = c; d.dataset.r = r;
+    tilesEl.append(d);
+    tiles.push(d);
   }
-
-  function render() {
-    const p = build.p;
-    const e = 1 - p;
-    mx += (tmx - mx) * 0.06;
-    my += (tmy - my) * 0.06;
-    const s = fit * (base + (1 - base) * p) * build.pulse;
-    const rx = 56 * e - my * 10 * e + my * 6 * p;
-    const rz = (-32 + mx * 12) * e - 40 * build.spin * e;
-    const ry = mx * 8 * p;
-    stage.style.transform = `translateY(${(e * 130 + build.shake).toFixed(1)}px) scale(${s.toFixed(4)}) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg)`;
-    layers.forEach((l, i) => {
-      l.style.transform = `translateZ(${(i * gap * build.spread * e + drops[i].d * 1600).toFixed(1)}px)`;
-      l.style.opacity = drops[i].o.toFixed(3);
+  function layoutTiles() {
+    const w = tilesEl.clientWidth, h = tilesEl.clientHeight;
+    if (!w || !h) return;
+    const ratio = IMG_W / IMG_H;
+    const cw = w / h > ratio ? w : h * ratio;
+    const ch = w / h > ratio ? w / ratio : h;
+    const ox = (w - cw) * 0.5, oy = (h - ch) * 0.2;
+    const tw = w / COLS, th = h / ROWS;
+    tiles.forEach((d) => {
+      d.style.backgroundSize = `${cw}px ${ch}px`;
+      d.style.backgroundPosition = `${ox - d.dataset.c * tw}px ${oy - d.dataset.r * th}px`;
     });
-    hero.style.setProperty('--p', p.toFixed(3));
-    const st = p > 0.97 ? 'hero.state.assembled' : 'hero.state.exploded';
-    if (st !== lastState) { lastState = st; stateEl.innerHTML = t(st); }
   }
 
-  measure();
+  // construction lines drawn across the whole first screen
+  function drawLines() {
+    const W = hero.clientWidth, H = hero.clientHeight;
+    const photo = hero.querySelector('.hero__photo').getBoundingClientRect();
+    const hr = hero.getBoundingClientRect();
+    const px = photo.left - hr.left, py = photo.top - hr.top, pw = photo.width, ph = photo.height;
+    const top = 76, bottom = H - 64;
+    linesEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    linesEl.innerHTML = [
+      `<line x1="0" y1="${top}" x2="${W}" y2="${top}"/>`,
+      `<line x1="0" y1="${bottom}" x2="${W}" y2="${bottom}"/>`,
+      `<line x1="${px - 14}" y1="0" x2="${px - 14}" y2="${H}"/>`,
+      `<line x1="${px + pw + 14}" y1="${top}" x2="${px + pw + 14}" y2="${bottom}"/>`,
+      `<line x1="${px}" y1="${py - 14}" x2="${px + pw}" y2="${py - 14}"/>`,
+      `<line x1="${px}" y1="${py + ph + 14}" x2="${px + pw}" y2="${py + ph + 14}"/>`,
+      `<path d="M${px + pw * 0.2} ${py + ph + 30} L${px + pw} ${py + ph * 0.02}"/>`,
+      `<circle class="ln-accent" cx="${px + pw * 0.56}" cy="${py + ph * 0.22}" r="${Math.min(pw, ph) * 0.2}" fill="none"/>`
+    ].join('');
+    linesEl.querySelectorAll('line, path, circle').forEach((l) => {
+      const len = l.getTotalLength();
+      l.style.strokeDasharray = len;
+      l.dataset.len = len;
+    });
+  }
+
+  const setState = (key) => { if (key !== lastState) { lastState = key; stateEl.innerHTML = t(key); } };
+
   applyLang(lang);
-  window.addEventListener('resize', () => { measure(); render(); });
+  layoutTiles();
+  drawLines();
+  window.addEventListener('resize', () => { layoutTiles(); drawLines(); if (!intro || !intro.isActive()) linesEl.querySelectorAll('*').forEach((l) => { l.style.strokeDashoffset = 0; }); });
+  let intro = null;
 
   if (!hasGsap || reduce) {
-    build.p = 1;
-    render();
+    tilesEl.hidden = true;
+    root.classList.remove('intro');
+    setState('hero.state.assembled');
     document.getElementById('replay').hidden = true;
     return;
   }
@@ -200,88 +225,99 @@
   /* scroll progress: construction status */
   gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
-  /* ---- the build sequence: blueprint draws, layers land one by one, the stack slams together ---- */
-  gsap.ticker.add(render);
-  const logEl = document.getElementById('log');
-  const shock = document.querySelector('.shock');
-  const flash = document.querySelector('.flash');
-  const markEl = document.querySelector('.type__head mark');
-  const bp = document.querySelector('.blueprint');
+  /* split the name into letters */
+  const splitChars = (elm) => {
+    elm.innerHTML = elm.textContent.trim().split(/\s+/)
+      .map((w) => `<span class="word">${[...w].map((c) => `<span class="c">${c}</span>`).join('')}</span>`).join(' ');
+    return elm.querySelectorAll('.c');
+  };
+  const rnd = gsap.utils.random;
+  hero.querySelectorAll('.scatter').forEach(splitChars);
+  const pieces = [...hero.querySelectorAll('.scatter .c, .piece'), ...tiles];
 
-  function drawBlueprint() {
-    const w = bp.clientWidth, h = bp.clientHeight, cx = w / 2, cy = h / 2, step = w < 700 ? 48 : 80;
-    let lines = '';
-    for (let x = cx % step; x < w; x += step) lines += `<line x1="${x}" y1="${cy}" x2="${x}" y2="${x % (step * 4) < 1 ? 0 : cy}" data-d="${Math.abs(x - cx)}"/><line x1="${x}" y1="${cy}" x2="${x}" y2="${h}" data-d="${Math.abs(x - cx)}"/>`;
-    for (let y = cy % step; y < h; y += step) lines += `<line x1="${cx}" y1="${y}" x2="0" y2="${y}" data-d="${Math.abs(y - cy)}"/><line x1="${cx}" y1="${y}" x2="${w}" y2="${y}" data-d="${Math.abs(y - cy)}"/>`;
-    bp.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    bp.innerHTML = `<g class="bp-grid">${lines}</g><g class="bp-cross"><line x1="${cx - 40}" y1="${cy}" x2="${cx + 40}" y2="${cy}"/><line x1="${cx}" y1="${cy - 40}" x2="${cx}" y2="${cy + 40}"/><circle cx="${cx}" cy="${cy}" r="120"/></g>`;
-    bp.querySelectorAll('line, circle').forEach((l) => { const len = l.getTotalLength ? l.getTotalLength() : 2000; l.style.strokeDasharray = len; l.style.strokeDashoffset = len; });
+  // where each piece sits in the mess: flung around the screen, tumbling in 3D
+  function mess(el) {
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    return {
+      x: rnd(vw * 0.06, vw * 0.94) - cx,
+      y: rnd(vh * 0.14, vh * 0.9) - cy,
+      z: rnd(-500, 320),
+      rotationX: rnd(-70, 70), rotationY: rnd(-80, 80), rotationZ: rnd(-160, 160),
+      scale: rnd(0.55, 1.25)
+    };
   }
 
-  let intro = null;
-  function buildSequence() {
+  function runIntro(fromCurrent) {
     if (intro) intro.kill();
-    drawBlueprint();
-    const tags = layers.map((l) => (l.querySelector('.tag') || {}).textContent || '');
-    const log = (txt) => () => { logEl.innerHTML = txt; };
-    build.p = 0; build.spread = 1.9; build.spin = 1;
-    drops.forEach((d) => { d.d = 1; d.o = 0; });
-    gsap.set(markEl, { backgroundSize: '0% 100%' });
-    gsap.set('.type__tag', { opacity: 0, y: 16 });
-    gsap.set(bp, { opacity: 1 });
-    gsap.set(shock, { scale: 0, opacity: 0 });
-    gsap.set(flash, { opacity: 0 });
-    intro = gsap.timeline({ onComplete: () => { logEl.innerHTML = lang === 'es' ? '▸ Obra lista · 5/5 capas <span class="ok">✓</span>' : '▸ Build complete · 5/5 layers <span class="ok">✓</span>'; } });
-    intro
-      .add(log('▸ DWG DJR-001 · ' + (lang === 'es' ? 'iniciando' : 'initializing')))
-      .to(bp.querySelectorAll('.bp-cross *'), { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' })
-      .to([...bp.querySelectorAll('.bp-grid line')].sort((a, b) => a.dataset.d - b.dataset.d), { strokeDashoffset: 0, duration: 0.9, ease: 'power3.out', stagger: 0.008 }, 0.15)
-      .to(build, { spin: 0.35, duration: 3.4, ease: 'sine.inOut' }, 0.5);
-    drops.forEach((d, i) => {
-      const at = 0.7 + i * 0.42;
-      intro
-        .to(d, { o: 1, duration: 0.25, ease: 'none' }, at)
-        .to(d, { d: 0, duration: 0.7, ease: 'back.out(1.15)' }, at)
-        .add(log(`▸ ${String(i + 1).padStart(2, '0')}/05 &nbsp;${tags[i].replace(/^\d+\s—\s/, '')} <span class="ok">✓</span>`), at + 0.45)
-        .fromTo(build, { shake: 0 }, { shake: 7, duration: 0.07, yoyo: true, repeat: 1, ease: 'power1.inOut' }, at + 0.55);
-    });
-    intro
-      .add(log('▸ ' + (lang === 'es' ? 'ensamblando…' : 'assembling…')), 3.2)
-      .to(build, { spin: 0, spread: 1, duration: 0.9, ease: 'power2.inOut' }, 3.0)
-      .to(build, { p: 1, duration: 1.15, ease: 'expo.in' }, 3.6)
-      .to(bp, { opacity: 0.25, duration: 0.6 }, 4.4)
-      .fromTo(flash, { opacity: 0.55 }, { opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, 4.75)
-      .fromTo(shock, { scale: 0.2, opacity: 0.9 }, { scale: 7, opacity: 0, duration: 1.3, ease: 'power3.out' }, 4.75)
-      .fromTo(build, { pulse: 1.04 }, { pulse: 1, duration: 0.8, ease: 'elastic.out(1, 0.45)' }, 4.75)
-      .to(markEl, { backgroundSize: '100% 100%', duration: 0.5, ease: 'power3.inOut' }, 5.1)
-      .to('.type__tag', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 5.3)
-      .fromTo('.hero__meta, .hero__actions, .hero__hint', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }, 5.3);
+    setState('hero.state.exploded');
+    const lines = linesEl.querySelectorAll('line, path, circle');
+    gsap.set(lines, { strokeDashoffset: (i, l) => l.dataset.len });
+    gsap.set(heroImg, { opacity: 0 });
+    gsap.set(tiles, { opacity: 1 });
+    if (!fromCurrent) {
+      pieces.forEach((p) => gsap.set(p, mess(p)));
+      gsap.set(hero.querySelector('.hero__head mark'), { backgroundColor: 'rgba(255,79,0,0)' });
+    }
+    intro = gsap.timeline({ onComplete: () => setState('hero.state.assembled') });
+    // the mess drifts for a beat…
+    intro.to(pieces, {
+      rotationZ: () => '+=' + rnd(-25, 25), rotationY: () => '+=' + rnd(-20, 20), y: () => '+=' + rnd(-24, 24),
+      duration: 1.1, ease: 'sine.inOut'
+    }, 0);
+    // …then everything flies home: tiles lock together first, then the letters, then the rest
+    intro.to(tiles, {
+      x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0, scale: 1,
+      duration: 1.25, ease: 'expo.out', stagger: { each: 0.035, from: 'random' }
+    }, 0.9);
+    intro.to(hero.querySelectorAll('.scatter .c'), {
+      x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0, scale: 1,
+      duration: 1.1, ease: 'expo.out', stagger: { each: 0.045, from: 'random' }
+    }, 1.05);
+    intro.to(hero.querySelectorAll('.piece'), {
+      x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0, scale: 1,
+      duration: 1.1, ease: 'expo.out', stagger: { each: 0.05, from: 'random' }
+    }, 1.2);
+    // the drawing snaps into its frame: construction lines race across the page
+    intro.to(lines, { strokeDashoffset: 0, duration: 0.9, ease: 'power3.inOut', stagger: 0.06 }, 2.1);
+    intro.to(hero.querySelector('.hero__head mark'), { backgroundColor: 'rgba(255,79,0,1)', duration: 0.35, ease: 'power2.out' }, 2.35);
+    intro.to(heroImg, { opacity: 1, duration: 0.25 }, 2.3).set(tiles, { opacity: 0 }, 2.56);
+    intro.fromTo(hero.querySelector('.hero__grid'), { scale: 1.015 }, { scale: 1, duration: 0.8, ease: 'elastic.out(1, 0.5)', immediateRender: false }, 2.2);
     return intro;
   }
-  buildSequence();
-  /* impatient visitors: a click, key or scroll fast-forwards the sequence */
-  const hurry = () => { if (intro && intro.isActive()) intro.timeScale(4); };
+  runIntro(false);
+  root.classList.remove('intro');
+
+  // impatient visitors: a click, key or scroll fast-forwards
+  const hurry = () => { if (intro && intro.isActive()) intro.timeScale(3.5); };
   hero.addEventListener('pointerdown', (ev) => { if (!ev.target.closest('a, button')) hurry(); });
   window.addEventListener('wheel', hurry, { passive: true });
   window.addEventListener('keydown', hurry);
   window.addEventListener('touchmove', hurry, { passive: true });
-  window.addEventListener('resize', () => { if (!intro || !intro.isActive()) { drawBlueprint(); gsap.set(bp.querySelectorAll('line, circle'), { strokeDashoffset: 0 }); } });
 
   document.getElementById('replay').addEventListener('click', () => {
-    gsap.timeline()
-      .to(build, { p: 0, spread: 1.9, spin: 0.6, duration: 1, ease: 'expo.inOut' })
-      .to(drops, { d: 1, o: 0, duration: 0.6, stagger: -0.08, ease: 'power2.in' }, 0.4)
-      .add(() => { buildSequence(); });
+    if (intro) intro.kill();
+    gsap.to(hero.querySelector('.hero__head mark'), { backgroundColor: 'rgba(255,79,0,0)', duration: 0.3 });
+    gsap.set(heroImg, { opacity: 0 });
+    gsap.set(tiles, { opacity: 1 });
+    pieces.forEach((p) => gsap.to(p, { ...mess(p), duration: 0.9, ease: 'power3.in', delay: rnd(0, 0.25) }));
+    gsap.delayedCall(1.2, () => runIntro(true));
   });
 
+  /* assembled: a gentle depth parallax under the cursor */
+  const photoEl = hero.querySelector('.hero__photo');
+  const copyEl = hero.querySelector('.hero__copy');
   hero.addEventListener('pointermove', (ev) => {
-    tmx = ev.clientX / window.innerWidth - 0.5;
-    tmy = ev.clientY / window.innerHeight - 0.5;
+    if (intro && intro.isActive()) return;
+    const mx = ev.clientX / window.innerWidth - 0.5, my = ev.clientY / window.innerHeight - 0.5;
+    gsap.to(photoEl, { rotateY: mx * 8, rotateX: -my * 6, x: mx * 12, duration: 0.8, ease: 'power2.out' });
+    gsap.to(copyEl, { x: -mx * 10, y: -my * 6, duration: 0.8, ease: 'power2.out' });
   });
-  hero.addEventListener('pointerleave', () => { tmx = 0; tmy = 0; });
+  hero.addEventListener('pointerleave', () => gsap.to([photoEl, copyEl], { rotateY: 0, rotateX: 0, x: 0, y: 0, duration: 0.8 }));
 
-  /* leaving the hero: the drawing sinks back into the table */
-  gsap.to('.hero__viewport', { yPercent: 18, scale: 0.9, opacity: 0.2, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+  /* leaving the hero: the drawing recedes */
+  gsap.to('.hero__grid', { yPercent: -8, opacity: 0.35, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
 
   /* stats count up */
   document.querySelectorAll('[data-count]').forEach((n) => {
@@ -294,13 +330,6 @@
     });
   });
 
-  /* split text into letters (kept inside words so lines never break mid-word) */
-  const splitChars = (elm) => {
-    elm.innerHTML = elm.textContent.trim().split(/\s+/)
-      .map((w) => `<span class="word">${[...w].map((c) => `<span class="c">${c}</span>`).join('')}</span>`).join(' ');
-    return elm.querySelectorAll('.c');
-  };
-  const rnd = gsap.utils.random;
   const scatter = { x: () => rnd(-700, 700), y: () => rnd(-420, 420), z: () => rnd(-900, 500), rotationX: () => rnd(-180, 180), rotationY: () => rnd(-180, 180), rotationZ: () => rnd(-90, 90), opacity: 0 };
 
   /* manifesto: “no borro nada” — every letter falls into place, pinned */
