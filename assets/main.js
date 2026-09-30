@@ -194,6 +194,7 @@
   drawLines();
   window.addEventListener('resize', () => { layoutTiles(); drawLines(); if (!intro || !intro.isActive()) linesEl.querySelectorAll('*').forEach((l) => { l.style.strokeDashoffset = 0; }); });
   let intro = null;
+  let exitTl = null;
 
   if (!hasGsap || reduce) {
     tilesEl.hidden = true;
@@ -260,7 +261,8 @@
       pieces.forEach((p) => gsap.set(p, mess(p)));
       gsap.set(hero.querySelector('.hero__head mark'), { backgroundColor: 'rgba(255,79,0,0)' });
     }
-    intro = gsap.timeline({ onComplete: () => setState('hero.state.assembled') });
+    killExit();
+    intro = gsap.timeline({ onComplete: () => { setState('hero.state.assembled'); buildExit(); } });
     // the mess drifts for a beat…
     intro.to(pieces, {
       rotationZ: () => '+=' + rnd(-25, 25), rotationY: () => '+=' + rnd(-20, 20), y: () => '+=' + rnd(-24, 24),
@@ -298,6 +300,7 @@
 
   document.getElementById('replay').addEventListener('click', () => {
     if (intro) intro.kill();
+    killExit();
     gsap.to(hero.querySelector('.hero__head mark'), { backgroundColor: 'rgba(255,79,0,0)', duration: 0.3 });
     gsap.set(heroImg, { opacity: 0 });
     gsap.set(tiles, { opacity: 1 });
@@ -316,8 +319,31 @@
   });
   hero.addEventListener('pointerleave', () => gsap.to([photoEl, copyEl], { rotateY: 0, rotateX: 0, x: 0, y: 0, duration: 0.8 }));
 
-  /* leaving the hero: the drawing recedes */
-  gsap.to('.hero__grid', { yPercent: -8, opacity: 0.35, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+  /* leaving the hero: the page you just watched assemble comes apart again, tied to the scroll */
+  function buildExit() {
+    killExit();
+    const vw = window.innerWidth, vh = window.innerHeight;
+    exitTl = gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.9 } });
+    pieces.forEach((p) => {
+      const r = p.getBoundingClientRect();
+      const dx = r.left + r.width / 2 - vw / 2, dy = r.top + r.height / 2 - vh / 2;
+      exitTl.fromTo(p, { x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0 }, {
+        x: dx * rnd(0.6, 1.5) + rnd(-160, 160), y: dy * rnd(0.4, 1.2) - rnd(80, 380), z: rnd(-400, 700),
+        rotationX: rnd(-120, 120), rotationY: rnd(-120, 120), rotationZ: rnd(-140, 140),
+        ease: 'power2.in', immediateRender: false
+      }, rnd(0, 0.18));
+    });
+    exitTl.set(heroImg, { opacity: 0 }, 0.002).set(tiles, { opacity: 1 }, 0.002);
+    exitTl.to(linesEl, { opacity: 0, ease: 'none' }, 0);
+    exitTl.to(hero.querySelector('.hero__photo'), { boxShadow: '0 0 0 rgba(21,21,21,0)', ease: 'none' }, 0);
+  }
+  function killExit() {
+    if (!exitTl) return;
+    exitTl.scrollTrigger && exitTl.scrollTrigger.kill();
+    exitTl.kill();
+    exitTl = null;
+    gsap.set(linesEl, { opacity: 1 });
+  }
 
   /* stats count up */
   document.querySelectorAll('[data-count]').forEach((n) => {
@@ -393,6 +419,46 @@
   /* footer: the mess assembles itself */
   const footChars = [...document.querySelectorAll('.foot__big [data-i18n]')].flatMap((c) => [...splitChars(c)]);
   gsap.from(footChars, { ...scatter, stagger: { each: 0.02, from: 'random' }, ease: 'power2.out', scrollTrigger: { trigger: '.foot', start: 'top 85%', end: 'top 20%', scrub: 0.8 } });
+
+  /* every big section title assembles out of a scatter as it arrives (line breaks kept) */
+  const splitLines = (elm) => {
+    elm.innerHTML = elm.innerHTML.split(/<br\s*\/?>/i).map((line) => {
+      const tmp = document.createElement('span'); tmp.innerHTML = line;
+      return tmp.textContent.trim().split(/\s+/).map((w) => `<span class="word">${[...w].map((c) => `<span class="c">${c}</span>`).join('')}</span>`).join(' ');
+    }).join('<br>');
+    return elm.querySelectorAll('.c');
+  };
+  document.querySelectorAll('.section-head h2, .coffee h2, .hire h2, #archive-title').forEach((h) => {
+    const chars = splitLines(h);
+    gsap.from(chars, {
+      x: () => rnd(-320, 320), y: () => rnd(-220, 220), z: () => rnd(-600, 300),
+      rotationX: () => rnd(-120, 120), rotationY: () => rnd(-120, 120), rotationZ: () => rnd(-80, 80), opacity: 0,
+      stagger: { each: 0.012, from: 'random' }, ease: 'power3.out',
+      scrollTrigger: { trigger: h, start: 'top 95%', end: 'top 50%', scrub: 0.7 }
+    });
+  });
+
+  /* dark chapters open up like a window: inset rounded panel → full bleed */
+  ['.coffee', '.hire', '.archive'].forEach((sel) => {
+    gsap.fromTo(sel, { clipPath: 'inset(7% 5% 0% 5% round 36px)' }, {
+      clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none',
+      scrollTrigger: { trigger: sel, start: 'top bottom', end: 'top 15%', scrub: true }
+    });
+  });
+  gsap.fromTo('.coffee__shot', { yPercent: 25 }, { yPercent: -15, ease: 'none', scrollTrigger: { trigger: '.coffee', start: 'top bottom', end: 'bottom top', scrub: true } });
+
+  /* the marquee band: runs with the scroll */
+  const band = document.querySelector('.marquee__track');
+  if (band) {
+    const phrase = `${t('hero.give')} ${t('hero.mess')}`.replace(/<[^>]+>/g, '');
+    band.innerHTML = Array.from({ length: 10 }, () => `<span>${phrase}</span><i></i>`).join('');
+    gsap.fromTo(band, { xPercent: 0 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: '.marquee', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
+  }
+
+  /* momentum: big type leans with scroll speed, then settles */
+  const leaners = gsap.utils.toArray('.section-head h2, .manifesto__title, .coffee h2, .hire h2, #archive-title, .foot__big, .marquee');
+  const leanTo = leaners.map((el) => gsap.quickTo(el, 'skewY', { duration: 0.5, ease: 'power3.out' }));
+  if (lenis) lenis.on('scroll', (e) => { const sk = gsap.utils.clamp(-5, 5, e.velocity * -0.18); leanTo.forEach((fn) => fn(sk)); });
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
 })();

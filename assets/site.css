@@ -196,6 +196,12 @@ section { position: relative; }
 .part--dark p { color: #DADAD3; }
 .part--dark a { color: var(--accent); white-space: nowrap; }
 
+/* ---------- marquee band ---------- */
+.marquee { position: relative; z-index: 2; overflow: hidden; margin: clamp(24px, 4vw, 56px) -2vw; padding: 18px 0; background: var(--ink); color: var(--paper); transform: rotate(-2deg); }
+.marquee__track { display: flex; align-items: center; gap: 36px; width: max-content; white-space: nowrap; }
+.marquee__track span { font-weight: 900; font-size: clamp(40px, 6vw, 96px); letter-spacing: -.045em; line-height: 1; text-transform: uppercase; }
+.marquee__track i { flex: none; width: .5em; height: .5em; font-size: clamp(40px, 6vw, 96px); background: var(--accent); }
+
 /* ---------- builds ---------- */
 .builds { border-bottom: 1px solid var(--ink); }
 .bench { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--ink); perspective: 1600px; }
