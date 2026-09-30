@@ -334,26 +334,18 @@
 
   /* manifesto: “no borro nada” — every letter falls into place, pinned */
   const manChars = [...document.querySelectorAll('.manifesto__title .chars')].flatMap((c) => [...splitChars(c)]);
-  gsap.timeline({
-    scrollTrigger: { trigger: '.manifesto__pin', start: 'top top', end: '+=140%', pin: true, scrub: 0.8 }
-  })
-    .from(manChars, { ...scatter, stagger: { each: 0.02, from: 'random' }, duration: 1, ease: 'power2.out' })
-    .from('.manifesto__lede', { opacity: 0, y: 40, duration: 0.4 }, '-=0.2');
-  gsap.from('.principle', {
-    y: 80, rotateX: -30, opacity: 0, stagger: 0.12, duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.principles', start: 'top 85%', once: true }
-  });
+  gsap.timeline({ scrollTrigger: { trigger: '.manifesto', start: 'top 85%', end: 'top 20%', scrub: 0.6 } })
+    .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
+  gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
 
-  /* bill of materials: each sheet lands on the pile, the ones below tilt back and dim */
+  /* bill of materials: the spec table prints itself — each rule draws across, then its row slides in */
   const parts = gsap.utils.toArray('.part');
+  const bomTl = gsap.timeline({ scrollTrigger: { trigger: '.parts', start: 'top 88%', end: 'top 30%', scrub: 0.5 } });
+  bomTl.from('.bom__cols span', { opacity: 0, y: 10, stagger: 0.05, duration: 0.4 }, 0);
   parts.forEach((part, i) => {
-    part.style.setProperty('--i', i);
-    const next = parts[i + 1];
-    if (!next) return;
-    gsap.fromTo(part, { scale: 1, y: 0, filter: 'brightness(1)' }, {
-      scale: 0.93, y: -10, filter: 'brightness(0.94)', ease: 'none', immediateRender: false,
-      scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 25%', scrub: true }
-    });
+    bomTl
+      .fromTo(part, { '--line': 0 }, { '--line': 1, duration: 0.6, ease: 'power2.inOut' }, i * 0.18)
+      .from(part.children, { y: 26, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }, i * 0.18 + 0.15);
   });
 
   /* builds: a pinned horizontal rail of 3D cards on desktop */

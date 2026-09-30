@@ -47,6 +47,10 @@ window.DJ_ES = {
   'p3.en': 'Me trago la complejidad para que el siguiente no tenga que tragársela. El buen trabajo borra sus propias huellas.',
 
   'bom.title': 'Lista de<br>materiales',
+  'bom.c1': 'Pieza',
+  'bom.c2': 'Años',
+  'bom.c3': 'Componente',
+  'bom.c4': 'Notas',
   'bom.note': 'Nada borrado, todo archivado. Cada pieza que entró en la obra, en el orden en que se instaló.',
   'b1.t': 'Fundador, primera vuelta — la fábrica de software',
   'b1.w': 'Monquick · Cofundador y CCO',
