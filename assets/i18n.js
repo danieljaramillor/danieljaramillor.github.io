@@ -141,7 +141,7 @@ window.DJ_ES = {
   'arc.s3': 'Lectura',
   'arc.s4': 'Borrados',
   'arc.new': 'Recientes',
-  'arc.old': 'Antiguos',
+  'arc.old': 'En orden',
   'arc.long': 'Más largos',
   'arc.random': '↯ Al azar',
   'foot.mail': 'Escribime ↗',
