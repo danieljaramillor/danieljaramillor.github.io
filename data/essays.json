@@ -3,6 +3,202 @@
   "es": "https://danieljaramillor.substack.com",
   "en": "https://danieljaramilloren.substack.com"
  },
- "essays": [],
+ "essays": [
+  {
+   "title": "Que Pena",
+   "subtitle": "Sobre la palabra más cara del idioma, la moneda chiquita con que la esquivo, y una deuda que llevo años sin pagar",
+   "date": "2026-08-08",
+   "url": "https://danieljaramillor.substack.com/p/que-pena",
+   "slug": "que-pena",
+   "words": 4100,
+   "en": {
+    "title": "Small Change",
+    "subtitle": "On the most expensive word in the language, the small change I use to dodge it, and a debt I've gone years without paying",
+    "url": "https://danieljaramillor.substack.com/p/small-change",
+    "slug": "small-change",
+    "date": "2026-08-08"
+   }
+  },
+  {
+   "title": "Diecisiete escalones",
+   "subtitle": "Sobre un ritual de café que nunca es el mismo, la percepción como oficio, y todo lo que uno sube sin contar",
+   "date": "2026-07-18",
+   "url": "https://danieljaramillor.substack.com/p/diecisiete-escalones",
+   "slug": "diecisiete-escalones",
+   "words": 3898,
+   "en": {
+    "title": "Seventeen Steps",
+    "subtitle": "On a coffee ritual that's never the same, perception as a craft, and everything we climb without counting",
+    "url": "https://danieljaramillor.substack.com/p/seventeen-steps",
+    "slug": "seventeen-steps",
+    "date": "2026-07-18"
+   }
+  },
+  {
+   "title": "Hacer fácil lo difícil",
+   "subtitle": "Sobre el proceso que no se ve, el valor que nadie dimensiona, y por qué a veces tocar en el metro está bien",
+   "date": "2026-06-08",
+   "url": "https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil",
+   "slug": "hacer-facil-lo-dificil",
+   "words": 3040,
+   "en": {
+    "title": "Making Hard Look Easy",
+    "subtitle": "On the process nobody sees, the value nobody measures, and why sometimes playing in the subway is fine",
+    "url": "https://danieljaramillor.substack.com/p/making-hard-look-easy",
+    "slug": "making-hard-look-easy",
+    "date": "2026-06-08"
+   }
+  },
+  {
+   "title": "Pantalones grandes",
+   "subtitle": "Sobre la ansiedad que vive en la calma, el ruido que no te necesita, y por qué ser suficiente no requiere hacer más",
+   "date": "2026-05-31",
+   "url": "https://danieljaramillor.substack.com/p/pantalones-grandes",
+   "slug": "pantalones-grandes",
+   "words": 3405,
+   "en": {
+    "title": "Pants a Size Too Big",
+    "subtitle": "On the anxiety that lives in the calm, the noise that doesn't need you, and why being enough doesn't require doing more",
+    "url": "https://danieljaramillor.substack.com/p/pants-a-size-too-big",
+    "slug": "pants-a-size-too-big",
+    "date": "2026-05-31"
+   }
+  },
+  {
+   "title": "Permiso para parar",
+   "subtitle": "Sobre la quietud que no elegís, el ruido que sí, y lo que queda cuando apagás todo",
+   "date": "2026-05-17",
+   "url": "https://danieljaramillor.substack.com/p/permiso-para-parar",
+   "slug": "permiso-para-parar",
+   "words": 3870,
+   "en": {
+    "title": "Permission to Stop",
+    "subtitle": "On the stillness you don't choose, the noise you do, and what's left when you switch everything off",
+    "url": "https://danieljaramillor.substack.com/p/permission-to-stop",
+    "slug": "permission-to-stop",
+    "date": "2026-05-17"
+   }
+  },
+  {
+   "title": "Debajo de la roca",
+   "subtitle": "Sobre la atención que no alcanza, los caparazones que hay que soltar, y por qué está bien no poder con todo",
+   "date": "2026-05-09",
+   "url": "https://danieljaramillor.substack.com/p/debajo-de-la-roca",
+   "slug": "debajo-de-la-roca",
+   "words": 3914,
+   "en": {
+    "title": "Under the Rock",
+    "subtitle": "On attention that runs short, the shells you have to shed, and why it's okay not to manage everything",
+    "url": "https://danieljaramillor.substack.com/p/under-the-rock",
+    "slug": "under-the-rock",
+    "date": "2026-05-09"
+   }
+  },
+  {
+   "title": "Bailar sin coreografía",
+   "subtitle": "Sobre elegirse, el costo de hacerlo, y por qué la meta no es llegar sino estar",
+   "date": "2026-05-02",
+   "url": "https://danieljaramillor.substack.com/p/bailar-sin-coreografia",
+   "slug": "bailar-sin-coreografia",
+   "words": 3490,
+   "en": {
+    "title": "Dancing Without Choreography",
+    "subtitle": "On choosing yourself, what it costs, and why the goal isn't to arrive but to be here",
+    "url": "https://danieljaramillor.substack.com/p/dancing-without-choreography",
+    "slug": "dancing-without-choreography",
+    "date": "2026-05-02"
+   }
+  },
+  {
+   "title": "Yo me encargo",
+   "subtitle": "Sobre no esperar nada, recordar todo, y la sombra que queda entre las dos cosas",
+   "date": "2026-04-26",
+   "url": "https://danieljaramillor.substack.com/p/yo-me-encargo",
+   "slug": "yo-me-encargo",
+   "words": 3888,
+   "en": {
+    "title": "I'll Take Care of It",
+    "subtitle": "On expecting nothing, remembering everything, and the shadow that falls between the two",
+    "url": "https://danieljaramillor.substack.com/p/ill-take-care-of-it",
+    "slug": "ill-take-care-of-it",
+    "date": "2026-04-26"
+   }
+  },
+  {
+   "title": "Opinar es gratis",
+   "subtitle": "Sobre el precio real de saber algo, los expertos que no lo son, y por qué prefiero equivocarme en voz alta",
+   "date": "2026-04-19",
+   "url": "https://danieljaramillor.substack.com/p/opinar-es-gratis",
+   "slug": "opinar-es-gratis",
+   "words": 4110,
+   "en": {
+    "title": "Talk Is Cheap",
+    "subtitle": "On the real price of knowing something, the experts who aren't, and why I'd rather be wrong out loud",
+    "url": "https://danieljaramillor.substack.com/p/talk-is-cheap",
+    "slug": "talk-is-cheap",
+    "date": "2026-04-19"
+   }
+  },
+  {
+   "title": "No me pidan que elija",
+   "subtitle": "Sobre generalistas, pivots y la estructura que permite hacer lo que quieras",
+   "date": "2026-04-12",
+   "url": "https://danieljaramillor.substack.com/p/no-me-pidan-que-elija",
+   "slug": "no-me-pidan-que-elija",
+   "words": 3977,
+   "en": {
+    "title": "Don't Make Me Choose",
+    "subtitle": "On generalists, pivots, and the structure that lets you do whatever you want",
+    "url": "https://danieljaramillor.substack.com/p/dont-make-me-choose",
+    "slug": "dont-make-me-choose",
+    "date": "2026-04-12"
+   }
+  },
+  {
+   "title": "Muy llevado de su parecer",
+   "subtitle": "Sobre subculturas, obsesiones genuinas y la diferencia entre absorberse en algo y construirse desde adentro",
+   "date": "2026-04-05",
+   "url": "https://danieljaramillor.substack.com/p/muy-llevado-de-su-parecer",
+   "slug": "muy-llevado-de-su-parecer",
+   "words": 4872,
+   "en": {
+    "title": "Headstrong",
+    "subtitle": "On subcultures, genuine obsessions, and the difference between getting absorbed in something and building yourself from the inside",
+    "url": "https://danieljaramillor.substack.com/p/headstrong",
+    "slug": "headstrong",
+    "date": "2026-04-05"
+   }
+  },
+  {
+   "title": "La Arquitectura de la Acumulación",
+   "subtitle": "Notas sobre un año habitando la capital (Más que notas son reflexiones)",
+   "date": "2026-03-29",
+   "url": "https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion",
+   "slug": "la-arquitectura-de-la-acumulacion",
+   "words": 3976,
+   "en": {
+    "title": "The Architecture of Accumulation",
+    "subtitle": "Notes on a year of living in the capital (less notes, really, than reflections)",
+    "url": "https://danieljaramillor.substack.com/p/the-architecture-of-accumulation",
+    "slug": "the-architecture-of-accumulation",
+    "date": "2026-03-29"
+   }
+  },
+  {
+   "title": "Hace 2 Años Hoy",
+   "subtitle": "Lo perdí (casi) todo",
+   "date": "2025-10-14",
+   "url": "https://danieljaramillor.substack.com/p/hace-2-anos-hoy",
+   "slug": "hace-2-anos-hoy",
+   "words": 3805,
+   "en": {
+    "title": "Two Years Ago Today",
+    "subtitle": "I lost (almost) everything",
+    "url": "https://danieljaramillor.substack.com/p/two-years-ago-today",
+    "slug": "two-years-ago-today",
+    "date": "2025-10-14"
+   }
+  }
+ ],
  "en_only": []
 }
