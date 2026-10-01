@@ -418,7 +418,10 @@
 
   /* footer: the mess assembles itself */
   const footChars = [...document.querySelectorAll('.foot__big [data-i18n]')].flatMap((c) => [...splitChars(c)]);
-  gsap.from(footChars, { ...scatter, stagger: { each: 0.02, from: 'random' }, ease: 'power2.out', scrollTrigger: { trigger: '.foot', start: 'top 85%', end: 'top 20%', scrub: 0.8 } });
+  const footMark = document.querySelector('.foot__big mark');
+  gsap.timeline({ scrollTrigger: { trigger: '.foot', start: 'top 85%', end: 'bottom bottom', scrub: 0.6 } })
+    .from(footChars, { ...scatter, stagger: { each: 0.02, from: 'random' }, ease: 'power2.out', duration: 1 })
+    .fromTo(footMark, { backgroundSize: '0% 77%' }, { backgroundSize: '100% 77%', ease: 'power2.inOut', duration: 0.3 });
 
   /* every big section title assembles out of a scatter as it arrives (line breaks kept) */
   const splitLines = (elm) => {
@@ -458,7 +461,13 @@
   /* momentum: big type leans with scroll speed, then settles */
   const leaners = gsap.utils.toArray('.section-head h2, .manifesto__title, .coffee h2, .hire h2, #archive-title, .foot__big, .marquee');
   const leanTo = leaners.map((el) => gsap.quickTo(el, 'skewY', { duration: 0.5, ease: 'power3.out' }));
-  if (lenis) lenis.on('scroll', (e) => { const sk = gsap.utils.clamp(-5, 5, e.velocity * -0.18); leanTo.forEach((fn) => fn(sk)); });
+  let settle = null;
+  const lean = (v) => leanTo.forEach((fn) => fn(v));
+  if (lenis) lenis.on('scroll', (e) => {
+    lean(gsap.utils.clamp(-5, 5, e.velocity * -0.18));
+    clearTimeout(settle);
+    settle = setTimeout(() => lean(0), 120);
+  });
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
