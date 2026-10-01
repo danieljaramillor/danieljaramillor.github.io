@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202610012101">
+<link rel="stylesheet" href="assets/site.css?v=202610012121">
 <script>document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3000);</script>
 </head>
 <body>
@@ -241,36 +241,32 @@
     <h2 id="builds-title"><span class="mono sh__idx">§ 03</span><span data-i18n="builds.title">On the workbench</span></h2>
     <p class="mono" data-i18n="builds.note">Things I build: for myself, with friends, and for the companies I help run. Shipped, in progress, and slightly unhinged.</p>
   </div>
-  <div class="bench" id="bench">
-    <ol class="bench__index" role="tablist" aria-label="Builds">
-      <li><button type="button" class="bi is-active" role="tab" id="bi-platapp" aria-controls="bv-platapp" aria-selected="true"><span class="mono bi__n">01</span><span class="bi__name">PlatApp</span><span class="mono bi__k" data-i18n="w1.k">Build 01 · Fintech app</span><span class="pill mono" data-i18n="st.building">Building</span><i class="bi__bar" aria-hidden="true"></i></button></li>
-      <li><button type="button" class="bi" role="tab" id="bi-pipmori" aria-controls="bv-pipmori" aria-selected="false"><span class="mono bi__n">02</span><span class="bi__name">Pipmori</span><span class="mono bi__k" data-i18n="w2.k">Build 02 · Digital detox</span><span class="pill mono" data-i18n="st.invite">Invite-only</span><i class="bi__bar" aria-hidden="true"></i></button></li>
-      <li><button type="button" class="bi" role="tab" id="bi-copiloto" aria-controls="bv-copiloto" aria-selected="false"><span class="mono bi__n">03</span><span class="bi__name">Copiloto</span><span class="mono bi__k" data-i18n="w3.k">Build 03 · Media platform</span><span class="pill mono" data-i18n="st.design">In development</span><i class="bi__bar" aria-hidden="true"></i></button></li>
-      <li><button type="button" class="bi" role="tab" id="bi-raiz" aria-controls="bv-raiz" aria-selected="false"><span class="mono bi__n">04</span><span class="bi__name">Raíz &amp; Co.</span><span class="mono bi__k" data-i18n="w4.k">Build 04 · The fund</span><span class="pill mono" data-i18n="st.redesign">New site soon</span><i class="bi__bar" aria-hidden="true"></i></button></li>
-      <li><button type="button" class="bi" role="tab" id="bi-eat" aria-controls="bv-eat" aria-selected="false"><span class="mono bi__n">05</span><span class="bi__name">Eatinerary</span><span class="mono bi__k" data-i18n="w5.k">Build 05 · Just for fun</span><span class="pill mono" data-i18n="st.relaunch">Relaunching</span><i class="bi__bar" aria-hidden="true"></i></button></li>
-    </ol>
-    <div class="bench__view">
-      <article class="bv bv--platapp is-active" id="bv-platapp" role="tabpanel" aria-labelledby="bi-platapp">
-        <a class="bv__shot" href="https://platapp.io" tabindex="-1"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>platapp.io</span></span><img src="img/builds/platapp.jpg" alt="PlatApp landing page: tell PlatApp what you spent, it does the rest" loading="lazy" width="1280" height="800"></a>
-        <div class="bv__body"><p data-i18n="w1.d">Log your spending with your voice. It records, categorizes and organizes your money so you don’t have to think about it. Made for Colombia.</p><a class="bv__go mono" href="https://platapp.io"><span data-i18n="bench.visit">Visit</span> platapp.io ↗</a></div>
-      </article>
-      <article class="bv bv--pip" id="bv-pipmori" role="tabpanel" aria-labelledby="bi-pipmori" hidden>
-        <a class="bv__shot" href="https://pipimori.vercel.app" tabindex="-1"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>pipimori.vercel.app</span></span><img src="img/builds/pipmori-wide.jpg" alt="Pipmori: a glowing little companion on a grassy hill at night, with soft sculpted animals" loading="lazy" width="1280" height="800"></a>
-        <div class="bv__body"><p data-i18n="w2.d">A little friend for a wider world. A pocket companion that hands you one small real-life quest at a time, so you use your phone less, hit your goals and see your people more. A passion project I’m building with a friend.</p><a class="bv__go mono" href="https://pipimori.vercel.app"><span data-i18n="bench.visit">Visit</span> pipimori.vercel.app ↗</a></div>
-      </article>
-      <article class="bv bv--cop" id="bv-copiloto" role="tabpanel" aria-labelledby="bi-copiloto" hidden>
-        <div class="bv__shot" tabindex="-1"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>copiloto</span></span><img src="img/builds/copiloto.jpg" alt="Copiloto’s home page: Para que despegues" loading="lazy" width="1280" height="800"></div>
-        <div class="bv__body"><p data-i18n="w3.d">We’re developing a new platform for Copiloto, a media company for founders across Latin America and the U.S. I lead tech as an advisor, and we’re building it together.</p><span class="bv__go mono" data-i18n="bench.private">Private preview · no public link yet</span></div>
-      </article>
-      <article class="bv bv--raiz" id="bv-raiz" role="tabpanel" aria-labelledby="bi-raiz" hidden>
-        <a class="bv__shot" href="https://raizandco.com" tabindex="-1"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>raizandco.com</span></span><img src="img/builds/raiz.jpg" alt="The new Raíz &amp; Co. site: Rooted in purpose. Built for scale." loading="lazy" width="1280" height="800"></a>
-        <div class="bv__body"><p data-i18n="w4.d">The fund we’re building, backing Latino founders across the U.S. and Latin America. I lead its whole technology consulting practice, and I’m building the new site.</p><a class="bv__go mono" href="https://raizandco.com"><span data-i18n="bench.visit">Visit</span> raizandco.com ↗</a></div>
-      </article>
-      <article class="bv bv--eat" id="bv-eat" role="tabpanel" aria-labelledby="bi-eat" hidden>
-        <a class="bv__shot" href="https://eatinerary.fun" tabindex="-1"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>eatinerary.fun</span></span><span class="bv__ph" aria-hidden="true"><b>Eatinerary</b><span class="mono" data-i18n="st.relaunch">Relaunching</span></span></a>
-        <div class="bv__body"><p data-i18n="w5.d">My conference snack tracker.</p><a class="bv__go mono" href="https://eatinerary.fun"><span data-i18n="bench.visit">Visit</span> eatinerary.fun ↗</a></div>
-      </article>
+  <div class="showcase" id="showcase">
+    <a class="tile tile--platapp" href="https://platapp.io">
+      <span class="tile__art"><img src="img/builds/platapp.jpg" alt="PlatApp landing page: tell PlatApp what you spent, it does the rest" loading="lazy"></span>
+      <span class="tile__top"><span class="mono tile__n">01</span><span class="pill mono" data-i18n="st.building">Building</span><span class="tile__go" aria-hidden="true">↗</span></span>
+      <span class="tile__cap"><span class="tile__name">PlatApp</span><span class="mono tile__k" data-i18n="w1.k">Build 01 · Fintech app</span><span class="tile__d" data-i18n="w1.d">Log your spending with your voice. It records, categorizes and organizes your money so you don’t have to think about it. Made for Colombia.</span></span>
+    </a>
+    <a class="tile tile--pip" href="https://pipimori.vercel.app">
+      <span class="tile__art"><img src="img/builds/pipmori.jpg" alt="Pipmori: a glowing little companion on a grassy hill at night, next to its home" loading="lazy"></span>
+      <span class="tile__top"><span class="mono tile__n">02</span><span class="pill mono" data-i18n="st.invite">Invite-only</span><span class="tile__go" aria-hidden="true">↗</span></span>
+      <span class="tile__cap"><span class="tile__name">Pipmori</span><span class="mono tile__k" data-i18n="w2.k">Build 02 · Digital detox</span><span class="tile__d" data-i18n="w2.d">A little friend for a wider world. A pocket companion that hands you one small real-life quest at a time, so you use your phone less, hit your goals and see your people more. A passion project I’m building with a friend.</span></span>
+    </a>
+    <div class="tile tile--cop">
+      <span class="tile__art"><img src="img/builds/copiloto.jpg" alt="Copiloto’s home page: Para que despegues" loading="lazy"></span>
+      <span class="tile__top"><span class="mono tile__n">03</span><span class="pill mono" data-i18n="st.design">In development</span></span>
+      <span class="tile__cap"><span class="tile__name">Copiloto</span><span class="mono tile__k" data-i18n="w3.k">Build 03 · Media platform</span><span class="tile__d" data-i18n="w3.d">We’re developing a new platform for Copiloto, a media company for founders across Latin America and the U.S. I lead tech as an advisor, and we’re building it together.</span></span>
     </div>
+    <a class="tile tile--raiz" href="https://raizandco.com">
+      <span class="tile__art"><img src="img/builds/raiz.jpg" alt="The new Raíz &amp; Co. site: Rooted in purpose. Built for scale." loading="lazy"></span>
+      <span class="tile__top"><span class="mono tile__n">04</span><span class="pill mono" data-i18n="st.redesign">New site soon</span><span class="tile__go" aria-hidden="true">↗</span></span>
+      <span class="tile__cap"><span class="tile__name">Raíz &amp; Co.</span><span class="mono tile__k" data-i18n="w4.k">Build 04 · The fund</span><span class="tile__d" data-i18n="w4.d">The fund we’re building, backing Latino founders across the U.S. and Latin America. I lead its whole technology consulting practice, and I’m building the new site.</span></span>
+    </a>
+    <a class="tile tile--eat" href="https://eatinerary.fun">
+      <span class="tile__art"><span class="tile__ph" aria-hidden="true">Eat<br>inerary</span></span>
+      <span class="tile__top"><span class="mono tile__n">05</span><span class="pill mono" data-i18n="st.relaunch">Relaunching</span><span class="tile__go" aria-hidden="true">↗</span></span>
+      <span class="tile__cap"><span class="tile__name">Eatinerary</span><span class="mono tile__k" data-i18n="w5.k">Build 05 · Just for fun</span><span class="tile__d" data-i18n="w5.d">My conference snack tracker.</span></span>
+    </a>
   </div>
 </section>
 
@@ -380,7 +376,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="assets/i18n.js?v=202610012101" defer></script>
-<script src="assets/main.js?v=202610012101" defer></script>
+<script src="assets/i18n.js?v=202610012121" defer></script>
+<script src="assets/main.js?v=202610012121" defer></script>
 </body>
 </html>
