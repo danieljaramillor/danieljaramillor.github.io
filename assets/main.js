@@ -18,7 +18,8 @@
   nodes.forEach((n) => { if (!(n.dataset.i18n in EN)) EN[n.dataset.i18n] = n.innerHTML; });
   Object.assign(EN, EN_EXTRA);
   const qLang = new URLSearchParams(location.search).get('lang');
-  let lang = (qLang === 'es' || qLang === 'en' ? qLang : null) || store.get('dj-lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en');
+  // decided in <head> before first paint (URL, then the visitor's own choice, then the device's languages); this is the fallback
+  let lang = window.__djLang || (qLang === 'es' || qLang === 'en' ? qLang : null) || store.get('dj-lang') || ((navigator.languages || [navigator.language || '']).map((x) => String(x).slice(0, 2).toLowerCase()).find((x) => x === 'es' || x === 'en') || 'en');
   const t = (key) => (lang === 'es' ? ES[key] : EN[key]) ?? EN[key] ?? '';
 
   function applyLang(next) {
@@ -344,6 +345,7 @@
   const setState = (key) => { if (key !== lastState) { lastState = key; stateEl.innerHTML = t(key); } };
 
   applyLang(lang);
+  root.classList.remove('lang-pending');
 
   /* pillars: the beam carries the words of whichever column holds the load.
      scroll moves the load I → VI, the light crosses the temple, and when all six carry, the roof goes on */
