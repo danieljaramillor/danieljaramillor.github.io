@@ -294,7 +294,6 @@
       const lx = -0.08 + seq * 1.16;                        // where the light is, 0 = left edge of the temple
       wrap.style.setProperty('--lx', (lx * 100).toFixed(1) + '%');
       wrap.style.setProperty('--seq', seq.toFixed(3));
-      wrap.style.setProperty('--ped', Math.min(1, Math.max(0, (p - SEQ - 0.04) / 0.12)).toFixed(3));
       cols.forEach((c, j) => {
         const d = (j + 0.5) / n - lx;                       // > 0: the light is to the left, so the right side falls in shadow
         c.style.setProperty('--load', Math.min(1, Math.max(0, f - j)).toFixed(3));
@@ -307,9 +306,19 @@
       if (goTo) goTo(i);
       else { open(i); cols.forEach((k, j) => k.style.setProperty('--load', j <= i ? 1 : 0)); }
     }));
-    lockHeight();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockHeight);
-    window.addEventListener('resize', lockHeight);
+    /* the roof is sized from the temple: tall enough to matter, small enough to fit once the camera pulls back */
+    const roof = document.querySelector('.roof');
+    const sizeRoof = () => {
+      const h = wrap.offsetHeight, w = wrap.offsetWidth + 28;
+      const rh = Math.round(h * 0.38);
+      wrap.style.setProperty('--roof-h', rh + 'px');
+      wrap.style.setProperty('--roof-fs', Math.round(Math.min(rh * 0.16, (w * 0.6) / (17 * 0.66))) + 'px');
+      if (!animate && roof) { roof.style.visibility = 'visible'; wrap.style.marginTop = rh + 12 + 'px'; }
+    };
+    const relayout = () => { lockHeight(); sizeRoof(); };
+    relayout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+    window.addEventListener('resize', relayout);
     open(0);
     if (!animate) { setLoad(1); open(0); }
     return { split, setLoad, lockHeight, bindScroll(fn) { goTo = fn; } };
@@ -501,8 +510,7 @@
       .from('.col__foot', { scaleX: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.3, ease: 'power3.out' }, '-=0.25')
       .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.06, from: 'center' }, duration: 0.7, ease: 'power4.out' }, '-=0.1')
       .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.4, ease: 'back.out(2.2)' }, '-=0.4')
-      .from('.pediment__frame', { opacity: 0, duration: 0.3 }, '-=0.1')
-      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.5, ease: 'power4.in' }, '<')
+      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.5, ease: 'power4.in' }, '-=0.1')
       .addLabel('land')
       .add(() => row.classList.remove('is-building'), 'land')
       .fromTo('.col__shaft', { scaleY: 0.93, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.35)' }, 'land')
@@ -513,18 +521,52 @@
       .from('.col__n, .words li', { opacity: 0, y: 12, stagger: 0.03, duration: 0.35 }, 'land+=0.1');
 
     const navH = () => (document.querySelector('.nav') || { offsetHeight: 64 }).offsetHeight + 8;
-    let roofDone = false;
+    /* the ending: the camera pulls back, the roof falls from above the screen, the temple takes the hit */
+    const wrap = document.querySelector('.temple'), roof = document.querySelector('.roof');
+    const roofChars = [...roof.querySelectorAll('.roof__t [data-i18n]')].flatMap((e) => [...splitChars(e)]);
+    const dust = Array.from({ length: 34 }, () => {
+      const d = document.createElement('i');
+      d.className = 'roof__dust';
+      d.style.left = rnd(2, 98) + '%';
+      d.style.top = '-8px';
+      d.style.opacity = 0;
+      wrap.appendChild(d);
+      return d;
+    });
+    const PULL = 0.72;               // how far the camera pulls back to make room for the roof
+    let roofDown = false, roofTl = null;
+    const drop = () => {
+      roofDown = true;
+      if (roofTl) roofTl.kill();
+      roof.style.visibility = 'visible';
+      roofTl = gsap.timeline()
+        .fromTo(roof, { y: () => -window.innerHeight * 1.1 }, { y: 0, duration: 0.55, ease: 'power4.in' })
+        .set(roofChars, { opacity: 0 }, 0)
+        .addLabel('hit')
+        .to(roof, { keyframes: [{ y: -22, duration: 0.12, ease: 'power2.out' }, { y: 0, duration: 0.22, ease: 'bounce.out' }] }, 'hit')
+        .fromTo(wrap, { x: 0 }, { keyframes: [{ x: -12, y: 12, duration: 0.05 }, { x: 10, y: -5, duration: 0.06 }, { x: -6, y: 4, duration: 0.06 }, { x: 3, y: -1, duration: 0.06 }, { x: 0, y: 0, duration: 0.1 }] }, 'hit')
+        .fromTo('.col__shaft', { scaleY: 0.88, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.9, ease: 'elastic.out(1, 0.3)' }, 'hit')
+        .fromTo('.temple__cornice', { backgroundColor: '#FF4F00' }, { backgroundColor: '#EDEDE8', duration: 1, ease: 'power2.in' }, 'hit')
+        .fromTo(dust, { x: 0, y: 0, opacity: 1, rotation: 0, scale: () => rnd(0.4, 1.6) }, { x: () => rnd(-280, 280), y: () => rnd(-160, 30), rotation: () => rnd(-240, 240), opacity: 0, duration: () => rnd(0.6, 1.3), ease: 'power3.out' }, 'hit')
+        .fromTo(roofChars, { scale: 2.6, opacity: 0, y: -24 }, { scale: 1, opacity: 1, y: 0, stagger: 0.022, duration: 0.3, ease: 'power4.in' }, 'hit+=0.18');
+    };
+    const lift = () => {
+      roofDown = false;
+      if (roofTl) roofTl.kill();
+      roofTl = gsap.to(roof, { y: () => -window.innerHeight * 1.1, duration: 0.45, ease: 'power3.in', onComplete: () => { roof.style.visibility = 'hidden'; } });
+    };
     const st = ScrollTrigger.create({
       trigger: '.temple-pin', pin: true, anticipatePin: 1,
       start: () => 'top ' + navH() + 'px',
-      end: () => '+=' + Math.round(window.innerHeight * 4),
+      end: () => '+=' + Math.round(window.innerHeight * 4.2),
       scrub: true, invalidateOnRefresh: true,
       onUpdate: (self) => {
-        temple.setLoad(self.progress);
-        /* the roof lands: one thud through the whole temple */
-        const done = self.progress > SEQ + 0.15;
-        if (done && !roofDone) gsap.fromTo('.temple', { y: 0 }, { keyframes: [{ y: 8, duration: 0.07 }, { y: -3, duration: 0.09 }, { y: 0, duration: 0.14 }] });
-        roofDone = done;
+        const p = self.progress;
+        temple.setLoad(p);
+        const pull = Math.min(1, Math.max(0, (p - SEQ) / 0.07));
+        gsap.set(wrap, { scale: 1 - (1 - PULL) * gsap.parseEase('power2.inOut')(pull), transformOrigin: '50% 100%' });
+        if (p > SEQ + 0.09 && !roofDown) drop();
+        else if (p < SEQ + 0.06 && roofDown) lift();
       }
     });
     temple.bindScroll((i) => {
