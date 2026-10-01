@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202610010311">
+<link rel="stylesheet" href="assets/site.css?v=202610010325">
 <script>document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3000);</script>
 </head>
 <body>
@@ -37,7 +37,7 @@
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="es" aria-pressed="false">ES</button>
     </div>
-    <a class="btn btn--accent nav__cta" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="nav.cta">Work with me →</a>
+    <a class="btn btn--accent nav__cta" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
     <button type="button" class="nav__menu mono" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-i18n="menu.open">Menu</span><i aria-hidden="true"></i></button>
   </div>
 </header>
@@ -66,9 +66,6 @@
       <h1 class="hero__name"><span class="scatter">Daniel</span><br><span class="scatter">Jaramillo</span></h1>
       <p class="hero__head"><span class="piece" data-i18n="hero.give">Give me</span> <mark class="piece" data-i18n="hero.mess">the mess.</mark></p>
       <p class="hero__tag piece" data-i18n="hero.tag">I’ll hand back a sharp product, and the team to keep it sharp. Generalist and founder — designer by training, founder by scar tissue.</p>
-      <div class="hero__chips mono">
-        <span class="piece" data-i18n="chip.1">5M+ users</span><span class="piece" data-i18n="chip.2">$1M+ raised</span><span class="piece" data-i18n="chip.3">1 exit</span><span class="piece chip--accent" data-i18n="chip.4">Generalist</span>
-      </div>
       <div class="hero__actions">
         <a class="btn btn--accent piece" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
         <a class="btn btn--ghost piece" href="#story" data-i18n="hero.cta2">Read the build</a>
@@ -98,94 +95,100 @@
   <div class="stat"><span class="stat__v" data-count="4">4</span><span class="stat__l mono" data-i18n="stat.4">industries: health, crypto, AI, coffee</span></div>
 </section>
 
-<!-- ============ MANIFESTO ============ -->
-<section class="manifesto" aria-labelledby="manifesto-title">
-  <div class="manifesto__pin">
-  <span class="eyebrow mono" data-i18n="man.eyebrow">Spec note — under construction, on purpose</span>
-  <h2 class="manifesto__title" id="manifesto-title"><span class="chars" data-i18n="man.t1">I delete nothing.</span> <span class="chars dim" data-i18n="man.t2">I archive.</span></h2>
-  <p class="manifesto__lede" data-i18n="man.lede">I don’t delete anything — I archive it, and build on top. The wins, the failures, the parts that hurt. It’s the idea behind everything I write, and the way this page is built: in layers.</p>
-  </div>
-</section>
+
 
 <!-- ============ PILLARS ============ -->
 <section class="pillars" id="pillars" aria-labelledby="pillars-title">
-  <div class="section-head">
-    <h2 id="pillars-title" data-i18n="pil.title">My<br>pillars</h2>
+  <div class="section-head section-head--quiet">
+    <h2 id="pillars-title"><span class="mono sh__idx">§ 01</span><span data-i18n="pil.title">My pillars</span></h2>
     <p class="mono" data-i18n="pil.note">Not dogmas — columns. A column carries weight; a dogma just defends. The six things everything I build rests on, pulled from my essays.</p>
   </div>
   <div class="temple-pin">
   <div class="temple">
+    <div class="temple__sky" aria-hidden="true"></div>
+    <div class="pediment" aria-hidden="true">
+      <svg class="pediment__frame" viewBox="0 0 1000 100" preserveAspectRatio="none"><polygon points="4,96 500,4 996,96" /></svg>
+      <svg class="pediment__solid" viewBox="0 0 1000 100" preserveAspectRatio="none"><polygon points="0,100 500,0 1000,100" /></svg>
+      <p class="pediment__t"><span data-i18n="man.t1">I delete nothing.</span> <span data-i18n="man.t2">I archive.</span></p>
+    </div>
     <div class="temple__cornice" aria-hidden="true"></div>
     <div class="beam" id="beam" aria-live="polite">
-      <div class="beam__l">
+      <span class="beam__big" aria-hidden="true">I</span>
+      <div class="beam__copy">
         <span class="mono beam__n"><b>I</b> / VI<span> · <span data-i18n="pil.beam">Load path ↓ everything rests on these</span></span></span>
         <h3 class="beam__t" data-i18n="pil1.t">Archive, don’t delete.</h3>
-      </div>
-      <div class="beam__r">
         <p class="beam__d" data-i18n="pil1.d">Nothing gets erased. Every win, every failure and every scar becomes foundation for the next floor.</p>
         <a class="mono beam__src" href="https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion" data-i18n="pil1.s">From “The Architecture of Accumulation” ↗</a>
       </div>
     </div>
     <div class="temple__architrave" aria-hidden="true"></div>
     <ol class="colonnade">
-      <li class="col is-active" data-n="I" data-k="pil1" data-href="https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion">
-        <button class="col__btn" type="button" aria-pressed="true" aria-controls="beam">
+      <li class="col is-active" data-n="I" data-href="https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion">
+        <button class="col__btn" type="button" aria-pressed="true" aria-controls="beam" aria-label="I — Archive, don’t delete.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">I</span><span class="col__t" data-i18n="pil1.t">Archive, don’t delete.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">I</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil1.d">Nothing gets erased. Every win, every failure and every scar becomes foundation for the next floor.</span><span class="col__s" hidden data-i18n="pil1.s">From “The Architecture of Accumulation” ↗</span>
+        <span class="col__t" hidden data-i18n="pil1.t">Archive, don’t delete.</span><span class="col__d" hidden data-i18n="pil1.d">Nothing gets erased. Every win, every failure and every scar becomes foundation for the next floor.</span><span class="col__s" hidden data-i18n="pil1.s">From “The Architecture of Accumulation” ↗</span>
       </li>
-      <li class="col" data-n="II" data-k="pil2" data-href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija">
-        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam">
+      <li class="col" data-n="II" data-href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija">
+        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam" aria-label="II — Problems, not industries.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">II</span><span class="col__t" data-i18n="pil2.t">Problems, not industries.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">II</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil2.d">Oncology, crypto, AI, coffee. The industry is the facade; the process is the structure. I still don’t fit in one sentence.</span><span class="col__s" hidden data-i18n="pil2.s">From “Don’t Make Me Choose” ↗</span>
+        <span class="col__t" hidden data-i18n="pil2.t">Problems, not industries.</span><span class="col__d" hidden data-i18n="pil2.d">Oncology, crypto, AI, coffee. The industry is the facade; the process is the structure. I still don’t fit in one sentence.</span><span class="col__s" hidden data-i18n="pil2.s">From “Don’t Make Me Choose” ↗</span>
       </li>
-      <li class="col" data-n="III" data-k="pil3" data-href="https://danieljaramillor.substack.com/p/opinar-es-gratis">
-        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam">
+      <li class="col" data-n="III" data-href="https://danieljaramillor.substack.com/p/opinar-es-gratis">
+        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam" aria-label="III — Opinions that cost something.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">III</span><span class="col__t" data-i18n="pil3.t">Opinions that cost something.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">III</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil3.d">Strong opinions, loosely held. “I don’t know yet” — but I know how to find out. The expensive ones I paid for by being wrong.</span><span class="col__s" hidden data-i18n="pil3.s">From “Talk Is Cheap” ↗</span>
+        <span class="col__t" hidden data-i18n="pil3.t">Opinions that cost something.</span><span class="col__d" hidden data-i18n="pil3.d">Strong opinions, loosely held. “I don’t know yet” — but I know how to find out. The expensive ones I paid for by being wrong.</span><span class="col__s" hidden data-i18n="pil3.s">From “Talk Is Cheap” ↗</span>
       </li>
-      <li class="col" data-n="IV" data-k="pil4" data-href="https://danieljaramillor.substack.com/p/yo-me-encargo">
-        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam">
+      <li class="col" data-n="IV" data-href="https://danieljaramillor.substack.com/p/yo-me-encargo">
+        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam" aria-label="IV — Attention is how I care.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">IV</span><span class="col__t" data-i18n="pil4.t">Attention is how I care.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">IV</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil4.d">I don’t take notes; I listen. Remembering what you told me is the gift. Everything else is logistics.</span><span class="col__s" hidden data-i18n="pil4.s">From “I’ll Take Care of It” ↗</span>
+        <span class="col__t" hidden data-i18n="pil4.t">Attention is how I care.</span><span class="col__d" hidden data-i18n="pil4.d">I don’t take notes; I listen. Remembering what you told me is the gift. Everything else is logistics.</span><span class="col__s" hidden data-i18n="pil4.s">From “I’ll Take Care of It” ↗</span>
       </li>
-      <li class="col" data-n="V" data-k="pil5" data-href="https://danieljaramillor.substack.com/p/permiso-para-parar">
-        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam">
+      <li class="col" data-n="V" data-href="https://danieljaramillor.substack.com/p/permiso-para-parar">
+        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam" aria-label="V — Own it. Then let go.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">V</span><span class="col__t" data-i18n="pil5.t">Own it. Then let go.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">V</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil5.d">If I want something, it’s on me. And part of owning it is knowing when to fold the aces — and giving myself permission to stop.</span><span class="col__s" hidden data-i18n="pil5.s">From “Permission to Stop” ↗</span>
+        <span class="col__t" hidden data-i18n="pil5.t">Own it. Then let go.</span><span class="col__d" hidden data-i18n="pil5.d">If I want something, it’s on me. And part of owning it is knowing when to fold the aces — and giving myself permission to stop.</span><span class="col__s" hidden data-i18n="pil5.s">From “Permission to Stop” ↗</span>
       </li>
-      <li class="col" data-n="VI" data-k="pil6" data-href="https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil">
-        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam">
+      <li class="col" data-n="VI" data-href="https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil">
+        <button class="col__btn" type="button" aria-pressed="false" aria-controls="beam" aria-label="VI — Make the hard look easy.">
           <span class="col__cap" aria-hidden="true"></span>
-          <span class="col__shaft"><span class="col__n" aria-hidden="true">VI</span><span class="col__t" data-i18n="pil6.t">Make the hard look easy.</span></span>
+          <span class="col__shaft" aria-hidden="true"><span class="col__n">VI</span></span>
           <span class="col__foot" aria-hidden="true"></span>
         </button>
-        <span class="col__d" hidden data-i18n="pil6.d">I swallow the complexity so the next person doesn’t have to. Good design is invisible; good work erases its own footprints.</span><span class="col__s" hidden data-i18n="pil6.s">From “Making Hard Look Easy” ↗</span>
+        <span class="col__t" hidden data-i18n="pil6.t">Make the hard look easy.</span><span class="col__d" hidden data-i18n="pil6.d">I swallow the complexity so the next person doesn’t have to. Good design is invisible; good work erases its own footprints.</span><span class="col__s" hidden data-i18n="pil6.s">From “Making Hard Look Easy” ↗</span>
       </li>
     </ol>
-    <div class="temple__steps" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="temple__steps" aria-hidden="true"><i class="step--load"><b></b></i><i></i><i></i></div>
+    <ol class="words" aria-hidden="true">
+      <li class="word is-active" data-i18n="pil1.w">Archive</li>
+      <li class="word" data-i18n="pil2.w">Problems</li>
+      <li class="word" data-i18n="pil3.w">Opinions</li>
+      <li class="word" data-i18n="pil4.w">Attention</li>
+      <li class="word" data-i18n="pil5.w">Ownership</li>
+      <li class="word" data-i18n="pil6.w">Craft</li>
+    </ol>
   </div>
   </div>
 </section>
 
 <!-- ============ BILL OF MATERIALS ============ -->
 <section class="bom" id="story" aria-labelledby="bom-title">
-  <div class="section-head">
-    <h2 id="bom-title" data-i18n="bom.title">Bill of<br>materials</h2>
+  <div class="section-head section-head--quiet">
+    <h2 id="bom-title"><span class="mono sh__idx">§ 02</span><span data-i18n="bom.title">Bill of materials</span></h2>
     <p class="mono" data-i18n="bom.note">Nothing deleted, everything archived. Every part that went into the build, in the order it was installed.</p>
   </div>
   <div class="bom__cols mono" aria-hidden="true"><span data-i18n="bom.c1">Part</span><span data-i18n="bom.c2">Years</span><span data-i18n="bom.c3">Component</span><span data-i18n="bom.c4">Notes</span></div>
@@ -232,54 +235,28 @@
 
 <!-- ============ BUILDS ============ -->
 <section class="builds" id="builds" aria-labelledby="builds-title">
-  <div class="section-head">
-    <h2 id="builds-title" data-i18n="builds.title">On the<br>workbench</h2>
-    <span class="swipe mono" aria-hidden="true" data-i18n="swipe">Swipe →</span>
+  <div class="section-head section-head--quiet">
+    <h2 id="builds-title"><span class="mono sh__idx">§ 03</span><span data-i18n="builds.title">On the workbench</span></h2>
     <p class="mono" data-i18n="builds.note">Things I build on my own time — shipped, in progress, and slightly unhinged.</p>
   </div>
-  <div class="bench">
-    <a class="card card--xl" href="https://platapp.io">
-      <div class="card__shot"><img src="img/builds/platapp.jpg" alt="PlatApp landing page: tell PlatApp what you spent, it does the rest" loading="lazy" width="1280" height="800"></div>
-      <div class="card__body">
+  <div class="workbench">
+    <a class="feature" href="https://platapp.io">
+      <div class="feature__shot"><span class="coffee__bar mono" aria-hidden="true"><i></i><i></i><i></i><span>platapp.io</span></span><img src="img/builds/platapp.jpg" alt="PlatApp landing page: tell PlatApp what you spent, it does the rest" loading="lazy" width="1280" height="800"></div>
+      <div class="feature__body">
         <div class="card__meta mono"><span data-i18n="w1.k">Build 01 · Fintech app</span><span class="pill" data-i18n="st.building">Building</span></div>
         <h3>PlatApp ↗</h3>
         <p data-i18n="w1.d">Log your spending with your voice. It records, categorizes and organizes your money so you don’t have to think about it. Made for Colombia.</p>
-        <span class="mono card__url">platapp.io</span>
       </div>
     </a>
-    <div class="card card--tall" data-todo="pipimori: link + one-liner">
-      <div class="card__shot card__shot--hatch"><span class="mono">PIPIMORI</span></div>
-      <div class="card__body">
-        <div class="card__meta mono"><span>Build 02</span><span class="pill" data-i18n="st.soon">Link soon</span></div>
-        <h3>Pipimori</h3>
-        <p data-i18n="w2.d">More on this one very soon.</p>
-      </div>
+    <div class="queue">
+      <span class="mono queue__head" data-i18n="bench.next">Next on the bench</span>
+      <ol class="queue__list">
+        <li class="q" data-todo="pipimori: link + one-liner"><span class="mono q__n">02</span><div><h3>Pipimori</h3><p data-i18n="w2.d">More on this one very soon.</p></div><span class="pill mono" data-i18n="st.soon">Link soon</span></li>
+        <li class="q" data-todo="copiloto: url + one-liner"><span class="mono q__n">03</span><div><h3>Copiloto</h3><p data-i18n="w3.d">Design and build of the Copiloto website.</p></div><span class="pill mono" data-i18n="st.live">Live</span></li>
+        <li class="q" data-todo="raiz: url"><span class="mono q__n">04</span><div><h3>Raíz &amp; Co.</h3><p data-i18n="w4.d">The site for my firm: advisory and investment for Latin America.</p></div><span class="pill mono" data-i18n="st.live">Live</span></li>
+        <li class="q"><span class="mono q__n">05</span><div><h3><a href="https://eatinerary.fun">Eatinerary ↗</a></h3><p data-i18n="w5.d">My conference snack tracker.</p></div><span class="pill mono" data-i18n="st.relaunch">Relaunching</span></li>
+      </ol>
     </div>
-    <div class="card" data-todo="copiloto: url + one-liner">
-      <div class="card__shot card__shot--hatch card__shot--sm"><span class="mono">COPILOTO</span></div>
-      <div class="card__body">
-        <div class="card__meta mono"><span data-i18n="w3.k">Build 03 · Website</span><span class="pill" data-i18n="st.live">Live</span></div>
-        <h3>Copiloto</h3>
-        <p data-i18n="w3.d">Design and build of the Copiloto website.</p>
-      </div>
-    </div>
-    <div class="card" data-todo="raiz: url">
-      <div class="card__shot card__shot--hatch card__shot--sm"><span class="mono">RAÍZ &amp; CO.</span></div>
-      <div class="card__body">
-        <div class="card__meta mono"><span data-i18n="w4.k">Build 04 · Studio site</span><span class="pill" data-i18n="st.live">Live</span></div>
-        <h3>Raíz &amp; Co.</h3>
-        <p data-i18n="w4.d">The site for my firm: advisory and investment for Latin America.</p>
-      </div>
-    </div>
-    <a class="card" href="https://eatinerary.fun">
-      <div class="card__shot card__shot--hatch card__shot--sm"><span class="mono">EATINERARY.FUN</span></div>
-      <div class="card__body">
-        <div class="card__meta mono"><span data-i18n="w5.k">Build 05 · Side quest</span><span class="pill" data-i18n="st.relaunch">Relaunching</span></div>
-        <h3>Eatinerary ↗</h3>
-        <p data-i18n="w5.d">My conference snack tracker.</p>
-        <span class="mono card__url">eatinerary.fun</span>
-      </div>
-    </a>
   </div>
 </section>
 
@@ -320,7 +297,11 @@
   <div class="hire__lead">
     <span class="eyebrow mono" data-i18n="hire.eyebrow">Spec — what I can be installed as</span>
     <h2 id="hire-title" data-i18n="hire.title">Hire the generalist.</h2>
-    <a class="btn btn--ink" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hire.cta">Let’s talk →</a>
+  </div>
+  <div class="hire__now">
+    <span class="mono hire__status"><i aria-hidden="true"></i><span data-i18n="hire.status">Currently</span></span>
+    <p data-i18n="hire.now">Head of Sales at LARVOL and Managing Partner at Raíz &amp; Co. Open to the right full-time role, to talks, and to a few advisory seats.</p>
+    <a class="btn btn--ink" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
   </div>
   <ul class="offers">
     <li><span class="mono">A</span><div><h3 data-i18n="o1.t">The generalist, full-time</h3><p data-i18n="o1.d">The person who can design it, build it and sell it — for teams building AI-first products at speed.</p></div></li>
@@ -334,16 +315,16 @@
   <div class="archive__head">
     <div>
       <span class="eyebrow mono accent" data-i18n="arc.eyebrow">The archive — essays (written in Spanish)</span>
-      <h2 id="archive-title" data-i18n="arc.title">Archivism<br>as a philosophy<br>of life.</h2>
+      <h2 id="archive-title"><span class="mono sh__idx">§ 04</span><span data-i18n="arc.title">Archivism as a philosophy of life.</span></h2>
     </div>
     <div class="archive__sub">
       <p data-i18n="arc.d">A series on building a life by accumulation: failure, coffee, attention, generalism, and the words we spend too easily.</p>
-      <a class="btn btn--paper" href="https://danieljaramillor.substack.com/" data-i18n="arc.cta">Subscribe on Substack ↗</a>
+      <a class="btn btn--ink" href="https://danieljaramillor.substack.com/" data-i18n="arc.cta">Subscribe on Substack ↗</a>
     </div>
   </div>
   <div class="featured" id="featured"></div>
   <ol class="essays" id="essays" reversed></ol>
-  <button type="button" class="btn btn--paper essays__more" id="moreEssays" hidden></button>
+  <button type="button" class="btn btn--ink essays__more" id="moreEssays" hidden></button>
   <noscript><p><a href="https://danieljaramillor.substack.com/archive">Read every essay on Substack ↗</a></p></noscript>
 </section>
 
@@ -368,7 +349,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="assets/i18n.js?v=202610010311" defer></script>
-<script src="assets/main.js?v=202610010311" defer></script>
+<script src="assets/i18n.js?v=202610010325" defer></script>
+<script src="assets/main.js?v=202610010325" defer></script>
 </body>
 </html>
