@@ -156,36 +156,6 @@
   window.matchMedia('(min-width: 1001px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
 
   /* ---------------- bill of materials: tap to open a part (phones) ---------------- */
-  /* pillars: one column open at a time; it walks through them until someone takes over */
-  (() => {
-    const row = document.querySelector('.pillars__row');
-    if (!row) return;
-    const items = [...row.querySelectorAll('.pillar')];
-    const count = document.querySelector('.pillars__count b');
-    const wide = window.matchMedia('(min-width: 1001px)');
-    let idx = 0, timer = null, taken = false;
-    const open = (i) => {
-      idx = i;
-      items.forEach((p, j) => {
-        const on = j === i;
-        p.classList.toggle('is-active', on);
-        p.querySelector('.pillar__hit').setAttribute('aria-expanded', on);
-        p.querySelector('.pillar__src').tabIndex = on ? 0 : -1;
-      });
-      if (count && items[i]) count.textContent = items[i].dataset.n;
-    };
-    const stop = () => { taken = true; clearInterval(timer); timer = null; };
-    const play = () => { if (taken || timer || !wide.matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; timer = setInterval(() => open((idx + 1) % items.length), 4200); };
-    items.forEach((p, i) => {
-      p.querySelector('.pillar__hit').addEventListener('click', () => { stop(); open(!wide.matches && idx === i && p.classList.contains('is-active') ? -1 : i); });
-      let hover;
-      p.addEventListener('mouseenter', () => { if (wide.matches) hover = setTimeout(() => { stop(); open(i); }, 110); });
-      p.addEventListener('mouseleave', () => clearTimeout(hover));
-    });
-    new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else { clearInterval(timer); timer = null; } }, { threshold: 0.5 }).observe(row);
-    open(0);
-  })();
-
   document.querySelectorAll('.part').forEach((part, i) => {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -264,6 +234,56 @@
   const setState = (key) => { if (key !== lastState) { lastState = key; stateEl.innerHTML = t(key); } };
 
   applyLang(lang);
+
+  /* pillars: pick a column and the beam above carries its words. it walks I → VI until someone takes over */
+  const temple = (() => {
+    const row = document.querySelector('.colonnade');
+    if (!row) return null;
+    const cols = [...row.querySelectorAll('.col')];
+    const beamN = document.querySelector('.beam__n b'), beamT = document.querySelector('.beam__t');
+    const beamD = document.querySelector('.beam__d'), beamS = document.querySelector('.beam__src');
+    const animate = !!window.gsap && !reduce;
+    let idx = 0, timer = null, taken = false, live = false;
+    const write = (c) => {
+      beamN.textContent = c.dataset.n;
+      beamT.textContent = c.querySelector('.col__t').textContent;
+      beamD.textContent = c.querySelector('.col__d').textContent;
+      beamS.textContent = c.querySelector('.col__s').textContent;
+      beamS.href = c.dataset.href;
+    };
+    const split = () => {
+      beamT.innerHTML = beamT.textContent.trim().split(/\s+/).map((w) => `<span class="word">${[...w].map((ch) => `<span class="c">${ch}</span>`).join('')}</span>`).join(' ');
+      return beamT.querySelectorAll('.c');
+    };
+    const open = (i, instant) => {
+      if (i === idx && !instant) return;
+      idx = i;
+      cols.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.querySelector('.col__btn').setAttribute('aria-pressed', j === i); });
+      if (!animate || instant) { write(cols[i]); return; }
+      gsap.killTweensOf([beamT, beamD, beamS, '.beam__t .c']);
+      gsap.timeline()
+        .to(beamT.querySelectorAll('.c').length ? beamT.querySelectorAll('.c') : beamT, { yPercent: -110, opacity: 0, stagger: 0.008, duration: 0.22, ease: 'power2.in' })
+        .to([beamD, beamS], { y: -14, opacity: 0, duration: 0.2 }, 0)
+        .add(() => { write(cols[i]); gsap.set([beamD, beamS], { y: 18 }); })
+        .add(() => gsap.fromTo(split(), { yPercent: 115, rotateX: -80, opacity: 0 }, { yPercent: 0, rotateX: 0, opacity: 1, stagger: 0.018, duration: 0.55, ease: 'power4.out' }))
+        .to([beamD, beamS], { y: 0, opacity: 1, stagger: 0.06, duration: 0.45, ease: 'power3.out' }, '+=0.1');
+    };
+    const next = () => open((idx + 1) % cols.length);
+    const stop = () => { taken = true; row.classList.remove('is-auto'); clearInterval(timer); timer = null; };
+    const play = () => {
+      if (taken || timer || reduce || !live) return;
+      row.classList.add('is-auto');
+      const restart = () => { const a = row.querySelector('.col.is-active .col__shaft'); a.style.animation = 'none'; void a.offsetWidth; a.style.animation = ''; };
+      restart();
+      timer = setInterval(() => { next(); restart(); }, 4600);
+    };
+    cols.forEach((c, i) => c.querySelector('.col__btn').addEventListener('click', () => { stop(); open(i); }));
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else { clearInterval(timer); timer = null; } }, { threshold: 0.4 }).observe(row);
+    write(cols[0]);
+    if (animate) split();
+    return { start() { live = true; play(); } , split };
+  })();
+  if (temple && (!window.gsap || reduce)) temple.start();
   layoutTiles();
   drawLines();
   window.addEventListener('resize', () => { layoutTiles(); drawLines(); if (!intro || !intro.isActive()) linesEl.querySelectorAll('*').forEach((l) => { l.style.strokeDashoffset = 0; }); });
@@ -439,13 +459,24 @@
     .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
   gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
 
-  /* pillars: the beam and base draw, the columns rise to carry it */
-  const pillarTl = gsap.timeline({ scrollTrigger: { trigger: '.pillars__row', start: desktop ? 'top 85%' : 'top 90%', end: desktop ? 'top 30%' : 'top 60%', scrub: 0.5 } });
-  pillarTl
-    .from('.pillars__beam', { scaleX: 0, duration: 0.5, ease: 'power2.inOut' }, 0)
-    .from('.pillars__base', { scaleX: 0, duration: 0.5, ease: 'power2.inOut' }, 0)
-    .from('.pillar', desktop ? { scaleY: 0, stagger: 0.08, duration: 0.5, ease: 'power3.out' } : { x: -40, opacity: 0, stagger: 0.06, duration: 0.4 }, 0.15)
-    .from('.pillar__n', { yPercent: desktop ? 60 : 0, opacity: 0, stagger: 0.08, duration: 0.4 }, 0.3);
+  /* pillars: the temple builds itself — stairs, plinths, the columns rise, capitals set, then the beam drops and the columns take the load */
+  if (temple) {
+    gsap.set('.col__shaft', { clipPath: 'inset(100% 0 0 0)' });
+    document.querySelector('.colonnade').classList.add('is-building');
+    gsap.timeline({ scrollTrigger: { trigger: '.temple', start: desktop ? 'top 70%' : 'top 80%', once: true }, onComplete: () => temple.start() })
+      .from('.temple__steps i', { scaleX: 0, stagger: { each: 0.08, from: 'end' }, duration: 0.5, ease: 'power3.out' })
+      .from('.col__foot', { scaleX: 0, stagger: { each: 0.05, from: 'center' }, duration: 0.35, ease: 'power3.out' }, '-=0.25')
+      .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.07, from: 'center' }, duration: 0.8, ease: 'power4.out' }, '-=0.1')
+      .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.05, from: 'center' }, duration: 0.45, ease: 'back.out(2.2)' }, '-=0.45')
+      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.55, ease: 'power4.in' }, '+=0.05')
+      .addLabel('land')
+      .add(() => document.querySelector('.colonnade').classList.remove('is-building'), 'land')
+      .fromTo('.col__shaft', { scaleY: 0.93, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.35)' }, 'land')
+      .fromTo('.temple', { y: 0 }, { keyframes: [{ y: 6, duration: 0.06 }, { y: -3, duration: 0.08 }, { y: 0, duration: 0.12 }] }, 'land')
+      .from(temple.split(), { yPercent: 115, rotateX: -80, opacity: 0, stagger: 0.02, duration: 0.6, ease: 'power4.out' }, 'land+=0.05')
+      .from(['.beam__n', '.beam__d', '.beam__src'], { y: 16, opacity: 0, stagger: 0.07, duration: 0.45, ease: 'power3.out' }, 'land+=0.15')
+      .from('.col__n, .col__t', { opacity: 0, y: 12, stagger: 0.04, duration: 0.35 }, 'land+=0.1');
+  }
 
   /* bill of materials: the spec table prints itself — each rule draws across, then its row slides in */
   const parts = gsap.utils.toArray('.part');
