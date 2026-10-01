@@ -235,18 +235,21 @@
 
   applyLang(lang);
 
-  /* pillars: the beam carries the words of whichever column holds the load. scroll moves the load I → VI */
+  /* pillars: the beam carries the words of whichever column holds the load.
+     scroll moves the load I → VI, the light crosses the temple, and when all six carry, the roof goes on */
+  const SEQ = 0.8;          // share of the scroll spent walking the six columns; the rest builds the roof
   const temple = (() => {
     const row = document.querySelector('.colonnade');
     if (!row) return null;
     const wrap = document.querySelector('.temple'), beam = document.querySelector('.beam');
     const cols = [...row.querySelectorAll('.col')];
-    const beamN = document.querySelector('.beam__n b'), beamT = document.querySelector('.beam__t');
+    const words = [...document.querySelectorAll('.words li')];
+    const beamBig = document.querySelector('.beam__big'), beamN = document.querySelector('.beam__n b'), beamT = document.querySelector('.beam__t');
     const beamD = document.querySelector('.beam__d'), beamS = document.querySelector('.beam__src');
     const animate = !!window.gsap && !reduce;
     let idx = -1, goTo = null;
     const write = (c) => {
-      beamN.textContent = c.dataset.n;
+      beamBig.textContent = beamN.textContent = c.dataset.n;
       beamT.textContent = c.querySelector('.col__t').textContent;
       beamD.textContent = c.querySelector('.col__d').textContent;
       beamS.textContent = c.querySelector('.col__s').textContent;
@@ -265,7 +268,6 @@
       if (animate) split();
       beam.style.height = max + 'px';
       wrap.style.setProperty('--beam-h', max + 'px');
-      row.classList.toggle('is-short', row.offsetHeight < 320);
       if (window.ScrollTrigger && ScrollTrigger.getAll().length) ScrollTrigger.refresh();
     };
     const open = (i) => {
@@ -273,31 +275,43 @@
       const first = idx === -1;
       idx = i;
       cols.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.querySelector('.col__btn').setAttribute('aria-pressed', j === i); });
+      words.forEach((w, j) => { w.classList.toggle('is-active', j === i); w.classList.toggle('is-done', j < i); });
       if (!animate || first) { write(cols[i]); if (animate) split(); return; }
-      gsap.killTweensOf([beam, beamD, beamS, '.beam__t .c']);
+      gsap.killTweensOf([beam, beamBig, beamD, beamS, '.beam__t .c']);
       gsap.timeline()
         .to(beamT.querySelectorAll('.c'), { yPercent: -110, opacity: 0, stagger: 0.006, duration: 0.2, ease: 'power2.in' })
         .to([beamD, beamS], { y: -14, opacity: 0, duration: 0.18 }, 0)
+        .to(beamBig, { xPercent: -30, opacity: 0, duration: 0.2, ease: 'power2.in' }, 0)
         .add(() => { write(cols[i]); gsap.set([beamD, beamS], { y: 18 }); })
-        .add(() => gsap.fromTo(split(), { yPercent: 115, rotateX: -80, opacity: 0 }, { yPercent: 0, rotateX: 0, opacity: 1, stagger: 0.016, duration: 0.55, ease: 'power4.out' }))
+        .fromTo(beamBig, { xPercent: 30, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.5, ease: 'power3.out' })
+        .add(() => gsap.fromTo(split(), { yPercent: 115, rotateX: -80, opacity: 0 }, { yPercent: 0, rotateX: 0, opacity: 1, stagger: 0.016, duration: 0.55, ease: 'power4.out' }), '<')
         .fromTo(beam, { y: -10 }, { y: 0, duration: 0.5, ease: 'bounce.out' }, '<')
         .to([beamD, beamS], { y: 0, opacity: 1, stagger: 0.06, duration: 0.45, ease: 'power3.out' }, '<+0.15');
     };
-    /* p runs 0 → 1 across the scroll: each column fills in turn and stays full */
+    /* p runs 0 → 1 across the pinned scroll */
     const setLoad = (p) => {
-      const n = cols.length, f = p * n;
-      cols.forEach((c, j) => c.style.setProperty('--load', Math.min(1, Math.max(0, f - j)).toFixed(3)));
+      const n = cols.length, seq = Math.min(1, p / SEQ), f = seq * n;
+      const lx = -0.08 + seq * 1.16;                        // where the light is, 0 = left edge of the temple
+      wrap.style.setProperty('--lx', (lx * 100).toFixed(1) + '%');
+      wrap.style.setProperty('--seq', seq.toFixed(3));
+      wrap.style.setProperty('--ped', Math.min(1, Math.max(0, (p - SEQ - 0.04) / 0.12)).toFixed(3));
+      cols.forEach((c, j) => {
+        const d = (j + 0.5) / n - lx;                       // > 0: the light is to the left, so the right side falls in shadow
+        c.style.setProperty('--load', Math.min(1, Math.max(0, f - j)).toFixed(3));
+        c.style.setProperty('--sr', Math.min(0.5, Math.max(0.04, d * 1.4)).toFixed(3));
+        c.style.setProperty('--sl', Math.min(0.5, Math.max(0.04, -d * 1.4)).toFixed(3));
+      });
       open(Math.min(n - 1, Math.floor(f)));
     };
     cols.forEach((c, i) => c.querySelector('.col__btn').addEventListener('click', () => {
       if (goTo) goTo(i);
-      else { open(i); cols.forEach((k, j) => k.style.setProperty('--load', j === i ? 1 : 0)); }
+      else { open(i); cols.forEach((k, j) => k.style.setProperty('--load', j <= i ? 1 : 0)); }
     }));
     lockHeight();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockHeight);
     window.addEventListener('resize', lockHeight);
     open(0);
-    if (!animate) cols[0].style.setProperty('--load', 1);
+    if (!animate) { setLoad(1); open(0); }
     return { split, setLoad, lockHeight, bindScroll(fn) { goTo = fn; } };
   })();
   layoutTiles();
@@ -333,6 +347,12 @@
       lenis.scrollTo(target, { offset: 0, duration: 1.4 });
     }));
   }
+
+  /* nav: the link for the section you are in stays lit */
+  document.querySelectorAll('.nav__links a').forEach((a) => {
+    const sec = document.querySelector(a.getAttribute('href'));
+    if (sec) ScrollTrigger.create({ trigger: sec, refreshPriority: -1, start: 'top 45%', end: 'bottom 45%', onToggle: (self) => a.classList.toggle('is-here', self.isActive) });
+  });
 
   /* scroll progress: construction status */
   gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
@@ -469,14 +489,9 @@
 
   const scatter = { x: () => rnd(-700, 700), y: () => rnd(-420, 420), z: () => rnd(-900, 500), rotationX: () => rnd(-180, 180), rotationY: () => rnd(-180, 180), rotationZ: () => rnd(-90, 90), opacity: 0 };
 
-  /* manifesto: “no borro nada” — every letter falls into place, pinned */
-  const manChars = [...document.querySelectorAll('.manifesto__title .chars')].flatMap((c) => [...splitChars(c)]);
-  gsap.timeline({ scrollTrigger: { trigger: '.manifesto', start: 'top 85%', end: 'top 20%', scrub: 0.6 } })
-    .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
-  gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
 
   /* pillars: the temple builds itself as it arrives — stairs, plinths, columns rise, capitals set, the beam drops.
-     then it pins, and scrolling pours the load through the columns one by one, I → VI */
+     then it pins: scrolling pours the load through the columns, the light crosses, and the roof goes on at the end */
   if (temple) {
     const row = document.querySelector('.colonnade');
     gsap.set('.col__shaft', { clipPath: 'inset(100% 0 0 0)' });
@@ -486,25 +501,34 @@
       .from('.col__foot', { scaleX: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.3, ease: 'power3.out' }, '-=0.25')
       .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.06, from: 'center' }, duration: 0.7, ease: 'power4.out' }, '-=0.1')
       .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.4, ease: 'back.out(2.2)' }, '-=0.4')
-      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.5, ease: 'power4.in' }, '+=0.02')
+      .from('.pediment__frame', { opacity: 0, duration: 0.3 }, '-=0.1')
+      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.5, ease: 'power4.in' }, '<')
       .addLabel('land')
       .add(() => row.classList.remove('is-building'), 'land')
       .fromTo('.col__shaft', { scaleY: 0.93, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.35)' }, 'land')
       .fromTo('.temple', { y: 0 }, { keyframes: [{ y: 6, duration: 0.06 }, { y: -3, duration: 0.08 }, { y: 0, duration: 0.12 }] }, 'land')
+      .from('.beam__big', { xPercent: -20, opacity: 0, duration: 0.5, ease: 'power3.out' }, 'land')
       .from(temple.split(), { yPercent: 115, rotateX: -80, opacity: 0, stagger: 0.02, duration: 0.6, ease: 'power4.out' }, 'land+=0.05')
       .from(['.beam__n', '.beam__d', '.beam__src'], { y: 16, opacity: 0, stagger: 0.07, duration: 0.45, ease: 'power3.out' }, 'land+=0.15')
-      .from('.col__n, .col__t', { opacity: 0, y: 12, stagger: 0.04, duration: 0.35 }, 'land+=0.1');
+      .from('.col__n, .words li', { opacity: 0, y: 12, stagger: 0.03, duration: 0.35 }, 'land+=0.1');
 
     const navH = () => (document.querySelector('.nav') || { offsetHeight: 64 }).offsetHeight + 8;
+    let roofDone = false;
     const st = ScrollTrigger.create({
       trigger: '.temple-pin', pin: true, anticipatePin: 1,
       start: () => 'top ' + navH() + 'px',
-      end: () => '+=' + Math.round(window.innerHeight * 3.4),
+      end: () => '+=' + Math.round(window.innerHeight * 4),
       scrub: true, invalidateOnRefresh: true,
-      onUpdate: (self) => temple.setLoad(Math.min(0.9999, self.progress * 1.04))
+      onUpdate: (self) => {
+        temple.setLoad(self.progress);
+        /* the roof lands: one thud through the whole temple */
+        const done = self.progress > SEQ + 0.15;
+        if (done && !roofDone) gsap.fromTo('.temple', { y: 0 }, { keyframes: [{ y: 8, duration: 0.07 }, { y: -3, duration: 0.09 }, { y: 0, duration: 0.14 }] });
+        roofDone = done;
+      }
     });
     temple.bindScroll((i) => {
-      const y = st.start + (st.end - st.start) * ((i + 0.55) / 6 / 1.04);
+      const y = st.start + (st.end - st.start) * ((i + 0.5) / 6 * SEQ);
       if (lenis) lenis.scrollTo(y, { duration: 1.1 }); else window.scrollTo({ top: y, behavior: 'smooth' });
     });
   }
@@ -519,27 +543,13 @@
       .from(part.children, { y: 26, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }, i * 0.18 + 0.15);
   });
 
-  /* builds: a pinned horizontal rail of 3D cards on desktop */
-  const builds = document.querySelector('.builds');
-  const bench = document.querySelector('.bench');
-  const cards = gsap.utils.toArray('.card');
-  if (desktop) {
-    builds.classList.add('is-rail');
-    const dist = () => bench.scrollWidth - window.innerWidth;
-    const rail = gsap.to(bench, {
-      x: () => -dist(), ease: 'none',
-      scrollTrigger: { trigger: builds, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true }
-    });
-    cards.forEach((c) => {
-      gsap.fromTo(c, { rotateY: -32, z: -260, opacity: 0.35 }, {
-        rotateY: 0, z: 0, opacity: 1, ease: 'none',
-        scrollTrigger: { containerAnimation: rail, trigger: c, start: 'left right', end: 'left 35%', scrub: true }
-      });
-    });
-  } else {
-    bindTilt(cards);
-    cards.forEach((c) => gsap.from(c, { y: 80, rotateX: 20, opacity: 0, duration: 1, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: c, start: 'top 90%', once: true } }));
-  }
+  /* builds: the shipped one rises in tilted like it is being placed on the bench, then the queue fills in behind it */
+  bindTilt(document.querySelectorAll('.feature'), 4);
+  gsap.timeline({ scrollTrigger: { trigger: '.workbench', start: 'top 75%', once: true } })
+    .from('.feature', { y: 120, rotateX: 22, opacity: 0, duration: 1.1, ease: 'power3.out', clearProps: 'transform' })
+    .from('.queue__head', { x: -30, opacity: 0, duration: 0.5 }, 0.4)
+    .fromTo('.q', { '--rule': 0 }, { '--rule': 1, stagger: 0.12, duration: 0.6, ease: 'power2.inOut' }, 0.5)
+    .from('.q > *', { y: 24, opacity: 0, stagger: 0.04, duration: 0.5, ease: 'power3.out' }, 0.6);
 
   /* coffee: one screen — the roast draws itself, the markers pop, the site slides in */
   const bt = document.querySelector('.roast__bt');
@@ -576,7 +586,13 @@
     }).join('<br>');
     return elm.querySelectorAll('.c');
   };
-  document.querySelectorAll('.section-head h2, .coffee h2, .hire h2, #archive-title').forEach((h) => {
+  document.querySelectorAll('.section-head--quiet h2, #archive-title').forEach((h) => {
+    const chars = splitLines(h.querySelector('[data-i18n]'));
+    gsap.timeline({ scrollTrigger: { trigger: h, start: 'top 92%', end: 'top 55%', scrub: 0.6 } })
+      .from(h.querySelector('.sh__idx'), { x: -40, opacity: 0, duration: 0.4 })
+      .from(chars, { yPercent: 110, opacity: 0, stagger: 0.012, duration: 0.5, ease: 'power3.out' }, 0.1);
+  });
+  document.querySelectorAll('.section-head:not(.section-head--quiet) h2, .coffee h2, .hire h2').forEach((h) => {
     const chars = splitLines(h);
     gsap.from(chars, {
       x: () => rnd(-320, 320), y: () => rnd(-220, 220), z: () => rnd(-600, 300),
@@ -587,9 +603,9 @@
   });
 
   /* dark chapters open up like a window: inset rounded panel → full bleed */
-  ['.coffee', '.hire', '.archive'].forEach((sel) => {
-    gsap.fromTo(sel, { clipPath: 'inset(7% 5% 0% 5% round 36px)' }, {
-      clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none',
+  ['.coffee', '.hire'].forEach((sel) => {
+    gsap.fromTo(sel, { clipPath: 'inset(7% 5% 0% 5%)' }, {
+      clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
       scrollTrigger: { trigger: sel, start: 'top bottom', end: 'top 15%', scrub: true }
     });
   });
@@ -604,7 +620,7 @@
   }
 
   /* momentum: big type leans with scroll speed, then settles */
-  const leaners = gsap.utils.toArray('.section-head h2, .manifesto__title, .coffee h2, .hire h2, #archive-title, .foot__big, .marquee');
+  const leaners = gsap.utils.toArray('.section-head:not(.section-head--quiet) h2, .coffee h2, .hire h2, .foot__big, .marquee');
   const leanTo = leaners.map((el) => gsap.quickTo(el, 'skewY', { duration: 0.5, ease: 'power3.out' }));
   let settle = null;
   const lean = (v) => leanTo.forEach((fn) => fn(v));
