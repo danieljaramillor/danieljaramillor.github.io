@@ -37,8 +37,19 @@
       <button type="button" data-lang="es" aria-pressed="false">ES</button>
     </div>
     <a class="btn btn--accent nav__cta" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="nav.cta">Work with me →</a>
+    <button type="button" class="nav__menu mono" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-i18n="menu.open">Menu</span><i aria-hidden="true"></i></button>
   </div>
 </header>
+<div class="menu" id="menu" hidden>
+  <nav class="menu__links" aria-label="Menu">
+    <a href="#story"><span class="mono">01</span><span data-i18n="nav.story">Story</span></a>
+    <a href="#builds"><span class="mono">02</span><span data-i18n="nav.builds">Builds</span></a>
+    <a href="#coffee"><span class="mono">03</span><span data-i18n="menu.coffee">Coffee</span></a>
+    <a href="#archive"><span class="mono">04</span><span data-i18n="nav.writing">Writing</span></a>
+    <a href="#hire"><span class="mono">05</span><span data-i18n="nav.hire">Hire</span></a>
+  </nav>
+  <a class="btn btn--accent menu__cta" href="https://calendar.app.google/KnNncYvWwveanFsq7" data-i18n="hero.cta">Book a call →</a>
+</div>
 <div class="progress" aria-hidden="true"><span></span></div>
 
 <main id="main">
@@ -163,6 +174,7 @@
 <section class="builds" id="builds" aria-labelledby="builds-title">
   <div class="section-head">
     <h2 id="builds-title" data-i18n="builds.title">On the<br>workbench</h2>
+    <span class="swipe mono" aria-hidden="true" data-i18n="swipe">Swipe →</span>
     <p class="mono" data-i18n="builds.note">Things I build on my own time — shipped, in progress, and slightly unhinged.</p>
   </div>
   <div class="bench">
@@ -269,6 +281,7 @@
   </div>
   <div class="featured" id="featured"></div>
   <ol class="essays" id="essays" reversed></ol>
+  <button type="button" class="btn btn--paper essays__more" id="moreEssays" hidden></button>
   <noscript><p><a href="https://danieljaramillor.substack.com/archive">Read every essay on Substack ↗</a></p></noscript>
 </section>
 

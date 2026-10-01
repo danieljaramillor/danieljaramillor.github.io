@@ -102,6 +102,12 @@
       list.append(li);
     });
     bindTilt(feat.querySelectorAll('.feat'), 5);
+    const more = document.getElementById('moreEssays');
+    const shown = () => list.classList.contains('show-all');
+    const label = () => { more.textContent = shown() ? (lang === 'es' ? 'Ver menos ↑' : 'Show fewer ↑') : (lang === 'es' ? `Ver los ${total} ensayos ↓` : `All ${total} essays ↓`); };
+    more.hidden = total <= 5;
+    label();
+    more.onclick = () => { list.classList.toggle('show-all'); label(); if (window.ScrollTrigger) ScrollTrigger.refresh(); };
   }
 
   fetch('data/essays.json', { cache: 'no-cache' })
@@ -130,6 +136,44 @@
       card.addEventListener('pointerleave', () => { card.style.transform = ''; });
     });
   }
+  /* ---------------- mobile menu ---------------- */
+  const menu = document.getElementById('menu');
+  const menuBtn = document.getElementById('menuBtn');
+  const menuLabel = menuBtn.querySelector('span');
+  function setMenu(open) {
+    menu.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuLabel.innerHTML = t(open ? 'menu.close' : 'menu.open') || (open ? 'Close' : 'Menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (window.__lenis) open ? window.__lenis.stop() : window.__lenis.start();
+    if (open && window.gsap && !reduce) {
+      gsap.fromTo(menu.querySelectorAll('.menu__links a, .menu__cta'), { y: 70, opacity: 0, rotateX: -40 }, { y: 0, opacity: 1, rotateX: 0, duration: 0.7, stagger: 0.06, ease: 'power3.out' });
+    }
+  }
+  menuBtn.addEventListener('click', () => setMenu(menu.hidden));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  window.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
+  window.matchMedia('(min-width: 1001px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
+
+  /* ---------------- bill of materials: tap to open a part (phones) ---------------- */
+  document.querySelectorAll('.part').forEach((part, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'part__toggle';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', (part.querySelector('h3') || {}).textContent || 'Part');
+    btn.textContent = '+';
+    part.querySelector('.part__t').append(btn);
+    const toggle = () => {
+      const open = part.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? '−' : '+';
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    };
+    btn.addEventListener('click', (ev) => { ev.stopPropagation(); toggle(); });
+    part.addEventListener('click', (ev) => { if (!ev.target.closest('a, button') && window.matchMedia('(max-width: 1000px)').matches) toggle(); });
+  });
+
   /* ---------------- hero: a mess of pieces that assembles itself ---------------- */
   const hero = document.querySelector('.hero');
   const tilesEl = hero.querySelector('.tiles');
@@ -211,6 +255,7 @@
   let lenis = null;
   if (window.Lenis) {
     lenis = new Lenis({ lerp: 0.085 });
+    window.__lenis = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);

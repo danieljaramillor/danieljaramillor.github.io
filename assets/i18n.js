@@ -6,6 +6,11 @@ window.DJ_ES = {
   'nav.writing': 'Ensayos',
   'nav.hire': 'Trabajemos',
   'nav.cta': 'Trabajemos →',
+  'menu.open': 'Menú',
+  'menu.close': 'Cerrar',
+  'menu.coffee': 'Café',
+  'swipe': 'Deslizá →',
+  'bom.tap': 'Tocá una pieza para abrirla',
 
   'hero.dwg': 'Plano N.º DJR-001 · La arquitectura de la acumulación',
   'hero.state.exploded': 'Estado: un desorden',
