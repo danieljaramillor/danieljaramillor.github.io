@@ -2,8 +2,8 @@ name: Sync Substack essays
 
 on:
   schedule:
-    # every 3 hours: a post published on either Substack shows up on the site within a few hours
-    - cron: "17 */3 * * *"
+    # once a week (Mondays, 11:17 UTC); run it by hand from the Actions tab to sync sooner
+    - cron: "17 11 * * 1"
   workflow_dispatch:
 
 permissions:
