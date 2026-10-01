@@ -235,15 +235,16 @@
 
   applyLang(lang);
 
-  /* pillars: pick a column and the beam above carries its words. it walks I → VI until someone takes over */
+  /* pillars: the beam carries the words of whichever column holds the load. scroll moves the load I → VI */
   const temple = (() => {
     const row = document.querySelector('.colonnade');
     if (!row) return null;
+    const wrap = document.querySelector('.temple'), beam = document.querySelector('.beam');
     const cols = [...row.querySelectorAll('.col')];
     const beamN = document.querySelector('.beam__n b'), beamT = document.querySelector('.beam__t');
     const beamD = document.querySelector('.beam__d'), beamS = document.querySelector('.beam__src');
     const animate = !!window.gsap && !reduce;
-    let idx = 0, timer = null, taken = false, live = false;
+    let idx = -1, goTo = null;
     const write = (c) => {
       beamN.textContent = c.dataset.n;
       beamT.textContent = c.querySelector('.col__t').textContent;
@@ -255,35 +256,50 @@
       beamT.innerHTML = beamT.textContent.trim().split(/\s+/).map((w) => `<span class="word">${[...w].map((ch) => `<span class="c">${ch}</span>`).join('')}</span>`).join(' ');
       return beamT.querySelectorAll('.c');
     };
-    const open = (i, instant) => {
-      if (i === idx && !instant) return;
+    /* the beam never changes size: it is as tall as the longest pillar needs, in this language, at this width */
+    const lockHeight = () => {
+      beam.style.height = 'auto';
+      let max = 0;
+      cols.forEach((c) => { write(c); max = Math.max(max, beam.offsetHeight); });
+      write(cols[Math.max(idx, 0)]);
+      if (animate) split();
+      beam.style.height = max + 'px';
+      wrap.style.setProperty('--beam-h', max + 'px');
+      row.classList.toggle('is-short', row.offsetHeight < 320);
+      if (window.ScrollTrigger && ScrollTrigger.getAll().length) ScrollTrigger.refresh();
+    };
+    const open = (i) => {
+      if (i === idx) return;
+      const first = idx === -1;
       idx = i;
       cols.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.querySelector('.col__btn').setAttribute('aria-pressed', j === i); });
-      if (!animate || instant) { write(cols[i]); return; }
-      gsap.killTweensOf([beamT, beamD, beamS, '.beam__t .c']);
+      if (!animate || first) { write(cols[i]); if (animate) split(); return; }
+      gsap.killTweensOf([beam, beamD, beamS, '.beam__t .c']);
       gsap.timeline()
-        .to(beamT.querySelectorAll('.c').length ? beamT.querySelectorAll('.c') : beamT, { yPercent: -110, opacity: 0, stagger: 0.008, duration: 0.22, ease: 'power2.in' })
-        .to([beamD, beamS], { y: -14, opacity: 0, duration: 0.2 }, 0)
+        .to(beamT.querySelectorAll('.c'), { yPercent: -110, opacity: 0, stagger: 0.006, duration: 0.2, ease: 'power2.in' })
+        .to([beamD, beamS], { y: -14, opacity: 0, duration: 0.18 }, 0)
         .add(() => { write(cols[i]); gsap.set([beamD, beamS], { y: 18 }); })
-        .add(() => gsap.fromTo(split(), { yPercent: 115, rotateX: -80, opacity: 0 }, { yPercent: 0, rotateX: 0, opacity: 1, stagger: 0.018, duration: 0.55, ease: 'power4.out' }))
-        .to([beamD, beamS], { y: 0, opacity: 1, stagger: 0.06, duration: 0.45, ease: 'power3.out' }, '+=0.1');
+        .add(() => gsap.fromTo(split(), { yPercent: 115, rotateX: -80, opacity: 0 }, { yPercent: 0, rotateX: 0, opacity: 1, stagger: 0.016, duration: 0.55, ease: 'power4.out' }))
+        .fromTo(beam, { y: -10 }, { y: 0, duration: 0.5, ease: 'bounce.out' }, '<')
+        .to([beamD, beamS], { y: 0, opacity: 1, stagger: 0.06, duration: 0.45, ease: 'power3.out' }, '<+0.15');
     };
-    const next = () => open((idx + 1) % cols.length);
-    const stop = () => { taken = true; row.classList.remove('is-auto'); clearInterval(timer); timer = null; };
-    const play = () => {
-      if (taken || timer || reduce || !live) return;
-      row.classList.add('is-auto');
-      const restart = () => { const a = row.querySelector('.col.is-active .col__shaft'); a.style.animation = 'none'; void a.offsetWidth; a.style.animation = ''; };
-      restart();
-      timer = setInterval(() => { next(); restart(); }, 4600);
+    /* p runs 0 → 1 across the scroll: each column fills in turn and stays full */
+    const setLoad = (p) => {
+      const n = cols.length, f = p * n;
+      cols.forEach((c, j) => c.style.setProperty('--load', Math.min(1, Math.max(0, f - j)).toFixed(3)));
+      open(Math.min(n - 1, Math.floor(f)));
     };
-    cols.forEach((c, i) => c.querySelector('.col__btn').addEventListener('click', () => { stop(); open(i); }));
-    new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else { clearInterval(timer); timer = null; } }, { threshold: 0.4 }).observe(row);
-    write(cols[0]);
-    if (animate) split();
-    return { start() { live = true; play(); } , split };
+    cols.forEach((c, i) => c.querySelector('.col__btn').addEventListener('click', () => {
+      if (goTo) goTo(i);
+      else { open(i); cols.forEach((k, j) => k.style.setProperty('--load', j === i ? 1 : 0)); }
+    }));
+    lockHeight();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockHeight);
+    window.addEventListener('resize', lockHeight);
+    open(0);
+    if (!animate) cols[0].style.setProperty('--load', 1);
+    return { split, setLoad, lockHeight, bindScroll(fn) { goTo = fn; } };
   })();
-  if (temple && (!window.gsap || reduce)) temple.start();
   layoutTiles();
   drawLines();
   window.addEventListener('resize', () => { layoutTiles(); drawLines(); if (!intro || !intro.isActive()) linesEl.querySelectorAll('*').forEach((l) => { l.style.strokeDashoffset = 0; }); });
@@ -459,23 +475,38 @@
     .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
   gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
 
-  /* pillars: the temple builds itself — stairs, plinths, the columns rise, capitals set, then the beam drops and the columns take the load */
+  /* pillars: the temple builds itself as it arrives — stairs, plinths, columns rise, capitals set, the beam drops.
+     then it pins, and scrolling pours the load through the columns one by one, I → VI */
   if (temple) {
+    const row = document.querySelector('.colonnade');
     gsap.set('.col__shaft', { clipPath: 'inset(100% 0 0 0)' });
-    document.querySelector('.colonnade').classList.add('is-building');
-    gsap.timeline({ scrollTrigger: { trigger: '.temple', start: desktop ? 'top 70%' : 'top 80%', once: true }, onComplete: () => temple.start() })
-      .from('.temple__steps i', { scaleX: 0, stagger: { each: 0.08, from: 'end' }, duration: 0.5, ease: 'power3.out' })
-      .from('.col__foot', { scaleX: 0, stagger: { each: 0.05, from: 'center' }, duration: 0.35, ease: 'power3.out' }, '-=0.25')
-      .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.07, from: 'center' }, duration: 0.8, ease: 'power4.out' }, '-=0.1')
-      .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.05, from: 'center' }, duration: 0.45, ease: 'back.out(2.2)' }, '-=0.45')
-      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.55, ease: 'power4.in' }, '+=0.05')
+    row.classList.add('is-building');
+    gsap.timeline({ scrollTrigger: { trigger: '.temple', start: 'top 85%', once: true } })
+      .from('.temple__steps i', { scaleX: 0, stagger: { each: 0.07, from: 'end' }, duration: 0.45, ease: 'power3.out' })
+      .from('.col__foot', { scaleX: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.3, ease: 'power3.out' }, '-=0.25')
+      .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.06, from: 'center' }, duration: 0.7, ease: 'power4.out' }, '-=0.1')
+      .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.4, ease: 'back.out(2.2)' }, '-=0.4')
+      .from(['.temple__cornice', '.beam', '.temple__architrave'], { y: -220, opacity: 0, duration: 0.5, ease: 'power4.in' }, '+=0.02')
       .addLabel('land')
-      .add(() => document.querySelector('.colonnade').classList.remove('is-building'), 'land')
+      .add(() => row.classList.remove('is-building'), 'land')
       .fromTo('.col__shaft', { scaleY: 0.93, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.35)' }, 'land')
       .fromTo('.temple', { y: 0 }, { keyframes: [{ y: 6, duration: 0.06 }, { y: -3, duration: 0.08 }, { y: 0, duration: 0.12 }] }, 'land')
       .from(temple.split(), { yPercent: 115, rotateX: -80, opacity: 0, stagger: 0.02, duration: 0.6, ease: 'power4.out' }, 'land+=0.05')
       .from(['.beam__n', '.beam__d', '.beam__src'], { y: 16, opacity: 0, stagger: 0.07, duration: 0.45, ease: 'power3.out' }, 'land+=0.15')
       .from('.col__n, .col__t', { opacity: 0, y: 12, stagger: 0.04, duration: 0.35 }, 'land+=0.1');
+
+    const navH = () => (document.querySelector('.nav') || { offsetHeight: 64 }).offsetHeight + 8;
+    const st = ScrollTrigger.create({
+      trigger: '.temple-pin', pin: true, anticipatePin: 1,
+      start: () => 'top ' + navH() + 'px',
+      end: () => '+=' + Math.round(window.innerHeight * 3.4),
+      scrub: true, invalidateOnRefresh: true,
+      onUpdate: (self) => temple.setLoad(Math.min(0.9999, self.progress * 1.04))
+    });
+    temple.bindScroll((i) => {
+      const y = st.start + (st.end - st.start) * ((i + 0.55) / 6 / 1.04);
+      if (lenis) lenis.scrollTo(y, { duration: 1.1 }); else window.scrollTo({ top: y, behavior: 'smooth' });
+    });
   }
 
   /* bill of materials: the spec table prints itself — each rule draws across, then its row slides in */
