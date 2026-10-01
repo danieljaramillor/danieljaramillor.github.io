@@ -13,11 +13,18 @@ separately as `en_only`.
 
 Substack doesn't send CORS headers, so the site can't read the feeds from the
 browser. A scheduled GitHub Action runs this instead and commits the result.
+
+Substack sometimes refuses requests from GitHub's servers (HTTP 403). The JSON
+API is tried first, then the RSS feed; if a publication still can't be read,
+the essays already in data/essays.json are kept as they are. A failed fetch
+must never empty the archive.
 """
 import json
 import pathlib
 import re
 import urllib.request
+import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
 
 ES = "https://danieljaramillor.substack.com"
 EN = "https://danieljaramilloren.substack.com"
@@ -41,24 +48,63 @@ KNOWN_PAIRS = {
 }
 
 
-def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (danieljaramillor.github.io)"})
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+
+
+def fetch(url):
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json, application/rss+xml, */*"})
     with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode())
+        return r.read().decode()
+
+
+def get(url):
+    return json.loads(fetch(url))
+
+
+def from_api(pub):
+    # Substack caps the page size below what's asked for, so keep paging until a page brings nothing new
+    posts, seen, offset = [], set(), 0
+    while offset < 2000:
+        batch = get(f"{pub}/api/v1/archive?sort=new&offset={offset}&limit=12")
+        new = [p for p in batch if p["slug"] not in seen]
+        if not new:
+            return posts
+        posts += new
+        seen.update(p["slug"] for p in new)
+        offset += len(batch)
+    return posts
+
+
+def from_rss(pub):
+    """The RSS feed carries the same posts (without word counts); used when the API is refused."""
+    root = ET.fromstring(fetch(f"{pub}/feed"))
+    posts = []
+    for item in root.iter("item"):
+        link = (item.findtext("link") or "").strip()
+        slug = link.rstrip("/").rsplit("/p/", 1)[-1]
+        posts.append({
+            "title": item.findtext("title") or "",
+            "subtitle": item.findtext("description") or "",
+            "post_date": parsedate_to_datetime(item.findtext("pubDate")).date().isoformat(),
+            "canonical_url": link,
+            "slug": slug,
+            "audience": "everyone",
+            "type": "newsletter",
+            "body_html": item.findtext("{http://purl.org/rss/1.0/modules/content/}encoded") or "",
+        })
+    return posts
 
 
 def archive(pub):
-    posts, offset = [], 0
-    while True:
+    """Posts of one publication, or None when it can't be read at all."""
+    for name, read in (("api", from_api), ("rss", from_rss)):
         try:
-            batch = get(f"{pub}/api/v1/archive?sort=new&offset={offset}&limit=50")
-        except Exception as e:  # a publication that's down or empty shouldn't break the other
-            print(f"could not read {pub}: {e}")
+            posts = read(pub)
+            print(f"read {len(posts)} posts from {pub} ({name})")
             return posts
-        posts += batch
-        offset += len(batch)
-        if len(batch) < 50:
-            return posts
+        except Exception as e:
+            print(f"could not read {pub} via {name}: {e}")
+    return None
 
 
 def public(posts):
@@ -80,34 +126,73 @@ def norm(title):
     return re.sub(r"\s+", " ", title.replace("’", "'").strip().lower())
 
 
-def spanish_slug_for(en_post, es_slugs):
+def body_of(pub, post):
+    if post.get("body_html"):
+        return post["body_html"]
     try:
-        body = get(f"{EN}/api/v1/posts/{en_post['slug']}").get("body_html") or ""
+        post["body_html"] = get(f"{pub}/api/v1/posts/{post['slug']}").get("body_html") or ""
     except Exception:
-        body = ""
-    for slug in re.findall(r"danieljaramillor\.substack\.com/p/([a-z0-9-]+)", body):
-        if slug in es_slugs:
-            return slug
+        post["body_html"] = ""
+    return post["body_html"]
+
+
+def spanish_slug_for(en_post, es_slugs):
     slug = KNOWN_PAIRS.get(norm(en_post["title"]))
-    return slug if slug in es_slugs else None
+    if slug in es_slugs:
+        return slug
+    pub = ES if "danieljaramillor.substack.com" in en_post.get("canonical_url", "") else EN
+    body = body_of(pub, en_post)
+    for slug in re.findall(r"danieljaramillor\.substack\.com/p/([a-z0-9-]+)", body):
+        if slug in es_slugs and slug != en_post["slug"]:
+            return slug
+    return None
 
 
 def main():
-    es_posts = public(archive(ES))
-    en_posts = public(archive(EN))
+    try:
+        old = json.loads(OUT.read_text())
+    except Exception:
+        old = {}
+    old_by_slug = {e["slug"]: e for e in old.get("essays", [])}
+
+    es_raw = archive(ES)
+    if not es_raw:
+        print("Spanish publication unreadable: keeping the existing data/essays.json untouched.")
+        return
+    en_raw = archive(EN)
+
+    # English translations may live on the English publication or next to the originals on the Spanish one.
+    known = set(old_by_slug)
+    es_posts, translations = [], []
+    for p in public(es_raw):
+        target = KNOWN_PAIRS.get(norm(p["title"]))
+        if target and target != p["slug"]:
+            translations.append(p)
+        elif p["slug"] not in known and "Originally published in Spanish" in body_of(ES, p):
+            translations.append(p)
+        else:
+            es_posts.append(p)
+
     essays = [card(p) for p in es_posts]
     by_slug = {e["slug"]: e for e in essays}
     for e in essays:
+        if not e.get("words") and e["slug"] in old_by_slug:  # the RSS feed has no word counts
+            e["words"] = old_by_slug[e["slug"]].get("words")
         e["en"] = None
 
     en_only = []
-    for p in en_posts:
+    for p in translations + public(en_raw or []):
         slug = spanish_slug_for(p, by_slug)
         if slug and by_slug[slug]["en"] is None:
             c = card(p)
             by_slug[slug]["en"] = {k: c[k] for k in ("title", "subtitle", "url", "slug", "date")}
-        else:
+        elif not (slug and by_slug[slug]["en"]):
             en_only.append(card(p))
+    if en_raw is None:
+        print("English publication unreadable: keeping the English versions already on file.")
+        for e in essays:
+            e["en"] = e["en"] or old_by_slug.get(e["slug"], {}).get("en")
+        en_only = en_only or old.get("en_only", [])
 
     OUT.parent.mkdir(exist_ok=True)
     data = {"publications": {"es": ES, "en": EN}, "essays": essays, "en_only": en_only}
