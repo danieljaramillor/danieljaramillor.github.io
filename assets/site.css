@@ -172,6 +172,7 @@ section { position: relative; }
 .temple__cornice { height: 18px; margin: 0 -14px 6px; background: var(--stone); }
 .temple__architrave { height: 12px; margin: 6px 0 0; background: var(--stone); }
 .beam {
+  overflow: hidden; align-content: end;
   display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: end;
   padding: clamp(26px, 2.6vw, 40px); background: var(--stone); color: var(--ink);
 }
@@ -187,7 +188,7 @@ section { position: relative; }
 .beam__src { align-self: flex-start; padding-top: 12px; border-top: 2px solid var(--ink); color: var(--ink); font-size: 12px; text-decoration: none; }
 .beam__src:hover { color: var(--accent); border-color: var(--accent); }
 
-.colonnade { list-style: none; margin: 0; padding: 0 2%; display: flex; justify-content: space-between; height: clamp(340px, 46vh, 500px); }
+.colonnade { list-style: none; margin: 0; padding: 0 2%; display: flex; justify-content: space-between; height: clamp(220px, calc(100vh - var(--beam-h, 260px) - 250px), 500px); }
 .col { flex: 0 0 11.5%; display: flex; }
 .col__btn { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 0; background: none; border: 0; color: var(--ink); font: inherit; cursor: pointer; }
 .col__cap { position: relative; width: 100%; height: 20px; background: var(--stone); }
@@ -197,19 +198,19 @@ section { position: relative; }
   display: flex; flex-direction: column; align-items: center; padding: 14px 0 18px;
   background: var(--stone) repeating-linear-gradient(90deg, transparent 0 calc(20% - 2px), rgba(17, 17, 16, .22) calc(20% - 2px) 20%);
 }
-.col__shaft::before { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .55s cubic-bezier(.7, 0, .2, 1); }
-.col__btn:hover .col__shaft::before { transform: scaleY(.1); }
-.col.is-active .col__shaft::before { transform: scaleY(1); }
-.colonnade.is-auto .col.is-active .col__shaft::before { animation: colLoad 4.6s linear both; }
-/* while the temple is being built, no column carries anything yet */
-.colonnade.is-building .col.is-active .col__shaft::before { transform: scaleY(0); animation: none; }
-@keyframes colLoad { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+/* the load: scroll pours it into each column from the base, one after another */
+.col__shaft::before { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleY(var(--load, 0)); transform-origin: 50% 100%; }
+.colonnade.is-building .col__shaft::before { transform: scaleY(0); }
+.col.is-active .col__shaft { box-shadow: 0 0 0 3px var(--accent); }
+.col__btn:hover .col__shaft { box-shadow: 0 0 0 3px var(--paper); }
+.col.is-active .col__btn:hover .col__shaft { box-shadow: 0 0 0 3px var(--accent); }
 .col__n, .col__t { position: relative; z-index: 1; }
 .col__n { font-weight: 900; font-size: clamp(26px, 2.5vw, 44px); letter-spacing: -.05em; line-height: 1; }
 .col__t {
   margin-top: auto; max-height: calc(100% - 64px); writing-mode: vertical-rl; transform: rotate(180deg);
   font-weight: 900; font-size: clamp(14px, 1.45vw, 24px); letter-spacing: -.02em; line-height: 1; text-transform: uppercase;
 }
+.colonnade.is-short .col__t { display: none; }
 .col__foot { width: 90%; height: 16px; margin-top: 4px; background: var(--stone); box-shadow: 0 -6px 0 -2px var(--stone); }
 .temple__steps i { display: block; height: 14px; margin-top: 5px; background: var(--stone); }
 .temple__steps i:nth-child(2) { margin-left: -10px; margin-right: -10px; }
@@ -390,8 +391,9 @@ section { position: relative; }
   .temple { margin: 0 calc(var(--gutter) + 8px); }
   .temple__cornice { margin: 0 -8px 5px; }
   .beam { grid-template-columns: minmax(0, 1fr); gap: 18px; min-height: 0; }
-  .beam__t { font-size: clamp(36px, 10vw, 60px); }
-  .colonnade { height: 300px; padding: 0; margin-top: 8px; }
+  .colonnade { height: clamp(150px, calc(100svh - var(--beam-h, 400px) - 230px), 300px); padding: 0; margin-top: 8px; }
+  .beam__t { font-size: clamp(32px, 8.6vw, 52px); }
+  .beam__d { font-size: 16px; }
   .beam__n span { display: none; }
   .col { flex-basis: 12%; }
   .col__shaft { width: 72%; margin-top: 14px; padding-top: 10px; }
