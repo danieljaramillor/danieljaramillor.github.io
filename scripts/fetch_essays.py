@@ -18,6 +18,12 @@ Substack sometimes refuses requests from GitHub's servers (HTTP 403). The JSON
 API is tried first, then the RSS feed; if a publication still can't be read,
 the essays already in data/essays.json are kept as they are. A failed fetch
 must never empty the archive.
+
+Substack's archive listing can also come back incomplete (for a while after
+posts are moved or unpublished), so it is only used to discover posts:
+an essay already on file is dropped only when its own page answers 404, and
+each English version is confirmed by asking for it directly, on the English
+publication first.
 """
 import json
 import pathlib
@@ -148,6 +154,25 @@ def spanish_slug_for(en_post, es_slugs):
     return None
 
 
+def slugify(title):
+    t = title.replace("’", "'").replace("'", "").lower()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+
+
+EN_SLUG = {es: slugify(en) for en, es in KNOWN_PAIRS.items()}
+
+
+def post(pub, slug):
+    """A public post fetched by slug, or None if it isn't (or is no longer) published there."""
+    try:
+        p = get(f"{pub}/api/v1/posts/{slug}")
+    except Exception:
+        return None
+    if p.get("audience") != "everyone" or pub.split("//")[1] not in (p.get("canonical_url") or ""):
+        return None
+    return p
+
+
 def main():
     try:
         old = json.loads(OUT.read_text())
@@ -175,23 +200,48 @@ def main():
 
     essays = [card(p) for p in es_posts]
     by_slug = {e["slug"]: e for e in essays}
+    # the listing can be partial: keep every essay we already had unless its page is really gone
+    for slug, e in old_by_slug.items():
+        if slug in by_slug:
+            continue
+        p = post(ES, slug)
+        if p:
+            essays.append(card(p))
+            by_slug[slug] = essays[-1]
+        else:
+            print(f"dropping {slug}: no longer published")
+    essays.sort(key=lambda e: e["date"], reverse=True)
     for e in essays:
         if not e.get("words") and e["slug"] in old_by_slug:  # the RSS feed has no word counts
             e["words"] = old_by_slug[e["slug"]].get("words")
         e["en"] = None
 
+    # candidate English slugs for each essay: from the listings, from last time, and from the known titles
+    cands = {e["slug"]: [] for e in essays}
     en_only = []
     for p in translations + public(en_raw or []):
         slug = spanish_slug_for(p, by_slug)
-        if slug and by_slug[slug]["en"] is None:
-            c = card(p)
-            by_slug[slug]["en"] = {k: c[k] for k in ("title", "subtitle", "url", "slug", "date")}
-        elif not (slug and by_slug[slug]["en"]):
+        if slug:
+            cands[slug].append(p["slug"])
+        else:
             en_only.append(card(p))
-    if en_raw is None:
-        print("English publication unreadable: keeping the English versions already on file.")
+    for e in essays:
+        prev = (old_by_slug.get(e["slug"]) or {}).get("en") or {}
+        cands[e["slug"]] += [prev.get("slug"), EN_SLUG.get(e["slug"])]
+        for pub in (EN, ES):
+            found = None
+            for c in dict.fromkeys(x for x in cands[e["slug"]] if x and x != e["slug"]):
+                found = post(pub, c)
+                if found:
+                    break
+            if found:
+                c = card(found)
+                e["en"] = {k: c[k] for k in ("title", "subtitle", "url", "slug", "date")}
+                break
+    if en_raw is None and not any(e["en"] for e in essays):
+        print("English versions unreadable: keeping the ones already on file.")
         for e in essays:
-            e["en"] = e["en"] or old_by_slug.get(e["slug"], {}).get("en")
+            e["en"] = old_by_slug.get(e["slug"], {}).get("en")
         en_only = en_only or old.get("en_only", [])
 
     OUT.parent.mkdir(exist_ok=True)
