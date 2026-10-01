@@ -73,8 +73,8 @@
   const norm = (x) => (x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const hash = (x) => [...x].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
   const L = () => (lang === 'es'
-    ? { essays: 'ensayos', words: 'palabras', match: 'en la repisa', none: 'Nada en la repisa con', min: 'min de lectura', read: 'Leer', readEn: 'Leer (en inglés)', next: 'N.º', writing: 'Escribiendo…', ph: 'Buscá en el archivo', prev: 'Ensayo anterior', nxt: 'Ensayo siguiente', inEs: '', inEn: ' · en inglés' }
-    : { essays: 'essays', words: 'words', match: 'on the shelf', none: 'Nothing on the shelf matches', min: 'min read', read: 'Read', readEs: 'Read (in Spanish)', next: 'No.', writing: 'Writing…', ph: 'Search the archive', prev: 'Previous essay', nxt: 'Next essay', inEs: ' · in Spanish', inEn: '' });
+    ? { essays: 'ensayos', words: 'palabras', match: 'en la repisa', none: 'Nada en la repisa con', min: 'min de lectura', read: 'Leer', readEn: 'Leer (en inglés)', next: 'N.º', writing: 'Escribiendo…', ph: 'Buscá en el archivo', hint: 'Pasá el mouse por los lomos para ojearlos · clic para escoger · ← → para recorrer la repisa', prev: 'Ensayo anterior', nxt: 'Ensayo siguiente', inEs: '', inEn: ' · en inglés' }
+    : { essays: 'essays', words: 'words', match: 'on the shelf', none: 'Nothing on the shelf matches', min: 'min read', read: 'Read', readEs: 'Read (in Spanish)', next: 'No.', writing: 'Writing…', ph: 'Search the archive', hint: 'Hover the spines to browse · click to pick one · ← → to walk the shelf', prev: 'Previous essay', nxt: 'Next essay', inEs: ' · in Spanish', inEn: '' });
 
   function renderEssays() {
     const row = document.getElementById('shelfRow');
@@ -99,11 +99,13 @@
       b.setAttribute('role', 'option');
       b.dataset.slug = raw.slug;
       b.style.setProperty('--hw', ((w - wMin) / Math.max(1, wMax - wMin)).toFixed(3));
-      b.style.setProperty('--ww', ((hash(raw.slug + 'w') % 100) / 100).toFixed(2));
+      b.style.setProperty('--ww', Math.min(1, Math.max(0.1, (e.title.length - 9) / 20 + (hash(raw.slug) % 10) / 60)).toFixed(2)); // long titles get a fatter spine so they fit on two lines
       b.setAttribute('aria-label', `${String(i + 1).padStart(2, '0')}. ${e.title}`);
       const [y, m] = raw.date.split('-');
       b.append(el('span', 'mono spine__y', `${m}.${y.slice(2)}`), el('span', 'spine__t', e.title), el('span', 'mono spine__n', String(i + 1).padStart(2, '0')));
       b.addEventListener('click', () => select(raw.slug, true));
+      b.addEventListener('pointerenter', (ev) => { if (ev.pointerType === 'mouse') peek(raw.slug); });
+      b.addEventListener('focus', () => peekLabel(raw.slug));
       return { raw, e, el: b, n: i + 1, w, hay: norm([raw.title, raw.subtitle, raw.en && raw.en.title, raw.en && raw.en.subtitle, ESSAYS_EN[raw.slug] && ESSAYS_EN[raw.slug].join(' ')].join(' ')) };
     });
     const nextUp = el('span', 'spine spine--next');
@@ -150,6 +152,7 @@
     shelf.sel = slug;
     shelf.items.forEach((x) => { const on = x === it; x.el.classList.toggle('is-active', on); x.el.setAttribute('aria-selected', String(on)); x.el.tabIndex = on ? 0 : -1; });
     card(it);
+    document.getElementById('shelfPeek').classList.remove('is-on');
     const row = document.getElementById('shelfRow');
     if (row.scrollWidth > row.clientWidth + 4) {
       const r = it.el.offsetLeft - row.clientWidth / 2 + it.el.offsetWidth / 2;
@@ -166,8 +169,9 @@
   }
   window.addEventListener('resize', tab);
   document.getElementById('shelfRow').addEventListener('scroll', () => requestAnimationFrame(tab), { passive: true });
-  function card(it) {
+  function card(it, preview) {
     const c = document.getElementById('shelfCard');
+    c.classList.toggle('is-preview', !!preview);
     const l = L();
     c.replaceChildren();
     if (!it) {
@@ -192,9 +196,61 @@
     body.append(el('span', 'mono card__meta', `${l.next} ${String(it.n).padStart(2, '0')} · ${fmtDate(it.raw.date)} · ${Math.max(1, Math.round(it.w / 230))} ${l.min}${note}`), el('h3', 'card__t', e.title), el('p', 'card__d', e.subtitle));
     const act = el('div', 'card__act');
     act.append(go, nav);
-    c.append(el('span', 'card__no', String(it.n).padStart(2, '0')), body, act);
-    if (hasGsap && !reduce) gsap.from([c.querySelector('.card__no'), ...body.children], { y: 18, opacity: 0, duration: 0.5, stagger: 0.05, ease: 'power3.out' });
+    c.append(el('span', 'card__no', String(it.n).padStart(2, '0')), body, act, el('span', 'mono card__hint', l.hint));
+    if (hasGsap && !reduce) {
+      gsap.killTweensOf(c.querySelectorAll('*'));
+      gsap.from([c.querySelector('.card__no'), ...body.children], { y: preview ? 8 : 18, opacity: 0, duration: preview ? 0.25 : 0.5, stagger: preview ? 0.02 : 0.05, ease: 'power3.out' });
+    }
   }
+  /* hovering a spine previews it in the card and shows its title the right way up; leaving the shelf goes back to the chosen one */
+  let peekTimer;
+  function peekLabel(slug) {
+    const it = shelf.items.find((x) => x.raw.slug === slug);
+    const lab = document.getElementById('shelfPeek');
+    if (!it || !lab) return;
+    lab.replaceChildren(el('b', null, String(it.n).padStart(2, '0')), document.createTextNode(it.e.title));
+    const caseR = lab.parentNode.getBoundingClientRect(), r = it.el.getBoundingClientRect();
+    lab.classList.add('is-on');
+    const x = Math.max(8, Math.min(caseR.width - lab.offsetWidth - 8, r.left - caseR.left + r.width / 2 - lab.offsetWidth / 2));
+    lab.style.setProperty('--px', x + 'px');
+  }
+  function peek(slug) {
+    peekLabel(slug);
+    shelf.items.forEach((x) => x.el.classList.toggle('is-peek', x.raw.slug === slug));
+    clearTimeout(peekTimer);
+    if (slug === shelf.sel) return card(shelf.items.find((x) => x.raw.slug === slug));
+    peekTimer = setTimeout(() => card(shelf.items.find((x) => x.raw.slug === slug), true), 70);
+  }
+  const rowEl = document.getElementById('shelfRow');
+  rowEl.addEventListener('pointerleave', () => {
+    clearTimeout(peekTimer);
+    document.getElementById('shelfPeek').classList.remove('is-on');
+    if (!shelf.items) return;
+    shelf.items.forEach((x) => x.el.classList.remove('is-peek'));
+    const cur = shelf.items.find((x) => x.raw.slug === shelf.sel);
+    const c = document.getElementById('shelfCard');
+    if (cur && c.classList.contains('is-preview')) card(cur);
+  });
+  rowEl.addEventListener('focusout', () => document.getElementById('shelfPeek').classList.remove('is-on'));
+
+  /* random: a light runs along the spines and stops on one */
+  document.getElementById('shelfRandom').addEventListener('click', () => {
+    const v = visible().filter((x) => x.raw.slug !== shelf.sel);
+    if (!v.length) return;
+    const pick = v[Math.floor(Math.random() * v.length)];
+    if (reduce) return select(pick.raw.slug, true);
+    const all = visible();
+    const hops = all.length + all.indexOf(pick);
+    let i = 0;
+    (function hop() {
+      all.forEach((x) => x.el.classList.remove('is-peek'));
+      if (i >= hops) { select(pick.raw.slug, true); return; }
+      all[i % all.length].el.classList.add('is-peek');
+      i++;
+      setTimeout(hop, 40 + i * i * 0.35);
+    })();
+  });
+
   function step(d) {
     const v = visible();
     const i = v.findIndex((x) => x.raw.slug === shelf.sel);
