@@ -293,7 +293,7 @@
       const n = cols.length, seq = Math.min(1, p / SEQ), f = seq * n;
       const lx = -0.08 + seq * 1.16;                        // where the light is, 0 = left edge of the temple
       wrap.style.setProperty('--lx', (lx * 100).toFixed(1) + '%');
-      wrap.style.setProperty('--seq', seq.toFixed(3));
+      wrap.parentNode.style.setProperty('--seq', seq.toFixed(3));
       cols.forEach((c, j) => {
         const d = (j + 0.5) / n - lx;                       // > 0: the light is to the left, so the right side falls in shadow
         c.style.setProperty('--load', Math.min(1, Math.max(0, f - j)).toFixed(3));
@@ -315,7 +315,22 @@
       wrap.style.setProperty('--roof-fs', Math.round(Math.min(rh * 0.16, (w * 0.6) / (17 * 0.66))) + 'px');
       if (!animate && roof) { roof.style.visibility = 'visible'; wrap.style.marginTop = rh + 12 + 'px'; }
     };
-    const relayout = () => { lockHeight(); sizeRoof(); };
+    /* the foundation line is fitted to the full width: one line on desktop, two on phones */
+    const found = document.querySelector('.found');
+    const fitFound = () => {
+      if (!found) return;
+      const ghost = found.querySelector('.found__ghost');
+      const phone = window.matchMedia('(max-width: 1000px)').matches;
+      const r = document.createRange();
+      const widthOf = (el) => { r.selectNodeContents(el); return r.getBoundingClientRect().width; };
+      const natural = phone ? Math.max(...[...ghost.children].map(widthOf)) : widthOf(ghost);
+      const cur = parseFloat(getComputedStyle(found).fontSize);
+      if (!natural) return;
+      const fs = Math.min(phone ? Math.min(46, window.innerHeight * 0.06) : Math.min(150, window.innerHeight * 0.11), (cur * found.clientWidth * 0.985) / natural);
+      found.style.setProperty('--found-fs', fs.toFixed(1) + 'px');
+      wrap.style.setProperty('--found-h', found.offsetHeight + 14 + 'px');
+    };
+    const relayout = () => { fitFound(); lockHeight(); sizeRoof(); };
     relayout();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
     window.addEventListener('resize', relayout);
@@ -506,7 +521,8 @@
     gsap.set('.col__shaft', { clipPath: 'inset(100% 0 0 0)' });
     row.classList.add('is-building');
     gsap.timeline({ scrollTrigger: { trigger: '.temple', start: 'top 85%', once: true } })
-      .from('.temple__steps i', { scaleX: 0, stagger: { each: 0.07, from: 'end' }, duration: 0.45, ease: 'power3.out' })
+      .from('.found', { y: 60, opacity: 0, duration: 0.6, ease: 'power3.out' })
+      .from('.temple__steps i', { scaleX: 0, stagger: { each: 0.07, from: 'end' }, duration: 0.45, ease: 'power3.out' }, '-=0.3')
       .from('.col__foot', { scaleX: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.3, ease: 'power3.out' }, '-=0.25')
       .to('.col__shaft', { clipPath: 'inset(0% 0 0 0)', stagger: { each: 0.06, from: 'center' }, duration: 0.7, ease: 'power4.out' }, '-=0.1')
       .from('.col__cap', { y: -60, opacity: 0, stagger: { each: 0.04, from: 'center' }, duration: 0.4, ease: 'back.out(2.2)' }, '-=0.4')
@@ -523,7 +539,6 @@
     const navH = () => (document.querySelector('.nav') || { offsetHeight: 64 }).offsetHeight + 8;
     /* the ending: the camera pulls back, the roof falls from above the screen, the temple takes the hit */
     const wrap = document.querySelector('.temple'), roof = document.querySelector('.roof');
-    const roofChars = [...roof.querySelectorAll('.roof__t [data-i18n]')].flatMap((e) => [...splitChars(e)]);
     const dust = Array.from({ length: 34 }, () => {
       const d = document.createElement('i');
       d.className = 'roof__dust';
@@ -541,14 +556,14 @@
       roof.style.visibility = 'visible';
       roofTl = gsap.timeline()
         .fromTo(roof, { y: () => -window.innerHeight * 1.1 }, { y: 0, duration: 0.55, ease: 'power4.in' })
-        .set(roofChars, { opacity: 0 }, 0)
         .addLabel('hit')
         .to(roof, { keyframes: [{ y: -22, duration: 0.12, ease: 'power2.out' }, { y: 0, duration: 0.22, ease: 'bounce.out' }] }, 'hit')
         .fromTo(wrap, { x: 0 }, { keyframes: [{ x: -12, y: 12, duration: 0.05 }, { x: 10, y: -5, duration: 0.06 }, { x: -6, y: 4, duration: 0.06 }, { x: 3, y: -1, duration: 0.06 }, { x: 0, y: 0, duration: 0.1 }] }, 'hit')
         .fromTo('.col__shaft', { scaleY: 0.88, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.9, ease: 'elastic.out(1, 0.3)' }, 'hit')
         .fromTo('.temple__cornice', { backgroundColor: '#FF4F00' }, { backgroundColor: '#EDEDE8', duration: 1, ease: 'power2.in' }, 'hit')
         .fromTo(dust, { x: 0, y: 0, opacity: 1, rotation: 0, scale: () => rnd(0.4, 1.6) }, { x: () => rnd(-280, 280), y: () => rnd(-160, 30), rotation: () => rnd(-240, 240), opacity: 0, duration: () => rnd(0.6, 1.3), ease: 'power3.out' }, 'hit')
-        .fromTo(roofChars, { scale: 2.6, opacity: 0, y: -24 }, { scale: 1, opacity: 1, y: 0, stagger: 0.022, duration: 0.3, ease: 'power4.in' }, 'hit+=0.18');
+        .fromTo('.found', { y: 0 }, { keyframes: [{ y: 14, duration: 0.05 }, { y: -5, duration: 0.07 }, { y: 0, duration: 0.12 }] }, 'hit')
+        .fromTo('.found__fill', { color: '#FF4F00' }, { color: '#EDEDE8', duration: 1.1, ease: 'power2.in' }, 'hit');
     };
     const lift = () => {
       roofDown = false;
@@ -557,7 +572,11 @@
     };
     const st = ScrollTrigger.create({
       trigger: '.temple-pin', pin: true, anticipatePin: 1,
-      start: () => 'top ' + navH() + 'px',
+      start: () => {
+        const pin = document.querySelector('.temple-pin');
+        const free = window.innerHeight - navH() - pin.offsetHeight;
+        return 'top ' + Math.round(navH() + Math.max(0, free / 2)) + 'px';
+      },
       end: () => '+=' + Math.round(window.innerHeight * 4.2),
       scrub: true, invalidateOnRefresh: true,
       onUpdate: (self) => {
