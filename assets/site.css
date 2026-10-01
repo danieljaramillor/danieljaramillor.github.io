@@ -290,13 +290,25 @@ section { position: relative; }
 .coffee .eyebrow { color: #C9B8A6; }
 .coffee h2 { font-size: clamp(48px, 5.4vw, 86px); }
 .coffee p { max-width: 520px; font-size: 18px; line-height: 1.55; color: #E3D6C6; }
-.coffee__viz { grid-column: 6 / span 7; position: relative; perspective: 1200px; padding-bottom: 12%; }
-.roast { transform-origin: 50% 100%; }
-.roast svg { width: 100%; height: auto; overflow: visible; }
-.roast__lbl { font: 500 12px var(--mono); fill: #C9B8A6; letter-spacing: .06em; }
+.coffee__viz { grid-column: 6 / span 7; position: relative; perspective: 1400px; padding-bottom: 18%; }
+/* the website is the hero; the roast curve is the card pinned to its corner */
+.coffee__shot {
+  position: relative; display: block; border: 1px solid #4A3A32; background: #2A1F1A; text-decoration: none;
+  box-shadow: 0 50px 100px rgba(0, 0, 0, .55); transform: rotate(-1.5deg); transition: transform .6s cubic-bezier(.2, .8, .2, 1);
+}
+.coffee__shot:hover { transform: rotate(0) translateY(-6px); }
+.coffee__shot img { display: block; width: 100%; height: auto; }
+.coffee__bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; color: #C9B8A6; font-size: 11px; border-bottom: 1px solid #4A3A32; }
+.coffee__bar i { width: 9px; height: 9px; border-radius: 50%; background: #4A3A32; }
+.coffee__bar span { margin-left: 10px; }
+.roast {
+  position: absolute; left: -2%; bottom: 0; width: 42%; z-index: 2; padding: 14px 16px 10px;
+  background: var(--coffee); border: 1px solid #4A3A32; box-shadow: 0 30px 60px rgba(0, 0, 0, .5); transform: rotate(2deg);
+}
+.roast__head { display: block; margin-bottom: 8px; color: #C9B8A6; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.roast svg { display: block; width: 100%; height: auto; overflow: visible; }
+.roast__lbl { font: 500 22px var(--mono); fill: #C9B8A6; letter-spacing: .04em; }
 .roast__lbl--hi { fill: var(--cream); }
-.coffee__shot { position: absolute; right: 0; bottom: 0; width: 48%; display: block; border: 1px solid #4A3A32; transform: rotate(-3deg); transition: transform .6s cubic-bezier(.2, .8, .2, 1); box-shadow: 0 40px 80px rgba(0, 0, 0, .5); }
-.coffee__shot:hover { transform: none; }
 
 /* ---------- hire ---------- */
 .hire {
@@ -432,7 +444,7 @@ section { position: relative; }
   .card--tall .card__shot, .card__shot--sm { height: 220px; }
   .coffee__copy, .coffee__viz, .hire__lead, .offers { grid-column: 1 / -1; }
   .coffee__viz { padding-bottom: 0; }
-  .coffee__shot { position: relative; width: 80%; margin: -8% 0 0 auto; }
+  .roast { position: relative; left: auto; bottom: auto; width: 68%; margin: -12% 0 0 -2%; }
   .part, .bom__cols { grid-template-columns: 80px minmax(0, 1fr); }
   .bom__cols span:nth-child(n+3) { display: none; }
   .featured { grid-template-columns: minmax(0, 1fr); }
@@ -461,7 +473,7 @@ section { position: relative; }
   .foot__links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .section-head h2, .manifesto__title, .hire h2, .coffee h2, .archive h2 { font-size: clamp(40px, 11.5vw, 64px); }
   .foot__big { font-size: clamp(48px, 15vw, 96px); }
-  .coffee__shot { transform: none; }
+  .coffee__shot, .roast { transform: none; }
   .foot__base { flex-direction: column; }
 }
 
