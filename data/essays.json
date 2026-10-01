@@ -1,5 +1,8 @@
 {
- "publication": "https://danieljaramillor.substack.com",
+ "publications": {
+  "es": "https://danieljaramillor.substack.com",
+  "en": "https://danieljaramilloren.substack.com"
+ },
  "essays": [
   {
    "title": "Que Pena",
@@ -7,7 +10,8 @@
    "date": "2026-08-08",
    "url": "https://danieljaramillor.substack.com/p/que-pena",
    "slug": "que-pena",
-   "words": 4100
+   "words": 4100,
+   "en": null
   },
   {
    "title": "Diecisiete escalones",
@@ -15,7 +19,8 @@
    "date": "2026-07-18",
    "url": "https://danieljaramillor.substack.com/p/diecisiete-escalones",
    "slug": "diecisiete-escalones",
-   "words": 3898
+   "words": 3898,
+   "en": null
   },
   {
    "title": "Hacer fácil lo difícil",
@@ -23,7 +28,8 @@
    "date": "2026-06-08",
    "url": "https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil",
    "slug": "hacer-facil-lo-dificil",
-   "words": 3040
+   "words": 3040,
+   "en": null
   },
   {
    "title": "Pantalones grandes",
@@ -31,7 +37,8 @@
    "date": "2026-05-31",
    "url": "https://danieljaramillor.substack.com/p/pantalones-grandes",
    "slug": "pantalones-grandes",
-   "words": 3405
+   "words": 3405,
+   "en": null
   },
   {
    "title": "Permiso para parar",
@@ -39,7 +46,8 @@
    "date": "2026-05-17",
    "url": "https://danieljaramillor.substack.com/p/permiso-para-parar",
    "slug": "permiso-para-parar",
-   "words": 3870
+   "words": 3870,
+   "en": null
   },
   {
    "title": "Debajo de la roca",
@@ -47,7 +55,8 @@
    "date": "2026-05-09",
    "url": "https://danieljaramillor.substack.com/p/debajo-de-la-roca",
    "slug": "debajo-de-la-roca",
-   "words": 3914
+   "words": 3914,
+   "en": null
   },
   {
    "title": "Bailar sin coreografía",
@@ -55,7 +64,8 @@
    "date": "2026-05-02",
    "url": "https://danieljaramillor.substack.com/p/bailar-sin-coreografia",
    "slug": "bailar-sin-coreografia",
-   "words": 3490
+   "words": 3490,
+   "en": null
   },
   {
    "title": "Yo me encargo",
@@ -63,7 +73,8 @@
    "date": "2026-04-26",
    "url": "https://danieljaramillor.substack.com/p/yo-me-encargo",
    "slug": "yo-me-encargo",
-   "words": 3888
+   "words": 3888,
+   "en": null
   },
   {
    "title": "Opinar es gratis",
@@ -71,7 +82,8 @@
    "date": "2026-04-19",
    "url": "https://danieljaramillor.substack.com/p/opinar-es-gratis",
    "slug": "opinar-es-gratis",
-   "words": 4110
+   "words": 4110,
+   "en": null
   },
   {
    "title": "No me pidan que elija",
@@ -79,7 +91,8 @@
    "date": "2026-04-12",
    "url": "https://danieljaramillor.substack.com/p/no-me-pidan-que-elija",
    "slug": "no-me-pidan-que-elija",
-   "words": 3977
+   "words": 3977,
+   "en": null
   },
   {
    "title": "Muy llevado de su parecer",
@@ -87,7 +100,8 @@
    "date": "2026-04-05",
    "url": "https://danieljaramillor.substack.com/p/muy-llevado-de-su-parecer",
    "slug": "muy-llevado-de-su-parecer",
-   "words": 4872
+   "words": 4872,
+   "en": null
   },
   {
    "title": "La Arquitectura de la Acumulación",
@@ -95,7 +109,8 @@
    "date": "2026-03-29",
    "url": "https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion",
    "slug": "la-arquitectura-de-la-acumulacion",
-   "words": 3976
+   "words": 3976,
+   "en": null
   },
   {
    "title": "Hace 2 Años Hoy",
@@ -103,7 +118,9 @@
    "date": "2025-10-14",
    "url": "https://danieljaramillor.substack.com/p/hace-2-anos-hoy",
    "slug": "hace-2-anos-hoy",
-   "words": 3805
+   "words": 3805,
+   "en": null
   }
- ]
+ ],
+ "en_only": []
 }
