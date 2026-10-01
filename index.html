@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202610012121">
+<link rel="stylesheet" href="assets/site.css?v=202610012133">
 <script>document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3000);</script>
 </head>
 <body>
@@ -344,13 +344,17 @@
         <button type="button" class="chip mono" data-sort="new" aria-pressed="true" data-i18n="arc.new">Newest</button>
         <button type="button" class="chip mono" data-sort="old" aria-pressed="false" data-i18n="arc.old">Oldest</button>
         <button type="button" class="chip mono" data-sort="long" aria-pressed="false" data-i18n="arc.long">Longest</button>
+        <button type="button" class="chip chip--ink mono" id="shelfRandom" data-i18n="arc.random">↯ Random</button>
       </div>
     </div>
-    <div class="shelf__case">
-      <div class="shelf__row" id="shelfRow" role="listbox" aria-label="Essays"></div>
-      <div class="shelf__plank" aria-hidden="true"><span class="mono" id="shelfDim"></span></div>
+    <div class="shelf__body">
+      <div class="shelf__case">
+        <span class="shelf__peek mono" id="shelfPeek" aria-hidden="true"></span>
+        <div class="shelf__row" id="shelfRow" role="listbox" aria-label="Essays"></div>
+        <div class="shelf__plank" aria-hidden="true"><span class="mono" id="shelfDim"></span></div>
+      </div>
+      <article class="shelf__card" id="shelfCard" aria-live="polite"></article>
     </div>
-    <article class="shelf__card" id="shelfCard" aria-live="polite"></article>
   </div>
   <noscript><p><a href="https://danieljaramillor.substack.com/archive">Read every essay on Substack ↗</a></p></noscript>
 </section>
@@ -376,7 +380,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="assets/i18n.js?v=202610012121" defer></script>
-<script src="assets/main.js?v=202610012121" defer></script>
+<script src="assets/i18n.js?v=202610012133" defer></script>
+<script src="assets/main.js?v=202610012133" defer></script>
 </body>
 </html>
