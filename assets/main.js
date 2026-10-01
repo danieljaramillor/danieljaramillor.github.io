@@ -43,18 +43,18 @@
   const FEATURED = ['hace-2-anos-hoy', 'no-me-pidan-que-elija', 'diecisiete-escalones'];
   // English titles for the Spanish essays (new essays fall back to their Spanish title)
   const ESSAYS_EN = {
-    'que-pena': ['So Sorry', 'On the most expensive word in the language, the small change I dodge it with, and a debt I’ve owed for years'],
-    'diecisiete-escalones': ['Seventeen Steps', 'On a coffee ritual that’s never the same, perception as a craft, and everything you climb without counting'],
-    'hacer-facil-lo-dificil': ['Making the Hard Look Easy', 'On the process nobody sees, the value nobody measures, and why playing in the subway is sometimes fine'],
-    'pantalones-grandes': ['Pants Too Big', 'On the anxiety that lives in the calm, the noise that doesn’t need you, and why being enough doesn’t require doing more'],
+    'que-pena': ['Small Change', 'On the most expensive word in the language, the small change I use to dodge it, and a debt I’ve gone years without paying'],
+    'diecisiete-escalones': ['Seventeen Steps', 'On a coffee ritual that’s never the same, perception as a craft, and everything we climb without counting'],
+    'hacer-facil-lo-dificil': ['Making Hard Look Easy', 'On the process nobody sees, the value nobody measures, and why sometimes playing in the subway is fine'],
+    'pantalones-grandes': ['Pants a Size Too Big', 'On the anxiety that lives in the calm, the noise that doesn’t need you, and why being enough doesn’t require doing more'],
     'permiso-para-parar': ['Permission to Stop', 'On the stillness you don’t choose, the noise you do, and what’s left when you switch everything off'],
-    'debajo-de-la-roca': ['Under the Rock', 'On attention that doesn’t stretch far enough, the shells you have to shed, and why it’s fine not to carry everything'],
+    'debajo-de-la-roca': ['Under the Rock', 'On attention that runs short, the shells you have to shed, and why it’s okay not to manage everything'],
     'bailar-sin-coreografia': ['Dancing Without Choreography', 'On choosing yourself, what it costs, and why the goal isn’t to arrive but to be here'],
-    'yo-me-encargo': ['I’ve Got It', 'On expecting nothing, remembering everything, and the shadow left between the two'],
-    'opinar-es-gratis': ['Opinions Are Free', 'On the real price of knowing something, experts who aren’t, and why I’d rather be wrong out loud'],
-    'no-me-pidan-que-elija': ['Don’t Make Me Choose', 'On generalists, pivots and the structure that lets you do whatever you want'],
-    'muy-llevado-de-su-parecer': ['Stubbornly My Own', 'On subcultures, genuine obsessions, and the difference between being absorbed by something and building yourself from within'],
-    'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year living in the capital (more reflections than notes)'],
+    'yo-me-encargo': ['I’ll Take Care of It', 'On expecting nothing, remembering everything, and the shadow that falls between the two'],
+    'opinar-es-gratis': ['Talk Is Cheap', 'On the real price of knowing something, the experts who aren’t, and why I’d rather be wrong out loud'],
+    'no-me-pidan-que-elija': ['Don’t Make Me Choose', 'On generalists, pivots, and the structure that lets you do whatever you want'],
+    'muy-llevado-de-su-parecer': ['Headstrong', 'On subcultures, genuine obsessions, and the difference between getting absorbed in something and building yourself from the inside'],
+    'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year of living in the capital (less notes, really, than reflections)'],
     'hace-2-anos-hoy': ['Two Years Ago Today', 'I lost (almost) everything']
   };
   const eTitle = (e) => (lang === 'en' && ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][0] : e.title);
@@ -408,6 +408,17 @@
   gsap.timeline({ scrollTrigger: { trigger: '.manifesto', start: 'top 85%', end: 'top 20%', scrub: 0.6 } })
     .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
   gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
+
+  /* pillars: the beam goes up first, then each column rises from the base to carry it */
+  const pillarTl = gsap.timeline({ scrollTrigger: { trigger: '.pillars__row', start: desktop ? 'top 85%' : 'top 90%', end: desktop ? 'top 25%' : 'top 55%', scrub: 0.5 } });
+  pillarTl
+    .from('.pillars__beam', { scaleX: 0, duration: 0.5, ease: 'power2.inOut' }, 0)
+    .from('.pillars__base', { scaleX: 0, transformOrigin: '100% 50%', duration: 0.5, ease: 'power2.inOut' }, 0);
+  gsap.utils.toArray('.pillar').forEach((pl, i) => {
+    pillarTl
+      .from(pl, desktop ? { scaleY: 0, duration: 0.5, ease: 'power3.out' } : { y: 60, opacity: 0, duration: 0.5, ease: 'power3.out' }, 0.2 + i * 0.09)
+      .from(pl.children, { y: 18, opacity: 0, stagger: 0.04, duration: 0.35, ease: 'power2.out' }, 0.38 + i * 0.09);
+  });
 
   /* bill of materials: the spec table prints itself — each rule draws across, then its row slides in */
   const parts = gsap.utils.toArray('.part');
