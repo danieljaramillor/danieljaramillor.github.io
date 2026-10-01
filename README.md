@@ -11,7 +11,7 @@ A static site, no build step. GitHub Pages serves it straight from the repo.
 - `assets/site.css` — styles. Colours are CSS variables at the top.
 - `assets/main.js` — language switch, the 3D exploded-view hero, scroll animations, essay list.
 - `data/essays.json` — the Substack essays. Don't edit by hand.
-- `scripts/fetch_essays.py` + `.github/workflows/substack.yml` — refresh `data/essays.json` from danieljaramillor.substack.com every day (or on demand from the Actions tab).
+- `scripts/fetch_essays.py` + `.github/workflows/substack.yml` — every 3 hours (or on demand from the Actions tab), refresh `data/essays.json` from both Substacks: the Spanish originals at danieljaramillor.substack.com and the English translations at danieljaramilloren.substack.com. Each English post is paired with its Spanish original through the "Originally published in Spanish as…" link at its end, so English readers get English links and Spanish readers get Spanish ones.
 - `img/` — photos and project screenshots.
 
 ## Editing

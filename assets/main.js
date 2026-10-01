@@ -57,8 +57,14 @@
     'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year of living in the capital (less notes, really, than reflections)'],
     'hace-2-anos-hoy': ['Two Years Ago Today', 'I lost (almost) everything']
   };
-  const eTitle = (e) => (lang === 'en' && ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][0] : e.title);
-  const eSub = (e) => (lang === 'en' && ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][1] : e.subtitle);
+  /* one row per essay, in the reader's language: the English post when one exists, otherwise the Spanish original */
+  const SUBSTACK = { es: 'https://danieljaramillor.substack.com', en: 'https://danieljaramilloren.substack.com' };
+  const view = (e) => {
+    if (e.en_only) return { ...e, spanish: false, english: true };
+    if (lang === 'en' && e.en) return { slug: e.slug, date: e.date, title: e.en.title, subtitle: e.en.subtitle, url: e.en.url, spanish: false };
+    if (lang === 'en') return { slug: e.slug, date: e.date, title: ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][0] : e.title, subtitle: ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][1] : e.subtitle, url: e.url, spanish: true };
+    return { slug: e.slug, date: e.date, title: e.title, subtitle: e.subtitle, url: e.url, spanish: false };
+  };
   const FEATURED_EN = {
     'hace-2-anos-hoy': 'I lost (almost) everything. The Germany story, told in full.',
     'no-me-pidan-que-elija': 'On generalists, pivots, and why problems — not industries — are my unit of measure.',
@@ -72,30 +78,32 @@
     const feat = document.getElementById('featured');
     const list = document.getElementById('essays');
     if (!essays.length) return;
-    const total = essays.length;
+    const rows = essays.map(view).sort((x, y) => (x.date < y.date ? 1 : x.date > y.date ? -1 : 0));
+    const total = rows.length;
     feat.replaceChildren();
     list.replaceChildren();
-    FEATURED.map((s) => essays.findIndex((e) => e.slug === s)).filter((i) => i > -1).forEach((i) => {
-      const e = essays[i];
+    FEATURED.map((s) => rows.findIndex((e) => e.slug === s)).filter((i) => i > -1).forEach((i) => {
+      const e = rows[i];
       const a = el('a', 'feat');
       a.href = e.url;
       a.append(
         el('span', 'feat__meta mono', `${lang === 'es' ? 'Ensayo' : 'Essay'} ${String(total - i).padStart(2, '0')} · ${fmtDate(e.date)}`),
-        el('span', 'feat__t', eTitle(e)),
-        el('span', 'feat__d', lang === 'es' ? e.subtitle : (FEATURED_EN[e.slug] || eSub(e))),
-        el('span', 'feat__go mono', lang === 'es' ? 'Leer ↗' : 'Read (in Spanish) ↗')
+        el('span', 'feat__t', e.title),
+        el('span', 'feat__d', lang === 'es' ? e.subtitle : (FEATURED_EN[e.slug] || e.subtitle)),
+        el('span', 'feat__go mono', lang === 'es' ? (e.english ? 'Leer (en inglés) ↗' : 'Leer ↗') : (e.spanish ? 'Read (in Spanish) ↗' : 'Read ↗'))
       );
       feat.append(a);
     });
-    essays.forEach((e, i) => {
+    rows.forEach((e, i) => {
       const li = el('li', 'essay');
       const a = el('a');
       a.href = e.url;
+      const note = lang === 'en' && e.spanish ? ' · in Spanish' : lang === 'es' && e.english ? ' · en inglés' : '';
       a.append(
         el('span', 'mono', `${lang === 'es' ? 'N.º' : 'No.'} ${String(total - i).padStart(2, '0')}`),
-        el('span', 'mono essay__date', fmtDate(e.date)),
-        el('span', 'essay__t', eTitle(e)),
-        el('span', 'essay__d', eSub(e)),
+        el('span', 'mono essay__date', fmtDate(e.date) + note),
+        el('span', 'essay__t', e.title),
+        el('span', 'essay__d', e.subtitle),
         el('span', 'mono', '↗')
       );
       li.append(a);
@@ -110,14 +118,32 @@
     more.onclick = () => { list.classList.toggle('show-all'); label(); if (window.ScrollTrigger) ScrollTrigger.refresh(); };
   }
 
+  /* every essay link on the page (pillar sources, the Germany story) points to the reader's language once a translation exists */
+  function relinkEssays() {
+    if (lang !== 'en') return;
+    const enUrl = {};
+    essays.forEach((e) => { if (e.en) enUrl[e.slug] = e.en.url; });
+    const swap = (href) => {
+      const m = href && href.match(/danieljaramillor\.substack\.com\/p\/([a-z0-9-]+)/);
+      return m && enUrl[m[1]];
+    };
+    document.querySelectorAll('a[href*="danieljaramillor.substack.com/p/"]').forEach((a) => { const u = swap(a.href); if (u) a.href = u; });
+    document.querySelectorAll('.col[data-href]').forEach((c) => { const u = swap(c.dataset.href); if (u) c.dataset.href = u; });
+  }
+
+  /* the subscribe and Substack links follow the language too */
+  document.querySelectorAll('a[href^="https://danieljaramillor.substack.com"]:not([href*="/p/"])').forEach((a) => {
+    if (lang === 'en') a.href = a.href.replace(SUBSTACK.es, SUBSTACK.en);
+  });
+
   fetch('data/essays.json', { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((d) => { essays = d.essays || []; renderEssays(); if (hasGsap) ScrollTrigger.refresh(); })
+    .then((d) => { essays = [...(d.essays || []), ...(d.en_only || []).map((e) => ({ ...e, en_only: true }))]; renderEssays(); relinkEssays(); if (hasGsap) ScrollTrigger.refresh(); })
     .catch(() => {
       const list = document.getElementById('essays');
       const li = el('li', 'essay');
       const a = el('a');
-      a.href = 'https://danieljaramillor.substack.com/archive';
+      a.href = (lang === 'en' ? SUBSTACK.en : SUBSTACK.es) + '/archive';
       a.append(el('span', 'essay__t', 'Substack ↗'));
       li.append(a);
       list.append(li);
