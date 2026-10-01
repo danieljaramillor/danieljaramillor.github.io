@@ -156,6 +156,36 @@
   window.matchMedia('(min-width: 1001px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
 
   /* ---------------- bill of materials: tap to open a part (phones) ---------------- */
+  /* pillars: one column open at a time; it walks through them until someone takes over */
+  (() => {
+    const row = document.querySelector('.pillars__row');
+    if (!row) return;
+    const items = [...row.querySelectorAll('.pillar')];
+    const count = document.querySelector('.pillars__count b');
+    const wide = window.matchMedia('(min-width: 1001px)');
+    let idx = 0, timer = null, taken = false;
+    const open = (i) => {
+      idx = i;
+      items.forEach((p, j) => {
+        const on = j === i;
+        p.classList.toggle('is-active', on);
+        p.querySelector('.pillar__hit').setAttribute('aria-expanded', on);
+        p.querySelector('.pillar__src').tabIndex = on ? 0 : -1;
+      });
+      if (count && items[i]) count.textContent = items[i].dataset.n;
+    };
+    const stop = () => { taken = true; clearInterval(timer); timer = null; };
+    const play = () => { if (taken || timer || !wide.matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; timer = setInterval(() => open((idx + 1) % items.length), 4200); };
+    items.forEach((p, i) => {
+      p.querySelector('.pillar__hit').addEventListener('click', () => { stop(); open(!wide.matches && idx === i && p.classList.contains('is-active') ? -1 : i); });
+      let hover;
+      p.addEventListener('mouseenter', () => { if (wide.matches) hover = setTimeout(() => { stop(); open(i); }, 110); });
+      p.addEventListener('mouseleave', () => clearTimeout(hover));
+    });
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else { clearInterval(timer); timer = null; } }, { threshold: 0.5 }).observe(row);
+    open(0);
+  })();
+
   document.querySelectorAll('.part').forEach((part, i) => {
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -409,16 +439,13 @@
     .from(manChars, { ...scatter, stagger: { each: 0.015, from: 'random' }, duration: 1, ease: 'power2.out' });
   gsap.from('.manifesto__lede', { opacity: 0, y: 30, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.manifesto__lede', start: 'top 90%', once: true } });
 
-  /* pillars: the beam goes up first, then each column rises from the base to carry it */
-  const pillarTl = gsap.timeline({ scrollTrigger: { trigger: '.pillars__row', start: desktop ? 'top 85%' : 'top 90%', end: desktop ? 'top 25%' : 'top 55%', scrub: 0.5 } });
+  /* pillars: the beam and base draw, the columns rise to carry it */
+  const pillarTl = gsap.timeline({ scrollTrigger: { trigger: '.pillars__row', start: desktop ? 'top 85%' : 'top 90%', end: desktop ? 'top 30%' : 'top 60%', scrub: 0.5 } });
   pillarTl
     .from('.pillars__beam', { scaleX: 0, duration: 0.5, ease: 'power2.inOut' }, 0)
-    .from('.pillars__base', { scaleX: 0, transformOrigin: '100% 50%', duration: 0.5, ease: 'power2.inOut' }, 0);
-  gsap.utils.toArray('.pillar').forEach((pl, i) => {
-    pillarTl
-      .from(pl, desktop ? { scaleY: 0, duration: 0.5, ease: 'power3.out' } : { y: 60, opacity: 0, duration: 0.5, ease: 'power3.out' }, 0.2 + i * 0.09)
-      .from(pl.children, { y: 18, opacity: 0, stagger: 0.04, duration: 0.35, ease: 'power2.out' }, 0.38 + i * 0.09);
-  });
+    .from('.pillars__base', { scaleX: 0, duration: 0.5, ease: 'power2.inOut' }, 0)
+    .from('.pillar', desktop ? { scaleY: 0, stagger: 0.08, duration: 0.5, ease: 'power3.out' } : { x: -40, opacity: 0, stagger: 0.06, duration: 0.4 }, 0.15)
+    .from('.pillar__n', { yPercent: desktop ? 60 : 0, opacity: 0, stagger: 0.08, duration: 0.4 }, 0.3);
 
   /* bill of materials: the spec table prints itself — each rule draws across, then its row slides in */
   const parts = gsap.utils.toArray('.part');
