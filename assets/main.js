@@ -69,7 +69,7 @@
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
   /* the shelf: one spine per essay, height by length; search ghosts the misses instead of hiding them (nothing gets deleted here) */
-  const shelf = { sort: 'new', q: '', sel: null, intro: false };
+  const shelf = { sort: 'old', q: '', sel: null, intro: false };
   const norm = (x) => (x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const hash = (x) => [...x].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
   const L = () => (lang === 'es'
