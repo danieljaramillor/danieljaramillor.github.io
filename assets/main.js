@@ -547,12 +547,12 @@
   gsap.set(bt, { strokeDasharray: len, strokeDashoffset: len });
   gsap.timeline({ scrollTrigger: { trigger: '.coffee', start: 'top 60%', once: true } })
     .from('.coffee__copy > *', { y: 40, opacity: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out' })
-    .from('.roast', { rotateX: 60, opacity: 0, duration: 1.1, ease: 'power3.out' }, 0)
-    .to(bt, { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, 0.3)
-    .from('.roast__ror', { opacity: 0, duration: 1 }, 0.6)
-    .from('.roast circle', { scale: 0, transformOrigin: '50% 50%', stagger: 0.45, duration: 0.5, ease: 'back.out(3)' }, 0.9)
-    .from('.roast__lbl', { opacity: 0, y: 8, stagger: 0.3, duration: 0.5 }, 1)
-    .from('.coffee__shot', { y: 140, rotate: 8, opacity: 0, duration: 1.2, ease: 'power3.out', clearProps: 'transform' }, 1.4);
+    .from('.coffee__shot', { y: 120, rotateX: 18, opacity: 0, duration: 1.2, ease: 'power3.out', clearProps: 'transform' }, 0.1)
+    .from('.roast', { y: 80, x: -40, rotate: -8, opacity: 0, duration: 1, ease: 'power3.out' }, 0.8)
+    .to(bt, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' }, 1.1)
+    .from('.roast__ror', { opacity: 0, duration: 1 }, 1.3)
+    .from('.roast circle', { scale: 0, transformOrigin: '50% 50%', stagger: 0.4, duration: 0.5, ease: 'back.out(3)' }, 1.5)
+    .from('.roast__lbl', { opacity: 0, y: 8, stagger: 0.25, duration: 0.5 }, 1.6);
 
   /* hire */
   gsap.from('.hire h2', { yPercent: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.hire', start: 'top 75%', once: true } });
@@ -593,7 +593,7 @@
       scrollTrigger: { trigger: sel, start: 'top bottom', end: 'top 15%', scrub: true }
     });
   });
-  gsap.fromTo('.coffee__shot', { yPercent: 25 }, { yPercent: -15, ease: 'none', scrollTrigger: { trigger: '.coffee', start: 'top bottom', end: 'bottom top', scrub: true } });
+  if (desktop) gsap.fromTo('.roast', { yPercent: 30 }, { yPercent: -20, ease: 'none', scrollTrigger: { trigger: '.coffee', start: 'top bottom', end: 'bottom top', scrub: true } });
 
   /* the marquee band: runs with the scroll */
   const band = document.querySelector('.marquee__track');
