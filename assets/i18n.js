@@ -143,7 +143,9 @@ window.DJ_ES = {
   'arc.new': 'Recientes',
   'arc.old': 'En orden',
   'arc.long': 'Más largos',
-  'arc.random': '↯ Al azar',
+  'arc.random': 'Al azar',
+  'arc.vshelf': 'Repisa',
+  'arc.vlist': 'Lista',
   'foot.mail': 'Escribime ↗',
   'foot.made': 'Construido por capas. Cali → Bogotá.'
 };
