@@ -259,53 +259,6 @@
       c.append(a);
     });
 
-  /* ---------------- builds: an index on the left, one preview on the right; it walks through them on its own until you pick one ---------------- */
-  (() => {
-    const tabs = [...document.querySelectorAll('.bi')];
-    const views = [...document.querySelectorAll('.bv')];
-    if (!tabs.length) return;
-    let cur = 0, t0 = 0, auto = !reduce, inView = false, hover = false;
-    const DWELL = 6500;
-    function show(i, user) {
-      if (user) auto = false;
-      if (i === cur && !user) return;
-      if (i === cur) return;
-      tabs[cur].classList.remove('is-active'); tabs[cur].setAttribute('aria-selected', 'false'); tabs[cur].style.removeProperty('--prog');
-      views[cur].hidden = true; views[cur].classList.remove('is-active');
-      cur = i;
-      tabs[cur].classList.add('is-active'); tabs[cur].setAttribute('aria-selected', 'true');
-      views[cur].hidden = false; views[cur].classList.add('is-active');
-      t0 = performance.now();
-      if (window.gsap && !reduce) {
-        const v = views[cur];
-        gsap.fromTo(v.querySelector('.bv__shot img, .bv__ph'), { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.8, ease: 'power4.inOut' });
-        gsap.from(v.querySelectorAll('.bv__body > *'), { y: 16, opacity: 0, stagger: 0.06, duration: 0.5, ease: 'power3.out', delay: 0.2 });
-      }
-    }
-    tabs.forEach((b, i) => {
-      b.addEventListener('click', () => show(i, true));
-      b.addEventListener('keydown', (ev) => {
-        const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key];
-        if (!d) return;
-        ev.preventDefault();
-        const n = (cur + d + tabs.length) % tabs.length;
-        show(n, true); tabs[n].focus();
-      });
-    });
-    const bench = document.getElementById('bench');
-    bench.addEventListener('pointerenter', () => { hover = true; });
-    bench.addEventListener('pointerleave', () => { hover = false; t0 = performance.now() - (parseFloat(tabs[cur].style.getPropertyValue('--prog')) || 0) * DWELL; });
-    new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) t0 = performance.now(); }, { threshold: 0.35 }).observe(bench);
-    (function tick(now) {
-      if (auto && inView && !hover && !document.hidden) {
-        const p = (now - t0) / DWELL;
-        tabs[cur].style.setProperty('--prog', Math.min(1, p).toFixed(3));
-        if (p >= 1) show((cur + 1) % tabs.length, false);
-      } else if (!auto) tabs[cur].style.removeProperty('--prog');
-      if (auto) requestAnimationFrame(tick);
-    })(performance.now());
-  })();
-
   /* ---------------- 3D tilt ---------------- */
   function bindTilt(els, max = 7) {
     if (reduce || !window.matchMedia('(hover: hover)').matches) return;
@@ -787,10 +740,8 @@
       .from(part.children, { y: 26, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }, i * 0.18 + 0.15);
   });
 
-  /* builds: the index rules draw in, the preview slides up */
-  gsap.timeline({ scrollTrigger: { trigger: '.bench', start: 'top 75%', once: true } })
-    .from('.bench__index li', { x: -40, opacity: 0, stagger: 0.07, duration: 0.6, ease: 'power3.out' })
-    .from('.bench__view', { y: 80, opacity: 0, duration: 0.9, ease: 'power3.out', clearProps: 'transform' }, 0.1);
+  /* builds: the tiles land on the bench one after another */
+  gsap.from('.tile', { y: 70, opacity: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out', clearProps: 'transform,opacity', scrollTrigger: { trigger: '.showcase', start: 'top 80%', once: true } });
 
   /* coffee: one screen — the roast draws itself, the markers pop, the site slides in */
   const bt = document.querySelector('.roast__bt');

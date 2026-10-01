@@ -136,8 +136,6 @@ window.DJ_ES = {
   'arc.d': 'Si querés conocerme más allá de la hoja de vida, empezá por acá. Todos los ensayos que he escrito, en orden en la repisa: el fracaso, el café, la atención, el generalismo y las palabras que gastamos demasiado fácil.',
   'arc.cta': 'Suscribite en Substack ↗',
 
-  'bench.visit': 'Visitar',
-  'bench.private': 'Vista privada · todavía sin link público',
   'arc.s1': 'Ensayos',
   'arc.s2': 'Palabras',
   'arc.s3': 'Lectura',
