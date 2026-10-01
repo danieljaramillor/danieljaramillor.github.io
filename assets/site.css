@@ -18,6 +18,8 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+/* flying pieces must never widen the page on phones (that pushes the fixed nav off-screen) */
+body > section, body > main, body > footer, body > div:not(.menu), main > section, .hero, .marquee { overflow-x: clip; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 body {
