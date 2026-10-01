@@ -632,11 +632,14 @@
 
   /* builds: the shipped one rises in tilted like it is being placed on the bench, then the queue fills in behind it */
   bindTilt(document.querySelectorAll('.feature'), 4);
-  gsap.timeline({ scrollTrigger: { trigger: '.workbench', start: 'top 75%', once: true } })
-    .from('.feature', { y: 120, rotateX: 22, opacity: 0, duration: 1.1, ease: 'power3.out', clearProps: 'transform' })
-    .from('.queue__head', { x: -30, opacity: 0, duration: 0.5 }, 0.4)
-    .fromTo('.q', { '--rule': 0 }, { '--rule': 1, stagger: 0.12, duration: 0.6, ease: 'power2.inOut' }, 0.5)
-    .from('.q > *', { y: 24, opacity: 0, stagger: 0.04, duration: 0.5, ease: 'power3.out' }, 0.6);
+  document.querySelectorAll('.feature').forEach((f) => gsap.from(f, {
+    y: 120, rotateX: 22, opacity: 0, duration: 1.1, ease: 'power3.out', clearProps: 'transform',
+    scrollTrigger: { trigger: f, start: 'top 85%', once: true },
+  }));
+  gsap.timeline({ scrollTrigger: { trigger: '.queue', start: 'top 85%', once: true } })
+    .from('.queue__head', { x: -30, opacity: 0, duration: 0.5 })
+    .fromTo('.q', { '--rule': 0 }, { '--rule': 1, stagger: 0.12, duration: 0.6, ease: 'power2.inOut' }, 0.1)
+    .from('.q > *', { y: 24, opacity: 0, stagger: 0.04, duration: 0.5, ease: 'power3.out' }, 0.2);
 
   /* coffee: one screen — the roast draws itself, the markers pop, the site slides in */
   const bt = document.querySelector('.roast__bt');

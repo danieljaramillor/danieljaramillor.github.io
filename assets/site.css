@@ -291,6 +291,13 @@ section { position: relative; }
 .feature p { color: #2A2A27; max-width: 560px; }
 .card__meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .pill { border: 1px solid var(--ink); padding: 4px 8px; white-space: nowrap; }
+.bench__main, .bench__side { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 64px); min-width: 0; }
+.bench__side { position: sticky; top: 96px; }
+.feature--raiz .feature__shot { background: #0A0F0C; }
+.feature--raiz .feature__shot .coffee__bar { color: #9DB0A6; border-color: #1C2A23; }
+.feature--raiz .feature__shot .coffee__bar i { background: #22332A; }
+.feature--pip .feature__shot { background: #141B2E; }
+.feature--pip .feature__shot img { aspect-ratio: 4 / 4.4; object-fit: cover; object-position: 50% 30%; }
 .queue__head { display: block; padding-bottom: 14px; color: var(--muted); }
 .queue__list { list-style: none; margin: 0; padding: 0; }
 .q { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 22px 0; }
@@ -473,6 +480,10 @@ section { position: relative; }
   .part__t, .part p { grid-column: 1 / -1; }
   .coffee__copy, .coffee__viz, .hire__lead, .hire__now, .offers { grid-column: 1 / -1; }
   .workbench { grid-template-columns: minmax(0, 1fr); }
+  .bench__main, .bench__side { display: contents; }
+  .feature--pip { order: 1; }
+  .feature--raiz { order: 2; }
+  .queue { order: 3; }
   .hire h2 { white-space: normal; }
   .coffee__viz { padding-bottom: 0; }
   .roast { position: relative; left: auto; bottom: auto; width: 68%; margin: -12% 0 0 -2%; }
