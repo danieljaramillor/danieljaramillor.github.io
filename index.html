@@ -111,46 +111,63 @@
 <section class="pillars" id="pillars" aria-labelledby="pillars-title">
   <div class="section-head">
     <h2 id="pillars-title" data-i18n="pil.title">My<br>pillars</h2>
-    <span class="swipe mono" aria-hidden="true" data-i18n="swipe">Swipe →</span>
     <p class="mono" data-i18n="pil.note">Not dogmas — columns. A column carries weight; a dogma just defends. The six things everything I build rests on, pulled from my essays.</p>
   </div>
-  <div class="pillars__beam" aria-hidden="true"><span class="mono" data-i18n="pil.beam">Load path ↓ everything rests on these</span></div>
+  <div class="pillars__beam" aria-hidden="true"><span class="mono" data-i18n="pil.beam">Load path ↓ everything rests on these</span><span class="mono pillars__count"><b>I</b> / VI</span></div>
   <ol class="pillars__row">
-    <li class="pillar">
-      <span class="mono pillar__n">I</span>
-      <h3 data-i18n="pil1.t">Archive, don’t delete.</h3>
-      <p data-i18n="pil1.d">Nothing gets erased. Every win, every failure and every scar becomes foundation for the next floor.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion" data-i18n="pil1.s">From “The Architecture of Accumulation” ↗</a>
+    <li class="pillar is-active" data-n="I">
+      <button class="pillar__hit" type="button" aria-expanded="true" aria-controls="pil1-body"><span class="pillar__n" aria-hidden="true">I</span><span class="pillar__vt" data-i18n="pil1.t">Archive, don’t delete.</span></button>
+      <div class="pillar__body" id="pil1-body">
+        <span class="mono pillar__tag">I / VI</span>
+        <h3 data-i18n="pil1.t">Archive, don’t delete.</h3>
+        <p data-i18n="pil1.d">Nothing gets erased. Every win, every failure and every scar becomes foundation for the next floor.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/la-arquitectura-de-la-acumulacion" data-i18n="pil1.s">From “The Architecture of Accumulation” ↗</a>
+      </div>
     </li>
-    <li class="pillar">
-      <span class="mono pillar__n">II</span>
-      <h3 data-i18n="pil2.t">Problems, not industries.</h3>
-      <p data-i18n="pil2.d">Oncology, crypto, AI, coffee. The industry is the facade; the process is the structure. I still don’t fit in one sentence.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija" data-i18n="pil2.s">From “Don’t Make Me Choose” ↗</a>
+    <li class="pillar" data-n="II">
+      <button class="pillar__hit" type="button" aria-expanded="false" aria-controls="pil2-body"><span class="pillar__n" aria-hidden="true">II</span><span class="pillar__vt" data-i18n="pil2.t">Problems, not industries.</span></button>
+      <div class="pillar__body" id="pil2-body">
+        <span class="mono pillar__tag">II / VI</span>
+        <h3 data-i18n="pil2.t">Problems, not industries.</h3>
+        <p data-i18n="pil2.d">Oncology, crypto, AI, coffee. The industry is the facade; the process is the structure. I still don’t fit in one sentence.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/no-me-pidan-que-elija" data-i18n="pil2.s">From “Don’t Make Me Choose” ↗</a>
+      </div>
     </li>
-    <li class="pillar">
-      <span class="mono pillar__n">III</span>
-      <h3 data-i18n="pil3.t">Opinions that cost something.</h3>
-      <p data-i18n="pil3.d">Strong opinions, loosely held. “I don’t know yet” — but I know how to find out. The expensive ones I paid for by being wrong.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/opinar-es-gratis" data-i18n="pil3.s">From “Talk Is Cheap” ↗</a>
+    <li class="pillar" data-n="III">
+      <button class="pillar__hit" type="button" aria-expanded="false" aria-controls="pil3-body"><span class="pillar__n" aria-hidden="true">III</span><span class="pillar__vt" data-i18n="pil3.t">Opinions that cost something.</span></button>
+      <div class="pillar__body" id="pil3-body">
+        <span class="mono pillar__tag">III / VI</span>
+        <h3 data-i18n="pil3.t">Opinions that cost something.</h3>
+        <p data-i18n="pil3.d">Strong opinions, loosely held. “I don’t know yet” — but I know how to find out. The expensive ones I paid for by being wrong.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/opinar-es-gratis" data-i18n="pil3.s">From “Talk Is Cheap” ↗</a>
+      </div>
     </li>
-    <li class="pillar">
-      <span class="mono pillar__n">IV</span>
-      <h3 data-i18n="pil4.t">Attention is how I care.</h3>
-      <p data-i18n="pil4.d">I don’t take notes; I listen. Remembering what you told me is the gift. Everything else is logistics.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/yo-me-encargo" data-i18n="pil4.s">From “I’ll Take Care of It” ↗</a>
+    <li class="pillar" data-n="IV">
+      <button class="pillar__hit" type="button" aria-expanded="false" aria-controls="pil4-body"><span class="pillar__n" aria-hidden="true">IV</span><span class="pillar__vt" data-i18n="pil4.t">Attention is how I care.</span></button>
+      <div class="pillar__body" id="pil4-body">
+        <span class="mono pillar__tag">IV / VI</span>
+        <h3 data-i18n="pil4.t">Attention is how I care.</h3>
+        <p data-i18n="pil4.d">I don’t take notes; I listen. Remembering what you told me is the gift. Everything else is logistics.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/yo-me-encargo" data-i18n="pil4.s">From “I’ll Take Care of It” ↗</a>
+      </div>
     </li>
-    <li class="pillar">
-      <span class="mono pillar__n">V</span>
-      <h3 data-i18n="pil5.t">Own it. Then let go.</h3>
-      <p data-i18n="pil5.d">If I want something, it’s on me. And part of owning it is knowing when to fold the aces — and giving myself permission to stop.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/permiso-para-parar" data-i18n="pil5.s">From “Permission to Stop” ↗</a>
+    <li class="pillar" data-n="V">
+      <button class="pillar__hit" type="button" aria-expanded="false" aria-controls="pil5-body"><span class="pillar__n" aria-hidden="true">V</span><span class="pillar__vt" data-i18n="pil5.t">Own it. Then let go.</span></button>
+      <div class="pillar__body" id="pil5-body">
+        <span class="mono pillar__tag">V / VI</span>
+        <h3 data-i18n="pil5.t">Own it. Then let go.</h3>
+        <p data-i18n="pil5.d">If I want something, it’s on me. And part of owning it is knowing when to fold the aces — and giving myself permission to stop.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/permiso-para-parar" data-i18n="pil5.s">From “Permission to Stop” ↗</a>
+      </div>
     </li>
-    <li class="pillar">
-      <span class="mono pillar__n">VI</span>
-      <h3 data-i18n="pil6.t">Make the hard look easy.</h3>
-      <p data-i18n="pil6.d">I swallow the complexity so the next person doesn’t have to. Good design is invisible; good work erases its own footprints.</p>
-      <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil" data-i18n="pil6.s">From “Making Hard Look Easy” ↗</a>
+    <li class="pillar" data-n="VI">
+      <button class="pillar__hit" type="button" aria-expanded="false" aria-controls="pil6-body"><span class="pillar__n" aria-hidden="true">VI</span><span class="pillar__vt" data-i18n="pil6.t">Make the hard look easy.</span></button>
+      <div class="pillar__body" id="pil6-body">
+        <span class="mono pillar__tag">VI / VI</span>
+        <h3 data-i18n="pil6.t">Make the hard look easy.</h3>
+        <p data-i18n="pil6.d">I swallow the complexity so the next person doesn’t have to. Good design is invisible; good work erases its own footprints.</p>
+        <a class="mono pillar__src" href="https://danieljaramillor.substack.com/p/hacer-facil-lo-dificil" data-i18n="pil6.s">From “Making Hard Look Easy” ↗</a>
+      </div>
     </li>
   </ol>
   <div class="pillars__base" aria-hidden="true"></div>
