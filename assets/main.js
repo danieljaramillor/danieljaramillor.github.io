@@ -69,8 +69,7 @@
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString(lang === 'es' ? 'es-CO' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
-  /* the archive: three picks to start with, then every essay as a plain, searchable index.
-     A slim shelf of spines sits on top of the index as its timeline (height = length); it points at rows, it doesn't replace them. */
+  /* the archive: three picks to start with, then every essay as a plain, searchable index; a thin bar beside each one shows its length */
   const PICKS = [
     ['hace-2-anos-hoy', { en: 'The story', es: 'La historia' }, { en: 'I lost (almost) everything. The Germany story, told in full.', es: 'Lo perdí (casi) todo. La historia de Alemania, completa.' }],
     ['no-me-pidan-que-elija', { en: 'The generalist', es: 'El generalista' }, { en: 'On generalists, pivots, and why problems, not industries, are my unit of measure.', es: 'Sobre generalistas, pivotes y por qué mi unidad de medida son los problemas, no las industrias.' }],
@@ -109,24 +108,13 @@
       const t = el('span', 'li__t', e.title);
       if (note) t.append(el('span', 'mono li__note', note));
       tt.append(t, el('span', 'li__d', e.subtitle));
-      a.append(el('span', 'mono li__n', pad(n)), tt, el('span', 'mono li__m', fmtDate(raw.date)), el('span', 'mono li__m', `${mins(w)} ${l.min}`), el('span', 'mono li__go', '↗'));
+      const len = el('span', 'mono li__len');
+      const bar = el('i', 'li__bar');
+      bar.style.setProperty('--len', (w / wMax).toFixed(3)); // how long this one is, against the longest
+      len.append(bar, document.createTextNode(`${mins(w)} ${l.min}`));
+      a.append(el('span', 'mono li__n', pad(n)), tt, el('span', 'mono li__m', fmtDate(raw.date)), len, el('span', 'mono li__go', '↗'));
       li.append(a);
-      const sp = el('span', 'strip__s', pad(n));
-      sp.style.setProperty('--hw', ((w - wMin) / Math.max(1, wMax - wMin)).toFixed(3));
-      sp.style.setProperty('--fw', (w / 4000).toFixed(2));
-      sp.title = e.title;
-      const it = { raw, e, li, sp, n, w, hay: norm([raw.title, raw.subtitle, raw.en && raw.en.title, raw.en && raw.en.subtitle, ESSAYS_EN[raw.slug] && ESSAYS_EN[raw.slug].join(' ')].join(' ')) };
-      const hot = (on) => { li.classList.toggle('is-hot', on); sp.classList.toggle('is-hot', on); };
-      sp.addEventListener('pointerenter', () => hot(true));
-      sp.addEventListener('pointerleave', () => hot(false));
-      li.addEventListener('pointerenter', () => hot(true));
-      li.addEventListener('pointerleave', () => hot(false));
-      a.addEventListener('focus', () => hot(true));
-      a.addEventListener('blur', () => hot(false));
-      sp.addEventListener('click', () => {
-        if (window.__lenis) window.__lenis.scrollTo(li, { offset: -160 }); else li.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-        li.classList.remove('is-flash'); void li.offsetWidth; li.classList.add('is-flash');
-      });
+      const it = { raw, e, li, n, w, hay: norm([raw.title, raw.subtitle, raw.en && raw.en.title, raw.en && raw.en.subtitle, ESSAYS_EN[raw.slug] && ESSAYS_EN[raw.slug].join(' ')].join(' ')) };
       return it;
     });
     place();
@@ -152,7 +140,7 @@
     if (hasGsap && !reduce && !shelf.intro) {
       shelf.intro = true;
       gsap.from('.pick', { y: 60, opacity: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out', clearProps: 'transform,opacity', scrollTrigger: { trigger: '.picks', start: 'top 85%', once: true } });
-      gsap.from(shelf.items.map((x) => x.sp), { scaleY: 0, transformOrigin: '50% 100%', stagger: 0.03, duration: 0.6, ease: 'back.out(2)', clearProps: 'transform', scrollTrigger: { trigger: '#shelfStrip', start: 'top 90%', once: true } });
+      gsap.from('.li__bar', { scaleX: 0, transformOrigin: '0 50%', stagger: 0.04, duration: 0.8, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: '#shelfList', start: 'top 85%', once: true } });
     }
   }
   function order() {
@@ -162,13 +150,12 @@
     return it;
   }
   function place() {
-    document.getElementById('shelfStrip').replaceChildren(...order().map((it) => it.sp));
     document.getElementById('shelfList').replaceChildren(...order().map((it) => it.li));
   }
   function filter() {
     const q = norm(shelf.q.trim());
     let n = 0;
-    shelf.items.forEach((it) => { const hit = !q || it.hay.includes(q); it.li.hidden = !hit; it.sp.classList.toggle('is-ghost', !hit); if (hit) n++; });
+    shelf.items.forEach((it) => { const hit = !q || it.hay.includes(q); it.li.hidden = !hit; if (hit) n++; });
     const l = L();
     document.getElementById('shelfCount').textContent = q ? `${n} / ${shelf.items.length}` : `${shelf.items.length} ${l.essays}`;
     const list = document.getElementById('shelfList');
@@ -187,22 +174,14 @@
   document.querySelectorAll('.seg--sort button').forEach((b) => b.addEventListener('click', () => {
     if (!shelf.items || shelf.sort === b.dataset.sort) return;
     document.querySelectorAll('.seg--sort button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    const before = new Map(shelf.items.map((it) => [it, [it.sp.getBoundingClientRect().left, it.li.getBoundingClientRect().top]]));
+    const before = new Map(shelf.items.map((it) => [it, it.li.getBoundingClientRect().top]));
     shelf.sort = b.dataset.sort;
     place();
     if (reduce) return;
-    shelf.items.forEach((it) => {
-      const [x, y] = before.get(it);
-      it.sp.style.transition = it.li.style.transition = 'none';
-      it.sp.style.translate = `${x - it.sp.getBoundingClientRect().left}px 0`;
-      it.li.style.translate = `0 ${y - it.li.getBoundingClientRect().top}px`;
-    });
+    shelf.items.forEach((it) => { it.li.style.transition = 'none'; it.li.style.translate = `0 ${before.get(it) - it.li.getBoundingClientRect().top}px`; });
     document.getElementById('shelfList').offsetWidth;
-    shelf.items.forEach((it) => {
-      it.sp.style.transition = it.li.style.transition = 'translate .6s cubic-bezier(.65,0,.25,1)';
-      it.sp.style.translate = it.li.style.translate = '0 0';
-    });
-    setTimeout(() => shelf.items.forEach((it) => { it.sp.style.transition = it.li.style.transition = it.sp.style.translate = it.li.style.translate = ''; }), 700);
+    shelf.items.forEach((it) => { it.li.style.transition = 'translate .6s cubic-bezier(.65,0,.25,1)'; it.li.style.translate = '0 0'; });
+    setTimeout(() => shelf.items.forEach((it) => { it.li.style.transition = it.li.style.translate = ''; }), 700);
   }));
 
   /* every essay link on the page (pillar sources, the Germany story) points to the reader's language once a translation exists */
