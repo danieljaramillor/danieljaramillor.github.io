@@ -40,7 +40,6 @@
     }));
 
   /* ---------------- essays (from data/essays.json, synced by a GitHub Action) ---------------- */
-  const FEATURED = ['hace-2-anos-hoy', 'no-me-pidan-que-elija', 'diecisiete-escalones'];
   // English titles for the Spanish essays (new essays fall back to their Spanish title)
   const ESSAYS_EN = {
     'que-pena': ['Small Change', 'On the most expensive word in the language, the small change I use to dodge it, and a debt I’ve gone years without paying'],
@@ -65,58 +64,172 @@
     if (lang === 'en') return { slug: e.slug, date: e.date, title: ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][0] : e.title, subtitle: ESSAYS_EN[e.slug] ? ESSAYS_EN[e.slug][1] : e.subtitle, url: e.url, spanish: true };
     return { slug: e.slug, date: e.date, title: e.title, subtitle: e.subtitle, url: e.url, spanish: false };
   };
-  const FEATURED_EN = {
-    'hace-2-anos-hoy': 'I lost (almost) everything. The Germany story, told in full.',
-    'no-me-pidan-que-elija': 'On generalists, pivots, and why problems — not industries — are my unit of measure.',
-    'diecisiete-escalones': 'A coffee ritual that is never the same, and perception as a craft.'
-  };
   let essays = [];
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString(lang === 'es' ? 'es-CO' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
+  /* the shelf: one spine per essay, height by length; search ghosts the misses instead of hiding them (nothing gets deleted here) */
+  const shelf = { sort: 'new', q: '', sel: null, intro: false };
+  const norm = (x) => (x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const hash = (x) => [...x].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const L = () => (lang === 'es'
+    ? { essays: 'ensayos', words: 'palabras', match: 'en la repisa', none: 'Nada en la repisa con', min: 'min de lectura', read: 'Leer', readEn: 'Leer (en inglés)', next: 'N.º', writing: 'Escribiendo…', ph: 'Buscá en el archivo', prev: 'Ensayo anterior', nxt: 'Ensayo siguiente', inEs: '', inEn: ' · en inglés' }
+    : { essays: 'essays', words: 'words', match: 'on the shelf', none: 'Nothing on the shelf matches', min: 'min read', read: 'Read', readEs: 'Read (in Spanish)', next: 'No.', writing: 'Writing…', ph: 'Search the archive', prev: 'Previous essay', nxt: 'Next essay', inEs: ' · in Spanish', inEn: '' });
+
   function renderEssays() {
-    const feat = document.getElementById('featured');
-    const list = document.getElementById('essays');
-    if (!essays.length) return;
-    const rows = essays.map(view).sort((x, y) => (x.date < y.date ? 1 : x.date > y.date ? -1 : 0));
-    const total = rows.length;
-    feat.replaceChildren();
-    list.replaceChildren();
-    FEATURED.map((s) => rows.findIndex((e) => e.slug === s)).filter((i) => i > -1).forEach((i) => {
-      const e = rows[i];
-      const a = el('a', 'feat');
-      a.href = e.url;
-      a.append(
-        el('span', 'feat__meta mono', `${lang === 'es' ? 'Ensayo' : 'Essay'} ${String(total - i).padStart(2, '0')} · ${fmtDate(e.date)}`),
-        el('span', 'feat__t', e.title),
-        el('span', 'feat__d', lang === 'es' ? e.subtitle : (FEATURED_EN[e.slug] || e.subtitle)),
-        el('span', 'feat__go mono', lang === 'es' ? (e.english ? 'Leer (en inglés) ↗' : 'Leer ↗') : (e.spanish ? 'Read (in Spanish) ↗' : 'Read ↗'))
-      );
-      feat.append(a);
+    const row = document.getElementById('shelfRow');
+    if (!row || !essays.length) return;
+    const l = L();
+    const chron = [...essays].sort((x, y) => (x.date < y.date ? -1 : 1));
+    const words = essays.map((e) => e.words || 3500);
+    const wMin = Math.min(...words), wMax = Math.max(...words);
+    const total = words.reduce((a, b) => a + b, 0);
+    document.getElementById('stEssays').textContent = essays.length;
+    document.getElementById('stWords').textContent = total.toLocaleString(lang === 'es' ? 'es-CO' : 'en-US');
+    document.getElementById('stHours').textContent = (total / 230 / 60).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + ' h';
+    document.getElementById('shelfDim').textContent = `${essays.length} ${l.essays} · ${total.toLocaleString(lang === 'es' ? 'es-CO' : 'en-US')} ${l.words}`;
+    const q = document.getElementById('shelfQ');
+    q.placeholder = l.ph;
+
+    shelf.items = chron.map((raw, i) => {
+      const e = view(raw);
+      const w = raw.words || 3500;
+      const b = el('button', 'spine spine--' + ['ink', 'paper', 'hatch', 'grey', 'paper', 'ink', 'grey'][hash(raw.slug) % 7]);
+      b.type = 'button';
+      b.setAttribute('role', 'option');
+      b.dataset.slug = raw.slug;
+      b.style.setProperty('--hw', ((w - wMin) / Math.max(1, wMax - wMin)).toFixed(3));
+      b.style.setProperty('--ww', ((hash(raw.slug + 'w') % 100) / 100).toFixed(2));
+      b.setAttribute('aria-label', `${String(i + 1).padStart(2, '0')}. ${e.title}`);
+      const [y, m] = raw.date.split('-');
+      b.append(el('span', 'mono spine__y', `${m}.${y.slice(2)}`), el('span', 'spine__t', e.title), el('span', 'mono spine__n', String(i + 1).padStart(2, '0')));
+      b.addEventListener('click', () => select(raw.slug, true));
+      return { raw, e, el: b, n: i + 1, w, hay: norm([raw.title, raw.subtitle, raw.en && raw.en.title, raw.en && raw.en.subtitle, ESSAYS_EN[raw.slug] && ESSAYS_EN[raw.slug].join(' ')].join(' ')) };
     });
-    rows.forEach((e, i) => {
-      const li = el('li', 'essay');
-      const a = el('a');
-      a.href = e.url;
-      const note = lang === 'en' && e.spanish ? ' · in Spanish' : lang === 'es' && e.english ? ' · en inglés' : '';
-      a.append(
-        el('span', 'mono', `${lang === 'es' ? 'N.º' : 'No.'} ${String(total - i).padStart(2, '0')}`),
-        el('span', 'mono essay__date', fmtDate(e.date) + note),
-        el('span', 'essay__t', e.title),
-        el('span', 'essay__d', e.subtitle),
-        el('span', 'mono', '↗')
-      );
-      li.append(a);
-      list.append(li);
-    });
-    bindTilt(feat.querySelectorAll('.feat'), 5);
-    const more = document.getElementById('moreEssays');
-    const shown = () => list.classList.contains('show-all');
-    const label = () => { more.textContent = shown() ? (lang === 'es' ? 'Ver menos ↑' : 'Show fewer ↑') : (lang === 'es' ? `Ver los ${total} ensayos ↓` : `All ${total} essays ↓`); };
-    more.hidden = total <= 5;
-    label();
-    more.onclick = () => { list.classList.toggle('show-all'); label(); if (window.ScrollTrigger) ScrollTrigger.refresh(); };
+    const nextUp = el('span', 'spine spine--next');
+    nextUp.setAttribute('aria-hidden', 'true');
+    nextUp.append(el('span', 'mono spine__y', '··.··'), el('span', 'spine__t', l.writing), el('span', 'mono spine__n', String(chron.length + 1).padStart(2, '0')));
+    const end = el('span', 'bookend');
+    end.setAttribute('aria-hidden', 'true');
+    end.append(el('b', 'mono', 'DJ.'));
+    shelf.tail = [nextUp, end];
+    row.replaceChildren(...order().map((it) => it.el), ...shelf.tail);
+    if (!shelf.sel || !shelf.items.some((it) => it.raw.slug === shelf.sel)) shelf.sel = chron[chron.length - 1].slug;
+    filter(false);
+    select(shelf.sel, false);
+
+    if (hasGsap && !reduce && !shelf.intro) {
+      shelf.intro = true;
+      gsap.from(shelf.items.map((it) => it.el), {
+        yPercent: -60, opacity: 0, duration: 0.9, ease: 'bounce.out', stagger: { each: 0.05, from: 'start' },
+        scrollTrigger: { trigger: row, start: 'top 80%', once: true }, clearProps: 'opacity,transform',
+      });
+    }
   }
+  function order() {
+    const it = [...shelf.items];
+    if (shelf.sort === 'new') it.reverse();
+    if (shelf.sort === 'long') it.sort((a, b) => b.w - a.w);
+    return it;
+  }
+  const visible = () => order().filter((it) => !it.el.classList.contains('is-ghost'));
+  function filter(follow) {
+    const q = norm(shelf.q.trim());
+    let n = 0;
+    shelf.items.forEach((it) => { const hit = !q || it.hay.includes(q); it.el.classList.toggle('is-ghost', !hit); it.el.tabIndex = -1; if (hit) n++; });
+    const l = L();
+    document.getElementById('shelfCount').textContent = q ? `${n} / ${shelf.items.length}` : `${shelf.items.length} ${l.match}`;
+    const cur = shelf.items.find((it) => it.raw.slug === shelf.sel);
+    if (follow && n && cur && cur.el.classList.contains('is-ghost')) select(visible()[0].raw.slug, false);
+    else if (n === 0) card(null);
+    else if (follow) select(shelf.sel, false);
+  }
+  function select(slug, user) {
+    const it = shelf.items.find((x) => x.raw.slug === slug);
+    if (!it) return;
+    shelf.sel = slug;
+    shelf.items.forEach((x) => { const on = x === it; x.el.classList.toggle('is-active', on); x.el.setAttribute('aria-selected', String(on)); x.el.tabIndex = on ? 0 : -1; });
+    card(it);
+    const row = document.getElementById('shelfRow');
+    if (row.scrollWidth > row.clientWidth + 4) {
+      const r = it.el.offsetLeft - row.clientWidth / 2 + it.el.offsetWidth / 2;
+      row.scrollTo({ left: r, behavior: user && !reduce ? 'smooth' : 'auto' });
+    }
+    requestAnimationFrame(tab);
+  }
+  function tab() {
+    const it = shelf.items && shelf.items.find((x) => x.raw.slug === shelf.sel);
+    const c = document.getElementById('shelfCard');
+    if (!it || !c) return;
+    const a = it.el.getBoundingClientRect(), b = c.getBoundingClientRect();
+    c.style.setProperty('--tab', Math.max(0, Math.min(b.width - 64, a.left + a.width / 2 - b.left - 32)) + 'px');
+  }
+  window.addEventListener('resize', tab);
+  document.getElementById('shelfRow').addEventListener('scroll', () => requestAnimationFrame(tab), { passive: true });
+  function card(it) {
+    const c = document.getElementById('shelfCard');
+    const l = L();
+    c.replaceChildren();
+    if (!it) {
+      c.classList.add('is-empty');
+      c.append(el('p', 'card__d', `${l.none} “${shelf.q.trim()}”.`));
+      return;
+    }
+    c.classList.remove('is-empty');
+    const e = it.e;
+    const note = lang === 'en' && e.spanish ? l.inEs : lang === 'es' && e.english ? l.inEn : '';
+    const go = el('a', 'btn btn--ink', (lang === 'en' && e.spanish ? l.readEs : lang === 'es' && e.english ? l.readEn : l.read) + ' ↗');
+    go.href = e.url;
+    const nav = el('div', 'card__nav');
+    [['←', -1, l.prev], ['→', 1, l.nxt]].forEach(([g, d, label]) => {
+      const b = el('button', 'chip mono', g);
+      b.type = 'button';
+      b.setAttribute('aria-label', label);
+      b.addEventListener('click', () => step(d));
+      nav.append(b);
+    });
+    const body = el('div', 'card__body');
+    body.append(el('span', 'mono card__meta', `${l.next} ${String(it.n).padStart(2, '0')} · ${fmtDate(it.raw.date)} · ${Math.max(1, Math.round(it.w / 230))} ${l.min}${note}`), el('h3', 'card__t', e.title), el('p', 'card__d', e.subtitle));
+    const act = el('div', 'card__act');
+    act.append(go, nav);
+    c.append(el('span', 'card__no', String(it.n).padStart(2, '0')), body, act);
+    if (hasGsap && !reduce) gsap.from([c.querySelector('.card__no'), ...body.children], { y: 18, opacity: 0, duration: 0.5, stagger: 0.05, ease: 'power3.out' });
+  }
+  function step(d) {
+    const v = visible();
+    const i = v.findIndex((x) => x.raw.slug === shelf.sel);
+    if (!v.length) return;
+    const nx = v[(i + d + v.length) % v.length];
+    select(nx.raw.slug, true);
+    return nx;
+  }
+  document.getElementById('shelfRow').addEventListener('keydown', (ev) => {
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+    if (!d) return;
+    ev.preventDefault();
+    const nx = step(d);
+    if (nx) nx.el.focus();
+  });
+  const sq = document.getElementById('shelfQ');
+  sq.addEventListener('input', () => { shelf.q = sq.value; filter(true); });
+  sq.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); const v = visible(); if (v.length) select(v[0].raw.slug, true); } });
+  document.querySelectorAll('.shelf__sort .chip').forEach((b) => b.addEventListener('click', () => {
+    if (!shelf.items || shelf.sort === b.dataset.sort) return;
+    document.querySelectorAll('.shelf__sort .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    const before = new Map(shelf.items.map((it) => [it, it.el.getBoundingClientRect().left]));
+    shelf.sort = b.dataset.sort;
+    const row = document.getElementById('shelfRow');
+    row.replaceChildren(...order().map((it) => it.el), ...shelf.tail);
+    if (reduce) return select(shelf.sel, false);
+    shelf.items.forEach((it) => {
+      const dx = before.get(it) - it.el.getBoundingClientRect().left;
+      it.el.style.transition = 'none';
+      it.el.style.translate = `${dx}px 0`;
+    });
+    row.offsetWidth;
+    shelf.items.forEach((it, i) => { it.el.style.transition = `translate .7s cubic-bezier(.65,0,.25,1) ${i * 0.018}s, transform .45s cubic-bezier(.2,.9,.25,1.25), background .3s, color .3s`; it.el.style.translate = '0 0'; });
+    setTimeout(() => { shelf.items.forEach((it) => { it.el.style.transition = ''; it.el.style.translate = ''; }); select(shelf.sel, false); }, 1000);
+  }));
 
   /* every essay link on the page (pillar sources, the Germany story) points to the reader's language once a translation exists */
   function relinkEssays() {
@@ -140,14 +253,58 @@
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
     .then((d) => { essays = [...(d.essays || []), ...(d.en_only || []).map((e) => ({ ...e, en_only: true }))]; renderEssays(); relinkEssays(); if (hasGsap) ScrollTrigger.refresh(); })
     .catch(() => {
-      const list = document.getElementById('essays');
-      const li = el('li', 'essay');
-      const a = el('a');
+      const c = document.getElementById('shelfCard');
+      const a = el('a', 'btn btn--ink', 'Substack ↗');
       a.href = (lang === 'en' ? SUBSTACK.en : SUBSTACK.es) + '/archive';
-      a.append(el('span', 'essay__t', 'Substack ↗'));
-      li.append(a);
-      list.append(li);
+      c.append(a);
     });
+
+  /* ---------------- builds: an index on the left, one preview on the right; it walks through them on its own until you pick one ---------------- */
+  (() => {
+    const tabs = [...document.querySelectorAll('.bi')];
+    const views = [...document.querySelectorAll('.bv')];
+    if (!tabs.length) return;
+    let cur = 0, t0 = 0, auto = !reduce, inView = false, hover = false;
+    const DWELL = 6500;
+    function show(i, user) {
+      if (user) auto = false;
+      if (i === cur && !user) return;
+      if (i === cur) return;
+      tabs[cur].classList.remove('is-active'); tabs[cur].setAttribute('aria-selected', 'false'); tabs[cur].style.removeProperty('--prog');
+      views[cur].hidden = true; views[cur].classList.remove('is-active');
+      cur = i;
+      tabs[cur].classList.add('is-active'); tabs[cur].setAttribute('aria-selected', 'true');
+      views[cur].hidden = false; views[cur].classList.add('is-active');
+      t0 = performance.now();
+      if (window.gsap && !reduce) {
+        const v = views[cur];
+        gsap.fromTo(v.querySelector('.bv__shot img, .bv__ph'), { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 0.8, ease: 'power4.inOut' });
+        gsap.from(v.querySelectorAll('.bv__body > *'), { y: 16, opacity: 0, stagger: 0.06, duration: 0.5, ease: 'power3.out', delay: 0.2 });
+      }
+    }
+    tabs.forEach((b, i) => {
+      b.addEventListener('click', () => show(i, true));
+      b.addEventListener('keydown', (ev) => {
+        const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key];
+        if (!d) return;
+        ev.preventDefault();
+        const n = (cur + d + tabs.length) % tabs.length;
+        show(n, true); tabs[n].focus();
+      });
+    });
+    const bench = document.getElementById('bench');
+    bench.addEventListener('pointerenter', () => { hover = true; });
+    bench.addEventListener('pointerleave', () => { hover = false; t0 = performance.now() - (parseFloat(tabs[cur].style.getPropertyValue('--prog')) || 0) * DWELL; });
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) t0 = performance.now(); }, { threshold: 0.35 }).observe(bench);
+    (function tick(now) {
+      if (auto && inView && !hover && !document.hidden) {
+        const p = (now - t0) / DWELL;
+        tabs[cur].style.setProperty('--prog', Math.min(1, p).toFixed(3));
+        if (p >= 1) show((cur + 1) % tabs.length, false);
+      } else if (!auto) tabs[cur].style.removeProperty('--prog');
+      if (auto) requestAnimationFrame(tick);
+    })(performance.now());
+  })();
 
   /* ---------------- 3D tilt ---------------- */
   function bindTilt(els, max = 7) {
@@ -630,16 +787,10 @@
       .from(part.children, { y: 26, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }, i * 0.18 + 0.15);
   });
 
-  /* builds: the shipped one rises in tilted like it is being placed on the bench, then the queue fills in behind it */
-  bindTilt(document.querySelectorAll('.feature'), 4);
-  document.querySelectorAll('.feature').forEach((f) => gsap.from(f, {
-    y: 120, rotateX: 22, opacity: 0, duration: 1.1, ease: 'power3.out', clearProps: 'transform',
-    scrollTrigger: { trigger: f, start: 'top 85%', once: true },
-  }));
-  gsap.timeline({ scrollTrigger: { trigger: '.queue', start: 'top 85%', once: true } })
-    .from('.queue__head', { x: -30, opacity: 0, duration: 0.5 })
-    .fromTo('.q', { '--rule': 0 }, { '--rule': 1, stagger: 0.12, duration: 0.6, ease: 'power2.inOut' }, 0.1)
-    .from('.q > *', { y: 24, opacity: 0, stagger: 0.04, duration: 0.5, ease: 'power3.out' }, 0.2);
+  /* builds: the index rules draw in, the preview slides up */
+  gsap.timeline({ scrollTrigger: { trigger: '.bench', start: 'top 75%', once: true } })
+    .from('.bench__index li', { x: -40, opacity: 0, stagger: 0.07, duration: 0.6, ease: 'power3.out' })
+    .from('.bench__view', { y: 80, opacity: 0, duration: 0.9, ease: 'power3.out', clearProps: 'transform' }, 0.1);
 
   /* coffee: one screen — the roast draws itself, the markers pop, the site slides in */
   const bt = document.querySelector('.roast__bt');
@@ -657,9 +808,6 @@
   /* hire */
   gsap.from('.hire h2', { yPercent: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.hire', start: 'top 75%', once: true } });
   gsap.from('.offers li', { x: 60, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.offers', start: 'top 85%', once: true } });
-
-  /* archive rows slide in */
-  ScrollTrigger.batch('.essay', { start: 'top 92%', once: true, onEnter: (els) => gsap.from(els, { x: -40, opacity: 0, stagger: 0.05, duration: 0.7, ease: 'power3.out' }) });
 
   /* footer: the mess assembles itself */
   const footChars = [...document.querySelectorAll('.foot__big [data-i18n]')].flatMap((c) => [...splitChars(c)]);
