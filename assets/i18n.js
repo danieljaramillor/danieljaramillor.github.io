@@ -133,7 +133,7 @@ window.DJ_ES = {
 
   'arc.eyebrow': 'El archivo — ensayos',
   'arc.title': 'Archivismo como filosofía de vida.',
-  'arc.d': 'Si querés conocerme más allá de la hoja de vida, empezá por acá. Todos los ensayos que he escrito, en orden en la repisa: el fracaso, el café, la atención, el generalismo y las palabras que gastamos demasiado fácil.',
+  'arc.d': 'Si querés conocerme más allá de la hoja de vida, empezá por acá. Todos los ensayos que he escrito, en orden: el fracaso, el café, la atención, el generalismo y las palabras que gastamos demasiado fácil.',
   'arc.cta': 'Suscribite en Substack ↗',
 
   'arc.s1': 'Ensayos',
@@ -143,9 +143,8 @@ window.DJ_ES = {
   'arc.new': 'Recientes',
   'arc.old': 'En orden',
   'arc.long': 'Más largos',
-  'arc.random': 'Al azar',
-  'arc.vshelf': 'Repisa',
-  'arc.vlist': 'Lista',
+  'arc.start': 'Empezá por acá — tres para conocerme',
+  'arc.all': 'El archivo completo',
   'foot.mail': 'Escribime ↗',
   'foot.made': 'Construido por capas. Cali → Bogotá.'
 };
