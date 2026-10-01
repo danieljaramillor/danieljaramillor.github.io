@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202610012151">
+<link rel="stylesheet" href="assets/site.css?v=202610012159">
 <script>document.documentElement.classList.add('intro');setTimeout(function(){document.documentElement.classList.remove('intro')},3000);</script>
 </head>
 <body>
@@ -326,7 +326,7 @@
     <span class="eyebrow mono accent" data-i18n="arc.eyebrow">The archive — essays</span>
     <h2 id="archive-title"><span class="mono sh__idx">§ 04</span><span data-i18n="arc.title">Archivism as a philosophy of life.</span></h2>
     <div class="arc__intro">
-      <p class="arc__lede" data-i18n="arc.d">If you want to know me past the CV, start here. Every essay I’ve written, on the shelf in order: failure, coffee, attention, generalism, and the words we spend too easily.</p>
+      <p class="arc__lede" data-i18n="arc.d">If you want to know me past the CV, start here. Every essay I’ve written, in order: failure, coffee, attention, generalism, and the words we spend too easily.</p>
       <dl class="arc__stats">
         <div><dt class="mono" data-i18n="arc.s1">Essays</dt><dd id="stEssays">13</dd></div>
         <div><dt class="mono" data-i18n="arc.s2">Words</dt><dd id="stWords">50k</dd></div>
@@ -337,29 +337,23 @@
     </div>
   </header>
 
+  <div class="picks">
+    <span class="eyebrow mono picks__head" data-i18n="arc.start">Start here — three to know me by</span>
+    <div class="picks__grid" id="picks"></div>
+  </div>
+
   <div class="shelf" id="shelf">
     <div class="shelf__bar">
+      <span class="shelf__label mono" data-i18n="arc.all">The full archive</span>
       <label class="shelf__search"><span aria-hidden="true">⌕</span><input id="shelfQ" type="search" autocomplete="off" spellcheck="false" aria-describedby="shelfCount"><span class="mono" id="shelfCount" aria-live="polite"></span></label>
       <div class="seg seg--sort" role="group" aria-label="Sort">
         <button type="button" data-sort="old" aria-pressed="true" data-i18n="arc.old">In order</button>
         <button type="button" data-sort="new" aria-pressed="false" data-i18n="arc.new">Newest</button>
         <button type="button" data-sort="long" aria-pressed="false" data-i18n="arc.long">Longest</button>
       </div>
-      <button type="button" class="iconbtn" id="shelfRandom"><b aria-hidden="true">↯</b><span data-i18n="arc.random">Random</span></button>
-      <div class="seg seg--view" role="group" aria-label="View">
-        <button type="button" data-view="shelf" aria-pressed="true" data-i18n="arc.vshelf">Shelf</button>
-        <button type="button" data-view="list" aria-pressed="false" data-i18n="arc.vlist">List</button>
-      </div>
     </div>
-    <div class="shelf__body" id="shelfBody">
-      <div class="shelf__case">
-        <span class="shelf__peek mono" id="shelfPeek" aria-hidden="true"></span>
-        <div class="shelf__row" id="shelfRow" role="listbox" aria-label="Essays"></div>
-        <div class="shelf__plank" aria-hidden="true"></div>
-      </div>
-      <article class="shelf__card" id="shelfCard" aria-live="polite"></article>
-    </div>
-    <ol class="shelf__list" id="shelfList" hidden></ol>
+    <div class="strip" id="shelfStrip" aria-hidden="true"></div>
+    <ol class="shelf__list" id="shelfList"></ol>
   </div>
   <noscript><p><a href="https://danieljaramillor.substack.com/archive">Read every essay on Substack ↗</a></p></noscript>
 </section>
@@ -385,7 +379,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="assets/i18n.js?v=202610012151" defer></script>
-<script src="assets/main.js?v=202610012151" defer></script>
+<script src="assets/i18n.js?v=202610012159" defer></script>
+<script src="assets/main.js?v=202610012159" defer></script>
 </body>
 </html>
