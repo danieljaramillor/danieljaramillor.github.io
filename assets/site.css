@@ -705,3 +705,12 @@ section[id],main[id]{scroll-margin-top:92px}
  .hire h2{font-size:clamp(44px,9vw,72px)}
  .offers h3{font-size:25px}
 }
+
+/* Two ways to start a conversation. */
+.contact-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.contact-or{font-size:16px}
+.btn--email{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn--email:hover{background:var(--ink);color:var(--paper)}
+@media(max-width:380px){.contact-actions{gap:10px}.contact-actions .btn{padding-inline:16px}}
+
+@media(max-width:480px){.contact-actions{display:grid;grid-template-columns:1fr;width:100%;gap:8px}.contact-or{text-align:center}.contact-actions .btn{justify-content:center}}

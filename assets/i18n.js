@@ -155,5 +155,8 @@ window.DJ_ES = {
   "picks.next": "Ensayo siguiente",
   "projects.hint": "Deslizá para ver los cinco proyectos",
   "picks.hint": "Deslizá para ver los tres ensayos",
-  "search.clear": "Borrar búsqueda"
+  "search.clear": "Borrar búsqueda",
+  "contact.call": "Agendá una llamada →",
+  "contact.or": "o",
+  "contact.email": "Escribime →"
 };
