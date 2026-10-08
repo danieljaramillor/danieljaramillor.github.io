@@ -21,6 +21,7 @@
   // decided in <head> before first paint (URL, then the visitor's own choice, then the device's languages); this is the fallback
   let lang = window.__djLang || (qLang === 'es' || qLang === 'en' ? qLang : null) || store.get('dj-lang') || ((navigator.languages || [navigator.language || '']).map((x) => String(x).slice(0, 2).toLowerCase()).find((x) => x === 'es' || x === 'en') || 'en');
   const t = (key) => (lang === 'es' ? ES[key] : EN[key]) ?? EN[key] ?? '';
+  let languageLayout = () => {};
 
   function applyLang(next) {
     lang = next === 'es' ? 'es' : 'en';
@@ -30,14 +31,22 @@
     document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     document.title = lang === 'es' ? 'Daniel Jaramillo — Dame el caos.' : 'Daniel Jaramillo — Give me the mess.';
     renderEssays();
+    languageLayout();
     lastState = null;
+    if(reduce||!hasGsap){stateEl.innerHTML=t('hero.state.assembled');lastState='hero.state.assembled';}
     if (hasGsap) ScrollTrigger.refresh();
   }
   document.querySelectorAll('.lang button').forEach((b) =>
     b.addEventListener('click', () => {
       if (b.dataset.lang === lang) return;
       store.set('dj-lang', b.dataset.lang);
-      if (window.gsap && !reduce) { const u = new URL(location.href); u.searchParams.set('lang', b.dataset.lang); u.hash = ''; location.href = u.toString(); } else applyLang(b.dataset.lang);
+      if (window.gsap && !reduce) {
+        const u = new URL(location.href); u.searchParams.set('lang', b.dataset.lang);
+        const section=[...document.querySelectorAll('main > section[id]')].filter(s=>s.getBoundingClientRect().top<innerHeight*.5).pop();
+        const id=section?.id||'top';u.hash=id==='top'?'':'#'+id;
+        try{sessionStorage.setItem('dj-return-section',id);}catch(e){}
+        location.href=u.toString();
+      } else {const u=new URL(location.href);u.searchParams.set('lang',b.dataset.lang);try{history.replaceState(null,'',u);}catch(e){}applyLang(b.dataset.lang);}
     }));
 
   /* ---------------- essays (from data/essays.json, synced by a GitHub Action) ---------------- */
@@ -54,7 +63,7 @@
     'opinar-es-gratis': ['Talk Is Cheap', 'On the real price of knowing something, the experts who aren’t, and why I’d rather be wrong out loud'],
     'no-me-pidan-que-elija': ['Don’t Make Me Choose', 'On generalists, pivots, and the structure that lets you do whatever you want'],
     'muy-llevado-de-su-parecer': ['Headstrong', 'On subcultures, genuine obsessions, and the difference between getting absorbed in something and building yourself from the inside'],
-    'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year of living in the capital (less notes, really, than reflections)'],
+    'la-arquitectura-de-la-acumulacion': ['The Architecture of Accumulation', 'Notes on a year of living in the capital (less a set of notes than a series of reflections)'],
     'hace-2-anos-hoy': ['Two Years Ago Today', 'I lost (almost) everything']
   };
   /* one row per essay, in the reader's language: the English post when one exists, otherwise the Spanish original */
@@ -79,8 +88,8 @@
   const norm = (x) => (x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const pad = (n) => String(n).padStart(2, '0');
   const L = () => (lang === 'es'
-    ? { essays: 'ensayos', none: 'Nada en el archivo con', min: 'min', read: 'Leer', ph: 'Buscá por título o tema', inEs: '', inEn: 'en inglés' }
-    : { essays: 'essays', none: 'Nothing in the archive matches', min: 'min', read: 'Read', ph: 'Search by title or theme', inEs: 'in Spanish', inEn: '' });
+    ? { essays: 'ensayos', none: 'No hay ensayos que coincidan con', min: 'min', read: 'Leer', ph: 'Buscá por título o tema', inEs: '', inEn: 'en inglés' }
+    : { essays: 'essays', none: 'No essays match', min: 'min', read: 'Read', ph: 'Search by title or theme', inEs: 'in Spanish', inEn: '' });
   const mins = (w) => Math.max(1, Math.round(w / 230));
 
   function renderEssays() {
@@ -204,7 +213,24 @@
 
   fetch('data/essays.json', { cache: 'no-cache' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((d) => { essays = [...(d.essays || []), ...(d.en_only || []).map((e) => ({ ...e, en_only: true }))]; renderEssays(); relinkEssays(); if (hasGsap) ScrollTrigger.refresh(); })
+    .then((d) => {
+      // Display-only corrections survive the scheduled Substack refresh.
+      // Source titles and URLs remain intact in the generated data file.
+      const display = {
+        'que-pena': { title: 'Qué pena' },
+        'hace-2-anos-hoy': { title: 'Hace 2 años hoy' },
+        'la-arquitectura-de-la-acumulacion': {
+          title: 'La arquitectura de la acumulación',
+          subtitle: 'Notas sobre un año habitando la capital (más que notas, son reflexiones)'
+        }
+      };
+      (d.essays || []).forEach(e => {
+        Object.assign(e, display[e.slug] || {});
+        if(e.slug === 'la-arquitectura-de-la-acumulacion' && e.en)
+          e.en.subtitle = 'Notes on a year of living in the capital (less a set of notes than a series of reflections)';
+      });
+      window.DJ_ESSAYS = d;
+      essays = [...(d.essays || []), ...(d.en_only || []).map((e) => ({ ...e, en_only: true }))]; renderEssays(); relinkEssays(); document.dispatchEvent(new Event('essays-ready')); if (hasGsap) ScrollTrigger.refresh(); })
     .catch(() => {
       const li = el('li', 'shelf__empty');
       const a = el('a', 'btn btn--ink', 'Substack ↗');
@@ -235,14 +261,24 @@
     menuBtn.setAttribute('aria-expanded', String(open));
     menuLabel.innerHTML = t(open ? 'menu.close' : 'menu.open') || (open ? 'Close' : 'Menu');
     document.body.style.overflow = open ? 'hidden' : '';
+    document.querySelector('main').inert=open;
+    document.querySelector('footer').inert=open;
     if (window.__lenis) open ? window.__lenis.stop() : window.__lenis.start();
     if (open && window.gsap && !reduce) {
       gsap.fromTo(menu.querySelectorAll('.menu__links a, .menu__cta'), { y: 70, opacity: 0, rotateX: -40 }, { y: 0, opacity: 1, rotateX: 0, duration: 0.7, stagger: 0.06, ease: 'power3.out' });
     }
+    if(open)menu.querySelector('a').focus({preventScroll:true});
   }
   menuBtn.addEventListener('click', () => setMenu(menu.hidden));
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
   window.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
+  window.addEventListener('keydown',ev=>{
+    if(menu.hidden||ev.key!=='Tab')return;
+    const items=[...document.querySelectorAll('.nav a,.nav button,#menu a')].filter(n=>n.getClientRects().length);
+    const first=items[0],last=items[items.length-1];
+    if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus();}
+    else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus();}
+  });
   window.matchMedia('(min-width: 1001px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
 
   /* ---------------- bill of materials: tap to open a part (phones) ---------------- */
@@ -251,6 +287,7 @@
     btn.type = 'button';
     btn.className = 'part__toggle';
     btn.setAttribute('aria-expanded', 'false');
+    const notes=part.querySelector('p');notes.id=notes.id||'career-notes-'+i;btn.setAttribute('aria-controls',notes.id);
     btn.setAttribute('aria-label', (part.querySelector('h3') || {}).textContent || 'Part');
     btn.textContent = '+';
     part.querySelector('.part__t').append(btn);
@@ -427,8 +464,9 @@
     window.addEventListener('resize', relayout);
     open(0);
     if (!animate) { setLoad(1); open(0); }
-    return { split, setLoad, lockHeight, bindScroll(fn) { goTo = fn; } };
+    return { split, setLoad, lockHeight, relayout, bindScroll(fn) { goTo = fn; } };
   })();
+  languageLayout=()=>temple?.relayout();
   layoutTiles();
   drawLines();
   window.addEventListener('resize', () => { layoutTiles(); drawLines(); if (!intro || !intro.isActive()) linesEl.querySelectorAll('*').forEach((l) => { l.style.strokeDashoffset = 0; }); });
@@ -454,13 +492,6 @@
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
-    document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (ev) => {
-      const id = a.getAttribute('href');
-      const target = id === '#top' ? 0 : document.querySelector(id);
-      if (target === null) return;
-      ev.preventDefault();
-      lenis.scrollTo(target, { offset: 0, duration: 1.4 });
-    }));
   }
 
   /* nav: the link for the section you are in stays lit */
@@ -775,4 +806,20 @@
   });
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
+})();
+
+(() => {
+  function revealExperience() {
+    const id = location.hash.slice(1);
+    if (!id.startsWith('experience-')) return;
+    const row = document.getElementById(id);
+    if (!row) return;
+    row.classList.add('is-open');
+    const button = row.querySelector('.part__toggle');
+    if (button) { button.setAttribute('aria-expanded', 'true'); button.textContent = '−'; }
+    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+  }
+  window.addEventListener('hashchange', revealExperience);
+
+  revealExperience();
 })();
