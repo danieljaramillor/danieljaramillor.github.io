@@ -15,6 +15,37 @@ A static site, no build step. GitHub Pages serves it straight from the repo.
 - `scripts/fetch_essays.py` + `.github/workflows/substack.yml` — once a week (or on demand from the Actions tab), refresh `data/essays.json` from both Substacks: the Spanish originals at danieljaramillor.substack.com and the English translations at danieljaramilloren.substack.com. Each English post is paired with its Spanish original through the "Originally published in Spanish as…" link at its end, so English readers get English links and Spanish readers get Spanish ones.
 - `img/` — photos and project screenshots.
 
+## Substack sync and recovery
+
+The importer reads only each publication's public RSS feed. New English versions
+must appear in a feed before they can be paired; it never guesses slugs or reads
+individual-post/draft APIs. Explicit Spanish-original links take precedence over
+legacy title pairs. Spanish essays without a published translation remain Spanish
+links in both language views.
+
+Both feeds must parse successfully before the archive is atomically replaced.
+HTTP errors (including 403), timeouts, malformed or empty feeds fail the command
+and the scheduled job, leaving the archive untouched. RSS is a rolling window:
+previously imported essays, translations and word counts are retained when absent.
+This intentionally does not automate deletion/unpublishing; review removals
+explicitly when an already imported post is withdrawn. New RSS entries have no
+word count; the site's existing estimate applies.
+
+If GitHub's hosted runner is refused, the job cannot guarantee automatic updates.
+Do not add proxies, browser impersonation, challenge solvers or credentials. On an
+authorized machine where the public feeds are normally accessible, run:
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 scripts/fetch_essays.py
+git diff -- data/essays.json
+```
+
+Commit the generated result to a review branch and open a PR. If that request is
+also refused, stop and retain the existing archive. No new persistent runner or
+credentials are configured. Merging the reviewed PR into `master` publishes via
+GitHub Pages and requires deployment approval.
+
 ## Editing
 
 - **Change a sentence:** edit it in `index.html` (English) and under the same key in `assets/i18n.js` (Spanish).
