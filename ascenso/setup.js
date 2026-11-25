@@ -14,7 +14,7 @@ const SetupKits=(()=>{
 })();
 if(typeof module!=='undefined')module.exports=SetupKits;
 if(typeof document!=='undefined'){
- const $=id=>document.getElementById(id);let kit='negocio',assistant='chatgpt',mode='install',step=0;
+ const $=id=>document.getElementById(id);let kit='negocio',assistant='chatgpt',mode='paste',step=0;
  const selectedKit=new URLSearchParams(location.search).get('kit');if(selectedKit==='negocio'||selectedKit==='vida'){kit=selectedKit;step=1}
  const steps=Array.from(document.querySelectorAll('.setup-step'));
  const dots=Array.from(document.querySelectorAll('.wizard-dot'));
@@ -26,6 +26,7 @@ if(typeof document!=='undefined'){
   $('setup-back').hidden=step===0;$('setup-next').hidden=step===2;
   if(focus)steps[step].querySelector('h2').focus();
  }
+ function primaryMode(){return assistant==='codex'?'install':'paste'}
  function destination(){return assistant==='codex'?'Pegalo en el chat de tu proyecto en Codex.':assistant==='chatgpt'?'Pegalo en una conversación de ChatGPT.':'Pegalo en tu asistente y seguí sus pasos.'}
  function paint(){
   const k=SetupKits.kits[kit];$('business').setAttribute('aria-pressed',String(kit==='negocio'));$('life').setAttribute('aria-pressed',String(kit==='vida'));
@@ -33,13 +34,16 @@ if(typeof document!=='undefined'){
   $('summary-kit').textContent=kit==='vida'?'Personal y hobbies':'Negocio';$('summary-assistant').textContent=assistantNames[assistant];
   $('prompt').textContent=SetupKits.prompt(kit,assistant,mode);$('zip').href='kit-'+kit+'.zip';$('zip').textContent='Descargar ZIP '+(kit==='vida'?'personal':'de negocio');$('skill').href='kits/'+k.name+'/SKILL.md';
   $('assistant-note').textContent=mode==='paste'?'Este pedido usa el kit como instrucciones en la conversación. No necesitás instalarlo.':assistant==='codex'?'El pedido le indica a Codex cómo revisar e instalar el kit en tu proyecto. Codex te confirma qué quedó preparado.':'Tu asistente puede guardarlo como skill si tiene esa función. Si no, el pedido le permite empezar con las instrucciones en la conversación.';
-  $('status').textContent='';$('open-chatgpt').hidden=assistant!=='chatgpt';$('paste-where').textContent=destination();
+  $('copy').textContent=assistant==='codex'?'1. Copiar pedido de instalación':'1. Copiar para empezar';$('use-now').textContent=assistant==='codex'?'Copiar para usar sin instalar':'Copiar pedido para guardarlo';$('save-title').textContent=assistant==='codex'?'¿Preferís usarlo sin instalar?':'¿Querés guardarlo para otra vez?';$('next-instructions').textContent=assistant==='codex'?'En el chat del proyecto: pegá el pedido y envialo. Codex te confirmará qué preparó y te ayudará a empezar.':'En el chat: mantené pulsado el cuadro de mensaje, elegí Pegar y tocá Enviar. El asistente te preguntará qué querés probar y qué te frena.';$('status').textContent='';$('open-chatgpt').setAttribute('aria-disabled','true');$('open-chatgpt').tabIndex=-1;$('setup-manual').hidden=true;$('open-chatgpt').hidden=assistant!=='chatgpt';$('paste-where').textContent=destination();
  }
- async function copy(id,status){const el=$(id);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$(status).textContent='Copiado. '+(id==='prompt'?destination():'Pegalo en tu asistente.');}catch{let parent=el.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}const range=document.createRange();range.selectNodeContents(el);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);$(status).textContent='Texto seleccionado. Copialo con Cmd+C o Ctrl+C y pegalo en tu asistente.'}}
- $('business').onclick=()=>{kit='negocio';mode='install';paint()};$('life').onclick=()=>{kit='vida';mode='install';paint()};
- document.querySelectorAll('[data-assistant]').forEach(b=>b.onclick=()=>{assistant=b.dataset.assistant;mode='install';paint()});
+ function readyToOpen(){$('open-chatgpt').removeAttribute('aria-disabled');$('open-chatgpt').removeAttribute('tabindex')}
+ async function copy(id,status){const el=$(id);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$(status).textContent='Copiado. '+(id==='prompt'?destination()+' Después tocá Enviar.':'Pegalo en tu asistente y envialo.');if(id==='prompt')readyToOpen();}catch{if(id==='prompt'){$('setup-manual').hidden=false;$('setup-manual-text').value=el.textContent;$('setup-manual-text').focus();$('setup-manual-text').select();$(status).textContent='No se pudo copiar automáticamente. Copiá el texto de abajo y tocá «Ya copié el pedido».';}else{let parent=el.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}$(status).textContent='Mantené pulsado el texto del pedido y elegí Copiar.'}}}
+ $('setup-manual-ready').onclick=()=>{readyToOpen();$('status').textContent='Abrí tu asistente, pegá el pedido y tocá Enviar.'};
+ $('open-chatgpt').onclick=e=>{if($('open-chatgpt').getAttribute('aria-disabled')==='true')e.preventDefault()};
+ $('business').onclick=()=>{kit='negocio';mode=primaryMode();paint()};$('life').onclick=()=>{kit='vida';mode=primaryMode();paint()};
+ document.querySelectorAll('[data-assistant]').forEach(b=>b.onclick=()=>{assistant=b.dataset.assistant;mode=primaryMode();paint()});
  $('setup-next').onclick=()=>moveStep(step+1);$('setup-back').onclick=()=>moveStep(step-1);$('edit-setup').onclick=()=>moveStep(0);
- $('copy').onclick=()=>{mode='install';paint();copy('prompt','status')};$('use-now').onclick=()=>{mode='paste';paint();copy('prompt','status')};
+ $('copy').onclick=()=>{mode=primaryMode();paint();copy('prompt','status')};$('use-now').onclick=()=>{mode=primaryMode()==='install'?'paste':'install';paint();copy('prompt','status')};
  $('tool').onchange=()=>{$('tool-prompt').textContent=SetupKits.toolPrompt($('tool').value);$('tool-status').textContent=''};$('copy-tool').onclick=()=>copy('tool-prompt','tool-status');
  $('tool').onchange();paint();moveStep(step,false);
 }
