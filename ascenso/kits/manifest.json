@@ -1,0 +1,12 @@
+{
+  "negocio": {
+    "file": "kit-negocio.zip",
+    "sha256": "f6646f38e3b50d5bf418e61b3c68f394b8c0246f8de3efb07543cbe00fac2a29",
+    "skill": "kits/ascenso-negocio/SKILL.md"
+  },
+  "vida": {
+    "file": "kit-vida.zip",
+    "sha256": "cdb783330c04ada7a18bcd5963a9cf80cc7b296716776c068015f9b85d0d9b9e",
+    "skill": "kits/ascenso-vida/SKILL.md"
+  }
+}
