@@ -44,17 +44,32 @@ Dejame una primera acción para hoy, qué voy a observar y qué me haría seguir
 const BrainstormUI=FirstTest;
 if(typeof module!=='undefined')module.exports=FirstTest;
 if(typeof document!=='undefined'){
- const $=id=>document.getElementById(id);let kit='negocio',selected=0;
+ const $=id=>document.getElementById(id);let kit='negocio',selected=0,step=0;
+ const steps=Array.from(document.querySelectorAll('.wizard-step'));
+ const dots=Array.from(document.querySelectorAll('.wizard-dot'));
+ function moveStep(next,focus=true){
+  step=Math.max(0,Math.min(2,next));steps.forEach((el,i)=>{el.hidden=i!==step});
+  dots.forEach((el,i)=>{el.classList.toggle('is-active',i===step);el.classList.toggle('is-done',i<step);if(i===step)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current')});
+  $('step-status').textContent=(step+1)+' de 3 · '+['Tu idea','Tu bloqueo','Lo que tenés'][step];
+  $('wizard-back').hidden=step===0;$('wizard-next').hidden=step===2;$('build-plan').hidden=step!==2;
+  if(focus){const legend=steps[step].querySelector('legend');legend.tabIndex=-1;legend.focus()}
+ }
+ function validIdea(){const el=$('idea');el.setCustomValidity(el.value.trim()?'':'Contá tu idea en una frase para seguir.');return el.reportValidity()}
+ $('idea').addEventListener('input',()=>{$('idea').setCustomValidity('')});
+ $('wizard-next').onclick=()=>{if(step===0&&!validIdea())return;moveStep(step+1)};
+ $('wizard-back').onclick=()=>moveStep(step-1);
+ $('edit-answers').onclick=()=>{moveStep(0);$('taller').scrollIntoView({behavior:'auto',block:'start'});$('idea').focus()};
+ $('mi-prueba').hidden=true;moveStep(0,false);
  function values(){return FirstTest.normalize({kit,idea:$('idea').value,blocker:$('blocker').value,blockerDetail:$('blocker-detail').value,time:$('available-time').value,resources:$('resources').value,date:$('test-date').value,criterion:$('criterion').value})}
  function text(tag,value,cls){const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;return el;}
  function paint(){const input=values(),opts=FirstTest.options(input);$('business-kit').setAttribute('aria-pressed',String(kit==='negocio'));$('life-kit').setAttribute('aria-pressed',String(kit==='vida'));$('idea').placeholder=kit==='vida'?'Quiero aprender a hacer pasta sin seguir aplazándolo…':'Quiero probar una idea que ayude a…';$('test-options').replaceChildren();
-  opts.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='test-option';b.id='test-option-'+i;b.setAttribute('aria-pressed',String(i===selected));b.append(text('span',String(i+1).padStart(2,'0'),'option-number'));const body=document.createElement('div');body.append(text('h4',o.title),text('p',o.action));const dl=document.createElement('dl');for(const [k,v]of [['Esfuerzo',o.effort],['Costo',o.cost],['Reversible',o.reversible],['Aprendería',o.learning]]){const group=document.createElement('div');group.append(text('dt',k),text('dd',v));dl.append(group)}body.append(dl);b.append(body);b.onclick=()=>{selected=i;paint();$('test-option-'+i).focus()};$('test-options').append(b)});
+  opts.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='test-option';b.id='test-option-'+i;b.setAttribute('aria-pressed',String(i===selected));b.append(text('span',String(i+1).padStart(2,'0'),'option-number'));const body=document.createElement('div');const heading=text('h4',o.title);body.append(heading);const description=text('p',o.action);description.hidden=i!==selected;body.append(description);const dl=document.createElement('dl');for(const [k,v]of [['Esfuerzo',o.effort],['Costo',o.cost],['Reversible',o.reversible],['Aprendería',o.learning]]){const group=document.createElement('div');group.append(text('dt',k),text('dd',v));dl.append(group)}dl.hidden=i!==selected;body.append(dl);b.setAttribute('aria-label',o.title+(i===selected?'. Elegida. '+o.action:'. Elegir este camino.'));b.append(body);b.onclick=()=>{selected=i;paint();$('test-option-'+i).focus()};$('test-options').append(b)});
   $('personalized-prompt').textContent=FirstTest.prompt(input,selected);const goal=input.idea?'Para «'+input.idea+'»: ':'Tu primer paso: ';$('action-summary').textContent=goal+opts[selected].action+(input.date?' Fecha elegida: '+input.date+'.':' Elegí cuándo lo vas a probar.');$('personal-copy-status').textContent='';
  }
- function selectText(el){const range=document.createRange();range.selectNodeContents(el);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range)}
+ function selectText(el){let parent=el.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}const range=document.createRange();range.selectNodeContents(el);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range)}
  async function copyPersonal(){const el=$('personalized-prompt');try{if(!navigator.clipboard)throw Error('Sin portapapeles');await navigator.clipboard.writeText(el.textContent);$('personal-copy-status').textContent='Prompt copiado. Pegalo en tu asistente.';return true}catch{selectText(el);$('personal-copy-status').textContent='Seleccionamos el prompt. Copialo con Cmd+C o Ctrl+C y pegalo en tu asistente.';return false}}
  $('business-kit').onclick=()=>{kit='negocio';selected=0;paint()};$('life-kit').onclick=()=>{kit='vida';selected=0;paint()};for(const id of ['idea','blocker','blocker-detail','available-time','resources','test-date','criterion'])$(id).addEventListener('input',paint);
- $('first-test-form').addEventListener('submit',e=>{e.preventDefault();paint();$('mi-prueba').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
+ $('first-test-form').addEventListener('submit',e=>{e.preventDefault();if(step<2){if(step===0&&!validIdea())return;moveStep(step+1);return}if(!$('idea').value.trim()){moveStep(0);validIdea();return}paint();$('mi-prueba').hidden=false;$('studio-title').tabIndex=-1;$('studio-title').focus({preventScroll:true});$('mi-prueba').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
  $('load-example').onclick=()=>{$('idea').value=kit==='vida'?'Aprender a hacer pasta fresca sin comprar una máquina':'Ayudar a coordinar un viaje de Normandía a Icesi antes de las siete';$('blocker').value=kit==='vida'?'aprender':'no-se';$('resources').value=kit==='vida'?'Una cocina y un rato para una primera cena':'Un esquema de la app y una persona a quien mostrárselo';paint()};
  $('copy-personal-prompt').onclick=()=>copyPersonal();$('copy-open-chatgpt').onclick=async()=>{const pending=copyPersonal();window.open('https://chatgpt.com/','_blank','noopener,noreferrer');const ok=await pending;if(ok)$('personal-copy-status').textContent='Prompt copiado. Pegalo en la pestaña de ChatGPT que abrimos.';};
  document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{const el=$(b.dataset.copy);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$('copy-status').textContent='Prompt copiado. Pegalo en tu asistente.';}catch{selectText(el);$('copy-status').textContent='Texto seleccionado. Copialo con Cmd+C o Ctrl+C.';}}));
