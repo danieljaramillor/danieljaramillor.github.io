@@ -1,4 +1,5 @@
 window.DJ_ES = {
+  "ascenso.article": "Ascenso: ideas, IA y una primera prueba",
   "skip": "Saltar al contenido",
   "nav.pillars": "Pilares",
   "nav.story": "Recorrido",
