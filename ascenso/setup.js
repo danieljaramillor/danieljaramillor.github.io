@@ -14,9 +14,32 @@ const SetupKits=(()=>{
 })();
 if(typeof module!=='undefined')module.exports=SetupKits;
 if(typeof document!=='undefined'){
- const $=id=>document.getElementById(id);let kit='negocio',assistant='chatgpt',mode='install';
- const selectedKit=new URLSearchParams(location.search).get('kit');if(selectedKit==='negocio'||selectedKit==='vida')kit=selectedKit;
- function paint(){const k=SetupKits.kits[kit];$('business').setAttribute('aria-pressed',String(kit==='negocio'));$('life').setAttribute('aria-pressed',String(kit==='vida'));document.querySelectorAll('[data-assistant]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.assistant===assistant)));$('prompt').textContent=SetupKits.prompt(kit,assistant,mode);$('zip').href='kit-'+kit+'.zip';$('zip').textContent='Descargar ZIP '+(kit==='vida'?'personal':'de negocio');$('skill').href='kits/'+k.name+'/SKILL.md';$('assistant-note').textContent=assistant==='codex'?'Codex puede descargar, revisar e instalar la skill en tu proyecto con este pedido.':'El pedido crea una skill si tu asistente tiene esa función. Si no, podés usarla como instrucciones desde ya.';$('status').textContent='';$('open-chatgpt').hidden=assistant!=='chatgpt';$('paste-where').textContent=assistant==='codex'?'Pegalo en el chat del proyecto que abriste en Codex.':assistant==='chatgpt'?'Pegalo en una conversación de ChatGPT.':'Pegalo en tu asistente y seguí sus pasos.';}
- async function copy(id,status){const el=$(id);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$(status).textContent='Copiado. Ahora pegalo en tu asistente.';}catch{if(id==='prompt')$('prompt-detail').open=true;const range=document.createRange();range.selectNodeContents(el);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);$(status).textContent='Texto seleccionado. Copialo con Cmd+C o Ctrl+C.'}}
- $('business').onclick=()=>{kit='negocio';mode='install';paint()};$('life').onclick=()=>{kit='vida';mode='install';paint()};document.querySelectorAll('[data-assistant]').forEach(b=>b.onclick=()=>{assistant=b.dataset.assistant;mode='install';paint()});$('copy').onclick=()=>{mode='install';paint();copy('prompt','status')};$('use-now').onclick=()=>{mode='paste';paint();copy('prompt','status')};$('tool').onchange=()=>{$('tool-prompt').textContent=SetupKits.toolPrompt($('tool').value);$('tool-status').textContent=''};$('copy-tool').onclick=()=>copy('tool-prompt','tool-status');$('tool').onchange();paint();
+ const $=id=>document.getElementById(id);let kit='negocio',assistant='chatgpt',mode='install',step=0;
+ const selectedKit=new URLSearchParams(location.search).get('kit');if(selectedKit==='negocio'||selectedKit==='vida'){kit=selectedKit;step=1}
+ const steps=Array.from(document.querySelectorAll('.setup-step'));
+ const dots=Array.from(document.querySelectorAll('.wizard-dot'));
+ const assistantNames={chatgpt:'ChatGPT',codex:'Codex',otro:'Otro asistente'};
+ function moveStep(next,focus=true){
+  step=Math.max(0,Math.min(2,next));steps.forEach((el,i)=>{el.hidden=i!==step});
+  dots.forEach((el,i)=>{el.classList.toggle('is-active',i===step);el.classList.toggle('is-done',i<step);if(i===step)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current')});
+  $('setup-progress').textContent=(step+1)+' de 3 · '+['Tu kit','Tu asistente','Listo para pegar'][step];
+  $('setup-back').hidden=step===0;$('setup-next').hidden=step===2;
+  if(focus)steps[step].querySelector('h2').focus();
+ }
+ function destination(){return assistant==='codex'?'Pegalo en el chat de tu proyecto en Codex.':assistant==='chatgpt'?'Pegalo en una conversación de ChatGPT.':'Pegalo en tu asistente y seguí sus pasos.'}
+ function paint(){
+  const k=SetupKits.kits[kit];$('business').setAttribute('aria-pressed',String(kit==='negocio'));$('life').setAttribute('aria-pressed',String(kit==='vida'));
+  document.querySelectorAll('[data-assistant]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.assistant===assistant)));
+  $('summary-kit').textContent=kit==='vida'?'Personal y hobbies':'Negocio';$('summary-assistant').textContent=assistantNames[assistant];
+  $('prompt').textContent=SetupKits.prompt(kit,assistant,mode);$('zip').href='kit-'+kit+'.zip';$('zip').textContent='Descargar ZIP '+(kit==='vida'?'personal':'de negocio');$('skill').href='kits/'+k.name+'/SKILL.md';
+  $('assistant-note').textContent=mode==='paste'?'Este pedido usa el kit como instrucciones en la conversación. No necesitás instalarlo.':assistant==='codex'?'El pedido le indica a Codex cómo revisar e instalar el kit en tu proyecto. Codex te confirma qué quedó preparado.':'Tu asistente puede guardarlo como skill si tiene esa función. Si no, el pedido le permite empezar con las instrucciones en la conversación.';
+  $('status').textContent='';$('open-chatgpt').hidden=assistant!=='chatgpt';$('paste-where').textContent=destination();
+ }
+ async function copy(id,status){const el=$(id);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$(status).textContent='Copiado. '+(id==='prompt'?destination():'Pegalo en tu asistente.');}catch{let parent=el.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}const range=document.createRange();range.selectNodeContents(el);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);$(status).textContent='Texto seleccionado. Copialo con Cmd+C o Ctrl+C y pegalo en tu asistente.'}}
+ $('business').onclick=()=>{kit='negocio';mode='install';paint()};$('life').onclick=()=>{kit='vida';mode='install';paint()};
+ document.querySelectorAll('[data-assistant]').forEach(b=>b.onclick=()=>{assistant=b.dataset.assistant;mode='install';paint()});
+ $('setup-next').onclick=()=>moveStep(step+1);$('setup-back').onclick=()=>moveStep(step-1);$('edit-setup').onclick=()=>moveStep(0);
+ $('copy').onclick=()=>{mode='install';paint();copy('prompt','status')};$('use-now').onclick=()=>{mode='paste';paint();copy('prompt','status')};
+ $('tool').onchange=()=>{$('tool-prompt').textContent=SetupKits.toolPrompt($('tool').value);$('tool-status').textContent=''};$('copy-tool').onclick=()=>copy('tool-prompt','tool-status');
+ $('tool').onchange();paint();moveStep(step,false);
 }
