@@ -30,3 +30,14 @@ body{overflow-x:clip}[aria-disabled=true]{opacity:.45;pointer-events:none}.open-
 .login-help{font-size:12px;line-height:1.6;color:#c2c6b4;margin:12px 0}
 
 .choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.choices button{padding:16px 32px 16px 13px;min-height:84px}.choices button:after{right:11px;top:20px;width:12px;height:12px}.choices strong{font-size:16px;overflow-wrap:break-word}.choices span{font-size:11px}#open-manual{border:1px solid #ffffff40;border-radius:9px;padding:13px 16px}@media(max-width:380px){.choices{grid-template-columns:1fr}.choices button{min-height:64px}}
+
+.install-link { font-weight: 750; }
+@media (max-width:760px) {
+  .setup-in-progress .setup-hero { padding-top: 16px; gap: 10px; }
+  .setup-in-progress .setup-copy > :not(h1) { display: none; }
+  .setup-in-progress .setup-copy h1 { margin: 4px 0; font-size: 29px; letter-spacing: -.035em; }
+  .setup-in-progress .setup-copy h1 span { display: inline; font-size: 1em; }
+  .setup-in-progress .setup-copy h1 em { display: inline; }
+  .setup-in-progress .setup-copy h1 em br,
+  .setup-in-progress .setup-copy h1 em::after { display: none; }
+}

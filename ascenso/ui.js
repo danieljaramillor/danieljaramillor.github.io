@@ -80,6 +80,14 @@ if(typeof document!=='undefined'){
  $('article-assistant').onchange=updateAssistant;
  $('copy-personal-prompt').onclick=()=>copyPersonal();$('copy-open-chatgpt').onclick=e=>{if($('copy-open-chatgpt').getAttribute('aria-disabled')==='true')e.preventDefault()};
  document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{const el=$(b.dataset.copy);try{if(!navigator.clipboard)throw Error();await navigator.clipboard.writeText(el.textContent);$('copy-status').textContent='Prompt copiado. Pegalo en tu asistente.';}catch{selectText(el);$('copy-status').textContent='Mantené pulsado el texto y elegí Copiar. En computador, usá Ctrl+C o Cmd+C.';}}));
- function revealHash(){const id=decodeURIComponent(location.hash.slice(1));if(!id)return;const el=document.getElementById(id);if(el&&el.tagName==='DETAILS')el.open=true;}
+ function revealHash(){
+  const id=location.hash.slice(1);
+  if(!id)return;
+  const target=document.getElementById(id);
+  if(!target)return;
+  for(let element=target;element;element=element.parentElement){
+   if(element.tagName==='DETAILS')element.open=true;
+  }
+ }
  window.addEventListener('hashchange',revealHash);revealHash();paint();
 }
