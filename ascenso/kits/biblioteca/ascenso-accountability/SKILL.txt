@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-accountability
 description: Acompañar compromisos elegidos por la persona mediante revisiones breves, evidencia y próximos pasos; crear recordatorios solo con funciones nativas disponibles y autorización concreta.
 ---

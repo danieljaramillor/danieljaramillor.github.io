@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-simulaciones
 description: Elegir y preparar MiroFish, TinyTroupe u OASIS para explorar hipótesis y objeciones, verificando requisitos y costos; convertir resultados sintéticos en cambios y pruebas con personas reales.
 ---

@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-mensaje
 description: Escribir una oferta, invitación o landing clara para una prueba, con un destinatario y una acción principal, sin testimonios, resultados ni urgencia inventados.
 ---

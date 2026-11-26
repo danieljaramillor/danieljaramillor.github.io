@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-vida
 description: Ayuda a empezar un proyecto personal o hobby aplazado mediante brainstorming acotado y una experiencia pequeña, sin convertir el disfrute en una meta de negocio.
 ---

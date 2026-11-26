@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-verificacion
 description: Comprobar un recorrido y sus resultados antes de entregarlos o publicarlos, contrastando afirmaciones con evidencia y diferenciando prueba local, despliegue, integración y ejecución real.
 ---

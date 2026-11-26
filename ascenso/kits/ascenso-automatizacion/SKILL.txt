@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-automatizacion
 description: Revisar conexiones del asistente, descubrir pequeñas tareas repetidas y preparar o activar automatizaciones verificables de calendario, correo, envíos y compromisos, según las capacidades reales de la cuenta.
 ---

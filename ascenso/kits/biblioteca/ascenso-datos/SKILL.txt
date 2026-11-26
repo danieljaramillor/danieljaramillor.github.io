@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-datos
 description: Definir y analizar evidencia de una prueba de idea o automatización, verificando fuentes, denominadores, calidad y límites; medir uso, aprendizaje o tiempo ahorrado sin inventar datos ni confundir simulación con observación.
 ---

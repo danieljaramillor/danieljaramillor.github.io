@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-integraciones
 description: Conectar una rutina autorizada con herramientas existentes, evaluar conectores, webhooks o flujos como n8n, Make y Zapier, y probar permisos, duplicados, fallos y parada antes de activarla.
 ---

@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-negocio
 description: Ayuda a convertir una idea de negocio aplazada en una primera prueba pequeña con personas reales, explorando bloqueos y comparando opciones antes de construir.
 ---

@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-experimentos
 description: Diseñar pruebas pequeñas con una hipótesis, observación y criterio previo; registrar resultados reales y límites para decidir si seguir, ajustar o parar.
 ---

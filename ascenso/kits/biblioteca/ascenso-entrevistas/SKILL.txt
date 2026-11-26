@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-entrevistas
 description: Preparar y analizar entrevistas neutrales sobre experiencias reales, con consentimiento para registrar y separación entre declaraciones, conducta observada e hipótesis.
 ---

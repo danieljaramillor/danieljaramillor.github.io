@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-diseno
 description: Diseñar y revisar el recorrido de una primera prueba, prototipo o kit para que una persona sin experiencia entienda qué hacer, pueda completarlo en celular y reciba estados y errores claros.
 ---

@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-investigacion
 description: Investigar un problema o decisión con fuentes verificables, separar hechos de inferencias y producir preguntas útiles para una prueba de negocio, personal o de automatización.
 ---

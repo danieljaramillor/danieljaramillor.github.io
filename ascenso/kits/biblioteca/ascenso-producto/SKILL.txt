@@ -1,4 +1,8 @@
 ---
+layout: null
+render_with_liquid: false
+---
+---
 name: ascenso-producto
 description: Convertir una idea de negocio, una experiencia personal o una rutina repetida en un problema concreto, supuestos y una primera prueba con evidencia real antes de ampliar la solución.
 ---
