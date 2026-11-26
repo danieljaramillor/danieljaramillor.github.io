@@ -24,7 +24,7 @@ const SetupKits=(()=>{
   return 'Quiero instalar todos los kits de Ascenso. El paquete completo incluye los tres kits, 27 skills y guías para 14 herramientas. '+setup+nativeSetup+' Decime qué quedó instalado y qué requiere configuración adicional. Conservá las versiones existentes y verificá cada resultado. Al terminar, preguntame si quiero probar una idea de negocio, empezar un proyecto personal o ahorrar tiempo con una automatización. Para automatizar, primero revisá las conexiones disponibles y prepará una prueba de la rutina elegida. La instalación no autoriza conectar cuentas, activar automatizaciones, enviar mensajes ni publicar.'+(goal.trim()?'\nMi objetivo: '+goal.trim():'');
  }
  function buildPrompt(kit,assistant,mode,goal=''){
-  const k=kits[kit]||kits.negocio;const instructions=k.instructions||common;const idea=goal.trim()?'\nMi objetivo: '+goal.trim():'';const skill=origin+'kits/'+k.name+'/SKILL.md';
+  const k=kits[kit]||kits.negocio;const instructions=k.instructions||common;const idea=goal.trim()?'\nMi objetivo: '+goal.trim():'';const skill=origin+'kits/'+k.name+'/SKILL.txt';
   if(mode==='paste')return k.focus+'\n\n'+instructions+idea+'\n\nLa skill de referencia está en '+skill+'. Si no podés abrir enlaces, estas instrucciones ya alcanzan para empezar. '+(k.start||'Empezá preguntándome qué quiero averiguar y qué me frena.');
   if(assistant==='codex')return 'Instalá el kit '+k.name+' en ESTE proyecto de Codex. Descargá '+origin+'kit-'+kit+'.zip y consultá su hash en '+origin+'kits/manifest.json. Antes de instalar, comprobá el hash y revisá los archivos: '+k.name+'/SKILL.md, EMPEZAR.txt e instalar_kits.py. No ejecutes código remoto sin revisarlo. El instalador es Python estándar, no usa red ni dependencias. Prepará primero un dry-run para la carpeta de proyecto actual y después instalá en .agents/skills/'+k.name+'/SKILL.md; conservá cualquier versión distinta que ya exista. No modifiques configuración global ni otros proyectos. Confirmá qué archivo quedó instalado. Si este asistente no tiene descargas o terminal, leé '+skill+' y usalo como instrucciones en esta conversación. Después usá $'+k.name+' para ayudarme a empezar.'+idea+'\n\n'+k.focus+'\n'+instructions;
   if(assistant==='claude-code')return 'Instalá el kit '+k.name+' en ESTE proyecto de Claude Code. Descargá '+origin+'kit-'+kit+'.zip y comprobá su hash en '+origin+'kits/manifest.json. Revisá el contenido y extraé el archivo '+k.name+'/SKILL.md. Creá .claude/skills/'+k.name+'/SKILL.md con ese contenido, conservando cualquier versión distinta que exista. No ejecutes instalar_kits.py para esta instalación individual. Esta skill solo necesita texto. No cambies configuración global ni otros proyectos. Comprobá que Claude Code reconoce la skill y explicame cómo usar /'+k.name+'. Si no tenés acceso a archivos o terminal, usá las instrucciones en esta conversación. Confirmá qué quedó instalado, sin inventarlo.'+idea+'\n\n'+k.focus+'\n'+instructions;
@@ -75,7 +75,7 @@ if(typeof document!=='undefined'){
   document.querySelectorAll('[data-import-kit]').forEach(link=>{
    const id=link.dataset.importKit;
    link.closest('li').hidden=!complete&&kit!==id;
-   link.href=claude?'kit-'+id+'-claude.zip':'kits/'+SetupKits.kits[id].name+'/SKILL.md';
+   link.href=claude?'kit-'+id+'-claude.zip':'kits/'+SetupKits.kits[id].name+'/SKILL.txt';
    link.download=claude?'':'SKILL.md';
   });
  }
@@ -91,7 +91,7 @@ if(typeof document!=='undefined'){
   $('prompt').textContent=SetupKits.prompt(kit,assistant,mode);
   $('zip').href='kit-'+kit+'.zip';
   $('zip').textContent='Descargar ZIP '+k.download;
-  $('skill').href=complete?'AGENTS.md':'kits/'+k.name+'/SKILL.md';
+  $('skill').href=complete?'AGENTS.md':'kits/'+k.name+'/SKILL.txt';
   $('skill').textContent=complete?'Leer la guía común':'Leer las instrucciones del kit';
   $('save-kit').hidden=complete;
   $('complete-option').hidden=complete;
