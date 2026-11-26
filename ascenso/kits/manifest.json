@@ -5,7 +5,11 @@
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
-    "skill": "kits/ascenso-negocio/SKILL.md"
+    "skill": "kits/ascenso-negocio/SKILL.md",
+    "claude": {
+      "file": "kit-negocio-claude.zip",
+      "sha256": "2bf2b805480e5087761b7f6b7eb657ff0af78e89b4a36ff0fd26c360f9dd3e30"
+    }
   },
   "vida": {
     "file": "kit-vida.zip",
@@ -13,7 +17,11 @@
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
-    "skill": "kits/ascenso-vida/SKILL.md"
+    "skill": "kits/ascenso-vida/SKILL.md",
+    "claude": {
+      "file": "kit-vida-claude.zip",
+      "sha256": "0f647d4919a6a4de4ae7f1b599c8b965e98dabb386774f9e8423773404a02892"
+    }
   },
   "automatizacion": {
     "file": "kit-automatizacion.zip",
@@ -21,7 +29,11 @@
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
-    "skill": "kits/ascenso-automatizacion/SKILL.md"
+    "skill": "kits/ascenso-automatizacion/SKILL.md",
+    "claude": {
+      "file": "kit-automatizacion-claude.zip",
+      "sha256": "4e8ddd9e7ea2b4370151a029b6f5a66e1dfa6b17fabd264c835979d113df8687"
+    }
   },
   "completo": {
     "file": "kit-completo.zip",

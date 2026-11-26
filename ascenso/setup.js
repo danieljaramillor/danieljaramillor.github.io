@@ -14,17 +14,22 @@ const SetupKits=(()=>{
  function completePrompt(assistant,goal){
   const code=assistants.get(assistant).code;
   const setup=code
-   ? 'Usá solo este proyecto. Descargá '+origin+'kit-completo.zip y verificá su SHA-256 en '+origin+'kits/manifest.json. Revisá el ZIP y el instalador. Desde la carpeta descomprimida ejecutá python3 instalar_kits.py --kit todos --biblioteca --externas --assistant '+assistant+' --proyecto /ruta/al/proyecto --dry-run. Si los destinos son correctos repetí sin --dry-run. Comprobá qué skills reconoce el asistente. Guiame para preparar las herramientas que sean compatibles, según AGENTS.md y el entorno real.'
+   ? 'Usá solo este proyecto. Descargá '+origin+'kit-completo.zip y verificá su SHA-256 en '+origin+'kits/manifest.json. Revisá el ZIP y el instalador. Desde la carpeta descomprimida ejecutá python3 instalar_kits.py --kit todos --biblioteca --externas --assistant '+assistant+' --proyecto /ruta/al/proyecto --dry-run. Reemplazá /ruta/al/proyecto por la ruta absoluta de este proyecto, entre comillas. Si los destinos son correctos repetí sin --dry-run. Comprobá qué skills reconoce el asistente. Guiame para preparar las herramientas que sean compatibles, según AGENTS.md y el entorno real.'
    : 'En '+assistants.get(assistant).name+', comprobá qué formas de guardar instrucciones o skills admite mi cuenta y guiame paso a paso. El paquete está en '+origin+'kit-completo.zip. Si requiere adjuntarlo, pedímelo. Prepará las skills y las herramientas compatibles con el entorno de esta cuenta. Si solo tenemos chat, usá las instrucciones disponibles como referencia y guiame para empezar con uno de los kits.';
-  return 'Quiero instalar todos los kits de Ascenso. El paquete completo incluye los tres kits, 27 skills y guías para 14 herramientas. '+setup+' Decime qué quedó instalado y qué requiere configuración adicional. Conservá las versiones existentes y verificá cada resultado. Al terminar, preguntame si quiero probar una idea de negocio, empezar un proyecto personal o ahorrar tiempo con una automatización. Para automatizar, primero revisá las conexiones disponibles y prepará una prueba de la rutina elegida. La instalación no autoriza conectar cuentas, activar automatizaciones, enviar mensajes ni publicar.'+(goal.trim()?'\nMi objetivo: '+goal.trim():'');
+  const nativeSetup=assistant==='claude'
+   ? ' Importá los tres kits principales por separado desde Personalizar → Skills. Cada kit se sube como un ZIP individual desde '+origin+'setup.html?kit=completo&assistant=claude. Usá el paquete completo para consultar la biblioteca y preparar las skills adicionales que quieras usar.'
+   :assistant==='gemini'
+    ? ' En Gemini web o Mac, importá los archivos SKILL.md de los tres kits desde Personalizar → Skills, si tu cuenta tiene esa opción. Están en '+origin+'setup.html?kit=completo&assistant=gemini. Si tu cuenta permite crear Gems, también podés guardar ahí las instrucciones.'
+    :'';
+  return 'Quiero instalar todos los kits de Ascenso. El paquete completo incluye los tres kits, 27 skills y guías para 14 herramientas. '+setup+nativeSetup+' Decime qué quedó instalado y qué requiere configuración adicional. Conservá las versiones existentes y verificá cada resultado. Al terminar, preguntame si quiero probar una idea de negocio, empezar un proyecto personal o ahorrar tiempo con una automatización. Para automatizar, primero revisá las conexiones disponibles y prepará una prueba de la rutina elegida. La instalación no autoriza conectar cuentas, activar automatizaciones, enviar mensajes ni publicar.'+(goal.trim()?'\nMi objetivo: '+goal.trim():'');
  }
  function buildPrompt(kit,assistant,mode,goal=''){
   const k=kits[kit]||kits.negocio;const instructions=k.instructions||common;const idea=goal.trim()?'\nMi objetivo: '+goal.trim():'';const skill=origin+'kits/'+k.name+'/SKILL.md';
   if(mode==='paste')return k.focus+'\n\n'+instructions+idea+'\n\nLa skill de referencia está en '+skill+'. Si no podés abrir enlaces, estas instrucciones ya alcanzan para empezar. '+(k.start||'Empezá preguntándome qué quiero averiguar y qué me frena.');
   if(assistant==='codex')return 'Instalá el kit '+k.name+' en ESTE proyecto de Codex. Descargá '+origin+'kit-'+kit+'.zip y consultá su hash en '+origin+'kits/manifest.json. Antes de instalar, comprobá el hash y revisá los archivos: '+k.name+'/SKILL.md, EMPEZAR.txt e instalar_kits.py. No ejecutes código remoto sin revisarlo. El instalador es Python estándar, no usa red ni dependencias. Prepará primero un dry-run para la carpeta de proyecto actual y después instalá en .agents/skills/'+k.name+'/SKILL.md; conservá cualquier versión distinta que ya exista. No modifiques configuración global ni otros proyectos. Confirmá qué archivo quedó instalado. Si este asistente no tiene descargas o terminal, leé '+skill+' y usalo como instrucciones en esta conversación. Después usá $'+k.name+' para ayudarme a empezar.'+idea+'\n\n'+k.focus+'\n'+instructions;
   if(assistant==='claude-code')return 'Instalá el kit '+k.name+' en ESTE proyecto de Claude Code. Descargá '+origin+'kit-'+kit+'.zip y comprobá su hash en '+origin+'kits/manifest.json. Revisá el contenido y extraé el archivo '+k.name+'/SKILL.md. Creá .claude/skills/'+k.name+'/SKILL.md con ese contenido, conservando cualquier versión distinta que exista. No ejecutes instalar_kits.py para esta instalación individual. Esta skill solo necesita texto. No cambies configuración global ni otros proyectos. Comprobá que Claude Code reconoce la skill y explicame cómo usar /'+k.name+'. Si no tenés acceso a archivos o terminal, usá las instrucciones en esta conversación. Confirmá qué quedó instalado, sin inventarlo.'+idea+'\n\n'+k.focus+'\n'+instructions;
-  if(assistant==='gemini')return 'Ayudame a guardar este kit como instrucciones reutilizables en Gemini. Revisá las opciones reales de mi cuenta: puede ofrecer Skills o Gems según la cuenta y la transición del producto. Guía oficial: https://support.google.com/gemini/answer/18560919. Prepará el nombre '+k.name+', una descripción y las instrucciones para copiar. Si hace falta que yo use Crear o suba un archivo, guiame paso a paso; no afirmes que lo guardaste solo porque me diste el texto. La referencia está en '+skill+'. Si esa función no está disponible, empezá en esta conversación con estas instrucciones:\n\n'+k.focus+'\n'+instructions+idea;
-  if(assistant==='claude')return 'Ayudame a guardar una skill de Claude llamada '+k.name+'. Revisá qué opciones tiene esta cuenta para crear o subir una skill. Usá como referencia '+skill+' y la guía oficial https://support.claude.com/en/articles/12512198-how-to-create-custom-skills. Prepará el SKILL.md y guiame por los pasos que yo deba completar en Claude. No ejecutes el instalador Python del paquete, que está pensado para Codex. No afirmes que quedó guardada si no lo comprobaste. Si no podemos crearla, empecemos con estas instrucciones en la conversación:\n\n'+k.focus+'\n'+instructions+idea;
+  if(assistant==='gemini')return 'Ayudame a guardar este kit como instrucciones reutilizables en Gemini. Revisá las opciones reales de mi cuenta: puede ofrecer Skills o Gems según la cuenta y la transición del producto. Guía oficial: https://support.google.com/gemini/answer/18560919. En Gemini web o Mac, si aparece Personalizar → Skills, guiame para importar el archivo SKILL.md. Si mi cuenta permite crear Gems, prepará el nombre '+k.name+', una descripción y las instrucciones para pegar. Si hace falta que yo use Crear o suba un archivo, guiame paso a paso; no afirmes que lo guardaste solo porque me diste el texto. La referencia está en '+skill+'. Si esa función no está disponible, empezá en esta conversación con estas instrucciones:\n\n'+k.focus+'\n'+instructions+idea;
+  if(assistant==='claude')return 'Ayudame a guardar una skill de Claude llamada '+k.name+'. Revisá qué opciones tiene esta cuenta para crear o subir una skill. Usá como referencia '+skill+' y la guía oficial https://support.claude.com/en/articles/12512198-how-to-create-custom-skills. Para subirla, usá el ZIP individual '+origin+'kit-'+kit+'-claude.zip. El ZIP tiene una sola carpeta con SKILL.md. Guiame para subirlo en Personalizar → Skills y habilitarlo. No ejecutes el instalador Python para esta importación. No afirmes que quedó guardada si no lo comprobaste. Si no podemos crearla, empecemos con estas instrucciones en la conversación:\n\n'+k.focus+'\n'+instructions+idea;
   if(assistant==='otro')return 'Ayudame a guardar estas instrucciones de una forma reutilizable que este asistente realmente admita, por ejemplo instrucciones de proyecto o un asistente personalizado. No asumas que puede instalar skills, ZIP ni librerías. Si hace falta que yo guarde algo, dame el texto listo y los pasos. Si no hay una opción para guardar, empecemos en esta conversación. Referencia: '+skill+'\n\n'+k.focus+'\n'+instructions+idea;
   return 'Creá una skill reutilizable llamada '+k.name+' a partir de estas instrucciones. Si tenés un creador de skills, por ejemplo @skill-creator, usalo; si no, ayudame a usar o guardar estas instrucciones con las opciones que realmente tenga esta cuenta. La skill está publicada en '+skill+' y el paquete se descarga de '+origin+'kit-'+kit+'.zip. No des por hecho que ChatGPT puede instalar un ZIP o ejecutar librerías locales: si no tengo esa función, empecemos en esta conversación con el texto de abajo. Confirmá qué quedó creado y cómo lo puedo volver a usar.\n\n'+k.focus+'\n'+instructions+idea;
  }
@@ -56,6 +61,24 @@ if(typeof document!=='undefined'){
   if(focus)steps[step].querySelector('h2').focus();
  }
  function destination(){return assistantInfo.get(assistant).destination}
+ function paintNativeImport(complete){
+  const nativeInstall=$('native-install');
+  const claude=assistant==='claude';
+  nativeInstall.hidden=!claude&&assistant!=='gemini';
+  nativeInstall.open=false;
+  if(nativeInstall.hidden)return;
+
+  $('native-install-title').textContent=claude?'Descargar el ZIP para importar en Claude':'Descargar el archivo para importar en Gemini';
+  $('native-install-note').textContent=claude
+   ?'En Claude, abrí Personalizar → Skills y subí un ZIP por kit. Después activá la skill y probala en un chat nuevo.'
+   :'En Gemini web o Mac, abrí Personalizar → Skills e importá cada SKILL.md. Si tu cuenta ofrece crear Gems, también podés pegar ahí las instrucciones.';
+  document.querySelectorAll('[data-import-kit]').forEach(link=>{
+   const id=link.dataset.importKit;
+   link.closest('li').hidden=!complete&&kit!==id;
+   link.href=claude?'kit-'+id+'-claude.zip':'kits/'+SetupKits.kits[id].name+'/SKILL.md';
+   link.download=claude?'':'SKILL.md';
+  });
+ }
  function paint(){
   const k=currentKit();
   const a=assistantInfo.get(assistant);
@@ -72,6 +95,7 @@ if(typeof document!=='undefined'){
   $('skill').textContent=complete?'Leer la guía común':'Leer las instrucciones del kit';
   $('save-kit').hidden=complete;
   $('complete-option').hidden=complete;
+  paintNativeImport(complete);
   $('assistant-note').textContent=mode==='paste'
    ?'Este pedido se usa directamente en la conversación.'
    :'Tu asistente te guiará con la instalación o el guardado que permita tu cuenta.';

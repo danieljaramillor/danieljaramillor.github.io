@@ -41,3 +41,13 @@ body{overflow-x:clip}[aria-disabled=true]{opacity:.45;pointer-events:none}.open-
   .setup-in-progress .setup-copy h1 em br,
   .setup-in-progress .setup-copy h1 em::after { display: none; }
 }
+
+.native-import-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.native-import-links a { display: inline-flex; align-items: center; min-height: 44px; }
