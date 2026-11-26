@@ -1,12 +1,17 @@
 {
   "negocio": {
     "file": "kit-negocio.zip",
-    "sha256": "f6646f38e3b50d5bf418e61b3c68f394b8c0246f8de3efb07543cbe00fac2a29",
+    "sha256": "dbe14e9f5d58c5b962484b5c2571fe7a2eb41eec14c7972afa939885984a1355",
     "skill": "kits/ascenso-negocio/SKILL.md"
   },
   "vida": {
     "file": "kit-vida.zip",
-    "sha256": "cdb783330c04ada7a18bcd5963a9cf80cc7b296716776c068015f9b85d0d9b9e",
+    "sha256": "f2d2eafbfba24a419736f05a87b81d1ff50bc61ad2a44a0b8e60f0b26a66cc00",
     "skill": "kits/ascenso-vida/SKILL.md"
+  },
+  "automatizacion": {
+    "file": "kit-automatizacion.zip",
+    "sha256": "655d5d6ccbda0a3f9890f95dc175a661dfed554cfb9eddd10fa2c22c11448c09",
+    "skill": "kits/ascenso-automatizacion/SKILL.md"
   }
 }

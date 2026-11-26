@@ -5,8 +5,8 @@ import argparse, shutil
 def install(source, project, kit, dry_run=False):
     source=Path(source).resolve(); project=Path(project).resolve()
     if not project.is_dir(): raise ValueError('La carpeta del proyecto no existe.')
-    if kit not in ('negocio','vida','ambos'): raise ValueError('Kit desconocido.')
-    names=['ascenso-negocio','ascenso-vida'] if kit=='ambos' else ['ascenso-'+kit]
+    if kit not in ('negocio','vida','automatizacion','ambos','todos'): raise ValueError('Kit desconocido.')
+    names=['ascenso-negocio','ascenso-vida','ascenso-automatizacion'] if kit=='todos' else ['ascenso-negocio','ascenso-vida'] if kit=='ambos' else ['ascenso-'+kit]
     results=[]
     for name in names:
         src=source/name/'SKILL.md'
@@ -25,7 +25,7 @@ def install(source, project, kit, dry_run=False):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--proyecto',default='.',help='Carpeta de proyecto elegida por vos')
-    parser.add_argument('--kit',choices=['negocio','vida','ambos'],default='ambos')
+    parser.add_argument('--kit',choices=['negocio','vida','automatizacion','ambos','todos'],default='ambos')
     parser.add_argument('--dry-run',action='store_true',help='Mostrar destinos sin escribir')
     args=parser.parse_args()
     for target in install(Path(__file__).resolve().parent,args.proyecto,args.kit,args.dry_run): print(('Revisar: ' if args.dry_run else 'Instalado: ')+target)

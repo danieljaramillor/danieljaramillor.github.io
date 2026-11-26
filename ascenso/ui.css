@@ -43,3 +43,7 @@ body{overflow-x:clip}.hero-start{display:inline-flex;align-items:center;gap:20px
 #use-chosen-test{width:100%;margin-top:22px}.commitment>summary{cursor:pointer;font-size:14px;line-height:1.5;min-height:48px;padding:8px 0 16px}.commitment{margin-top:22px}.commitment[open] .two-fields{margin-top:12px}
 
 .assistant-label{display:block;font-size:14px;font-weight:600;margin:24px 0 10px}.prompt-panel select{font-size:16px;min-height:48px}#article-open-manual{padding:13px 16px;border:1px solid #ffffff40;border-radius:9px}
+
+/* Tres kits, mismo recorrido. */
+.kit-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.kit-grid{grid-template-columns:1fr}}
