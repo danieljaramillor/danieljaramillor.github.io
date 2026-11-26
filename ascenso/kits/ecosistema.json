@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-11-25",
+  "guide": "ECOSISTEMA.md",
+  "scope": "11 herramientas adicionales a MiroFish, TinyTroupe y OASIS, para validación rápida y seguimiento.",
+  "default_install_all": false,
+  "selection_policy": "Primero revisar herramientas existentes. Elegir solo las que acorten la próxima prueba. n8n, Make y Zapier son alternativas: no conectar los tres por defecto.",
+  "default_create_accounts": false,
+  "default_activate_automations": false,
+  "default_publish_or_pay": false,
+  "phases": [
+    {
+      "id": "ordenar",
+      "name": "Elegir qué vas a probar y quién se compromete"
+    },
+    {
+      "id": "recoger",
+      "name": "Conseguir respuestas y encuentros reales"
+    },
+    {
+      "id": "prototipar",
+      "name": "Poner una versión pequeña en manos de alguien"
+    },
+    {
+      "id": "medir",
+      "name": "Ver qué funciona y dónde se pierde la gente"
+    },
+    {
+      "id": "automatizar",
+      "name": "Repetir una tarea con control y seguimiento"
+    }
+  ],
+  "minimal_paths": [
+    {
+      "goal": "Validar un problema con gente real",
+      "steps": [
+        "Escribir una pregunta y una prueba pequeña en el asistente.",
+        "Contactar personalmente a personas adecuadas.",
+        "Usar un formulario Tally o una entrevista; Cal.com solo si simplifica coordinar.",
+        "Registrar conducta observada y decidir seguir, ajustar o parar."
+      ]
+    },
+    {
+      "goal": "Probar algo personal o un hobby",
+      "steps": [
+        "Elegir una acción pequeña para hoy.",
+        "Usar calendario o notas existentes si ayudan.",
+        "Registrar si se hizo y cómo se sintió; no convertirlo en un negocio."
+      ]
+    },
+    {
+      "goal": "Dar seguimiento sin olvidarse",
+      "steps": [
+        "Elegir una persona responsable, una fecha y una señal concreta de avance.",
+        "Usar calendario y correo existentes; Notion si ya hay un tablero compartido.",
+        "Probar manualmente una vez.",
+        "Solo si se repite, evaluar función nativa del asistente o un único motor de automatización."
+      ]
+    },
+    {
+      "goal": "Probar un flujo de una app",
+      "steps": [
+        "Elegir una sola herramienta: Streamlit, Gradio o Replit según el prototipo.",
+        "Comprobar el flujo con datos ficticios; Playwright solo si aporta una prueba útil.",
+        "Observar a personas reales usándolo.",
+        "Agregar PostHog únicamente si necesitás medir un comportamiento definido."
+      ]
+    }
+  ],
+  "shared_requirements": {
+    "secrets": "Configurar mediante autorización nativa, entorno local o almacén de secretos. Nunca pedir valores en el chat.",
+    "approval": "Un diagnóstico no autoriza publicar, invitar personas, enviar mensajes, escribir calendarios, activar recurrencia o aceptar cobros. Verificar autorización concreta antes de esos efectos.",
+    "testing": "Un botón Test o Run once puede tener efectos externos reales. Usar datos y destinos de prueba antes de ejecutarlo.",
+    "activation": "Verificar identificador, fuentes, frecuencia o evento, zona horaria, destino, deduplicación, errores, parada y control para pausar.",
+    "measurement": "Separar pruebas internas, datos ficticios, señales de interés, conducta real y pagos. Medir ahorro antes y después sin inventar resultados.",
+    "fallback": "Si no hay terminal o conector, preparar instrucciones o una versión manual. No afirmar instalación ni ejecución sin evidencia."
+  },
+  "tools": [
+    {
+      "id": "notion",
+      "name": "Notion",
+      "phase": "ordenar",
+      "purpose": "Anotar hipótesis, pruebas, responsables y fechas en un tablero compartido.",
+      "validation_example": "Una tarea para entrevistar a tres personas, otra para revisar qué dijeron y una fecha para decidir.",
+      "setup_kind": "saas",
+      "setup_steps": [
+        "Abrí un espacio existente o creá una página de proyecto.",
+        "Usá Projects & Tasks o una tabla con responsable, fecha y estado.",
+        "Compartí solo con las personas que elijas; no se invita automáticamente."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta de Notion; autorización nativa si conectás el asistente al espacio.",
+      "runtime": "El tablero vive en Notion; una tarea escrita no es una automatización activa.",
+      "verification": [
+        "Comprobá una tarea ficticia con responsable, fecha y estado.",
+        "Verificá qué personas pueden ver la página."
+      ],
+      "stop": "Cerrá la prueba, marcá tareas resueltas y revisá notificaciones o automatizaciones que hayas activado.",
+      "cost_check": "Revisá el plan antes de agregar funciones pagas o miembros facturables.",
+      "evidence_limit": "Un tablero completo no demuestra que se realizaron las entrevistas.",
+      "docs": [
+        "https://www.notion.com/help/guides/getting-started-with-projects-and-tasks"
+      ]
+    },
+    {
+      "id": "tally",
+      "name": "Tally",
+      "phase": "recoger",
+      "purpose": "Publicar un formulario breve para recoger interés, disponibilidad y experiencias.",
+      "validation_example": "Preguntá cuándo ocurrió por última vez el problema y ofrecé una prueba concreta.",
+      "setup_kind": "saas",
+      "setup_steps": [
+        "Creá un formulario con pocas preguntas y una explicación de para qué usarás las respuestas.",
+        "Hacé una respuesta de prueba.",
+        "Publicá un enlace o elegí una inserción en una página cuando quieras compartirlo."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta de Tally; conectá destinos solo si los necesitás.",
+      "runtime": "El formulario publicado recibe respuestas en el servicio; no necesita una conversación de IA abierta.",
+      "verification": [
+        "Comprobá que la respuesta ficticia aparece y se distingue de las reales.",
+        "Probá el enlace y la confirmación desde un celular."
+      ],
+      "stop": "Cerrá la recepción al terminar el experimento y revisá las conexiones de salida.",
+      "cost_check": "Verificá el plan de las opciones elegidas, como dominio propio o personalización avanzada.",
+      "evidence_limit": "Dejar un correo o decir que una idea gusta no equivale a usarla ni pagar.",
+      "docs": [
+        "https://tally.so/help/create-a-form",
+        "https://tally.so/help/form-submissions"
+      ]
+    },
+    {
+      "id": "cal-com",
+      "name": "Cal.com",
+      "phase": "recoger",
+      "purpose": "Conseguir una cita real para entrevistar o probar un prototipo.",
+      "validation_example": "Ofrecé horarios de 15 minutos para observar cómo alguien intenta completar una tarea.",
+      "setup_kind": "saas_or_self_hosted",
+      "setup_steps": [
+        "Para empezar rápido, usá la cuenta alojada; no hace falta autoalojar.",
+        "Prepará un enlace con duración, disponibilidad, ubicación y zona horaria.",
+        "Conectá el calendario pertinente mediante autorización nativa y revisá conflictos."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta y calendario autorizado; autoalojar requiere otra configuración y operación.",
+      "runtime": "El servicio aloja las reservas; la sincronización depende de la conexión real al calendario.",
+      "verification": [
+        "Revisá el enlace como visitante.",
+        "Si autorizaste una reserva ficticia, comprobá que llegue al calendario y luego cancelala."
+      ],
+      "stop": "Desactivá el enlace de la prueba cuando no quieras más reservas y revisá reservas pendientes.",
+      "cost_check": "Comprobá el plan para funciones de equipo, integraciones o servicios adicionales.",
+      "evidence_limit": "Reservar no demuestra asistencia, satisfacción ni compra.",
+      "docs": [
+        "https://cal.com/help/event-types/event-types"
+      ]
+    },
+    {
+      "id": "streamlit",
+      "name": "Streamlit",
+      "phase": "prototipar",
+      "purpose": "Crear una app pequeña en Python para probar un flujo con datos, filtros o resultados.",
+      "validation_example": "Un formulario que muestra opciones de ruta ficticias o compara resultados de una idea.",
+      "setup_kind": "local_python_or_hosted",
+      "setup_steps": [
+        "Elegí un proyecto y un entorno Python aislado compatible con la documentación actual.",
+        "Instalá streamlit en ese entorno y prepará una pantalla con una sola tarea.",
+        "Opcional: revisá `streamlit skills` para instalar sus instrucciones oficiales en un agente compatible."
+      ],
+      "install_command": "python -m pip install streamlit",
+      "installable_as_local_library": true,
+      "credentials": "No necesita clave de modelo para una app local sin APIs; hosting o fuentes externas pueden requerir cuenta o secretos.",
+      "runtime": "El servidor local debe estar ejecutándose; compartir una app duradera requiere un despliegue adecuado.",
+      "verification": [
+        "Importá streamlit desde el entorno.",
+        "Al iniciar una prueba local autorizada, completá el flujo con datos ficticios y observá el resultado."
+      ],
+      "stop": "Detené el proceso local o el despliegue elegido; revisá trabajos externos si los agregaste.",
+      "cost_check": "Comprobá costos del hosting, base de datos o APIs antes de conectarlos.",
+      "evidence_limit": "Que la app funcione con datos ficticios no demuestra uso real.",
+      "docs": [
+        "https://docs.streamlit.io/get-started/installation",
+        "https://docs.streamlit.io/get-started/installation/command-line"
+      ]
+    },
+    {
+      "id": "gradio",
+      "name": "Gradio",
+      "phase": "prototipar",
+      "purpose": "Convertir una función Python o un modelo en una interfaz que alguien pueda probar.",
+      "validation_example": "Dejar que alguien pruebe una receta de transformación de texto con ejemplos de muestra.",
+      "setup_kind": "local_python_or_hosted",
+      "setup_steps": [
+        "Prepará un entorno Python aislado compatible.",
+        "Instalá gradio y conectá una función pequeña a entradas y salidas.",
+        "Empezá en local; no actives enlaces públicos de compartición por defecto."
+      ],
+      "install_command": "python -m pip install --upgrade gradio",
+      "installable_as_local_library": true,
+      "credentials": "La librería no necesita clave para una función local; modelos, APIs o alojamiento pueden necesitarla.",
+      "runtime": "La demo local requiere su proceso activo; una opción de compartir no equivale a un servicio persistente garantizado.",
+      "verification": [
+        "Importá gradio.",
+        "Comprobá entradas válidas, errores y una salida ficticia antes de ofrecer una prueba."
+      ],
+      "stop": "Detené el proceso o el alojamiento y cerrá enlaces de compartición si se habilitaron.",
+      "cost_check": "Acordá consumo si la función llama modelos o servicios de pago.",
+      "evidence_limit": "Una demo convincente no sustituye observar a personas intentando resolver su problema.",
+      "docs": [
+        "https://github.com/gradio-app/gradio#installation"
+      ]
+    },
+    {
+      "id": "replit",
+      "name": "Replit",
+      "phase": "prototipar",
+      "purpose": "Preparar una app desde una descripción y refinarla con pruebas.",
+      "validation_example": "Un prototipo de una sola pantalla para que tres personas intenten reservar un turno.",
+      "setup_kind": "hosted_development",
+      "setup_steps": [
+        "Creá un proyecto y describí usuario, tarea, datos ficticios y qué querés observar.",
+        "Revisá el plan y el alcance antes de construir más funciones.",
+        "Probá en preview; publicar y elegir alojamiento son pasos separados."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta de Replit; conexiones y secretos se configuran en sus opciones nativas, nunca en el pedido público.",
+      "runtime": "Preview, proyecto y despliegue tienen condiciones distintas; verificá qué continúa funcionando al cerrar la sesión.",
+      "verification": [
+        "Completá el flujo en preview.",
+        "Si se publica con autorización, abrí la URL real y verificá acceso y comportamiento."
+      ],
+      "stop": "Detené o quitá el despliegue y revisá recursos asociados si se activaron.",
+      "cost_check": "Comprobá uso del agente, modo elegido y despliegue antes de aceptar consumo.",
+      "evidence_limit": "El agente construye el prototipo; no aporta por sí solo participantes reales.",
+      "docs": [
+        "https://docs.replit.com/features/agent/overview"
+      ]
+    },
+    {
+      "id": "posthog",
+      "name": "PostHog",
+      "phase": "medir",
+      "purpose": "Ver eventos y pasos de un flujo para detectar dónde se abandona.",
+      "validation_example": "Comparar abrió el prototipo, empezó la tarea y la terminó, separando pruebas internas.",
+      "setup_kind": "saas_plus_sdk",
+      "setup_steps": [
+        "Definí dos o tres eventos necesarios antes de instrumentar.",
+        "Elegí la integración de tu app y un proyecto de PostHog.",
+        "Revisá autocaptura, datos sensibles y controles de consentimiento antes de habilitar la recolección."
+      ],
+      "installable_as_local_library": true,
+      "credentials": "Proyecto y configuración del SDK; claves personales y de administración permanecen privadas.",
+      "runtime": "El SDK emite datos cuando la app se usa; la analítica depende de que los eventos lleguen al proyecto correcto.",
+      "verification": [
+        "Generá un evento ficticio identificado como prueba.",
+        "Verificá que aparece una sola vez en el proyecto y que no contiene campos sensibles."
+      ],
+      "stop": "Desactivá la captura o retirala del despliegue y revisá las fuentes que sigan emitiendo eventos.",
+      "cost_check": "Revisá límites y presupuesto de ingesta antes de ampliar captura o funciones.",
+      "evidence_limit": "Un clic no prueba valor, retención ni una compra.",
+      "docs": [
+        "https://posthog.com/docs/product-analytics/installation",
+        "https://posthog.com/docs/privacy/data-collection"
+      ]
+    },
+    {
+      "id": "playwright",
+      "name": "Playwright",
+      "phase": "medir",
+      "purpose": "Comprobar que una web deja completar el flujo antes de invitar participantes.",
+      "validation_example": "Revisar en tamaños móviles que el formulario abre, se puede llenar y muestra confirmación.",
+      "setup_kind": "local_node_or_ci",
+      "setup_steps": [
+        "Usá un proyecto de pruebas separado o revisá los cambios al proyecto existente.",
+        "Seguí la instalación oficial y elegí navegadores y pruebas necesarias.",
+        "Apuntá a una copia local o entorno de pruebas con datos ficticios."
+      ],
+      "install_command": "npm init playwright@latest",
+      "installable_as_local_library": true,
+      "credentials": "No hacen falta para una app local pública; sesiones autenticadas de pruebas deben ser específicas y privadas.",
+      "runtime": "Corre localmente o en CI cuando se ejecuta; no observa personas reales.",
+      "verification": [
+        "Revisá el test antes de correrlo: completar un formulario puede escribir datos.",
+        "Comprobá aserciones del flujo y el informe de errores."
+      ],
+      "stop": "Terminá la ejecución y desactivá jobs de CI si se programaron.",
+      "cost_check": "Revisá consumo de CI o navegadores alojados si se eligieron.",
+      "evidence_limit": "Que un test pase demuestra funcionamiento del caso probado, no demanda ni facilidad para una persona nueva.",
+      "docs": [
+        "https://playwright.dev/docs/intro"
+      ]
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "phase": "automatizar",
+      "purpose": "Encadenar datos, condiciones y acciones en un flujo repetible.",
+      "validation_example": "Pasar una respuesta de formulario a un registro y preparar un recordatorio de la prueba acordada.",
+      "setup_kind": "saas_or_self_hosted",
+      "setup_steps": [
+        "Elegí n8n Cloud o autoalojamiento si podés operar el servidor.",
+        "Para autoalojar, seguí la guía vigente de Docker Compose; revisá persistencia, cifrado y acceso.",
+        "Prepará el flujo desactivado, con entradas ficticias y destino de prueba."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta o instancia propia y credenciales de los servicios en su almacén de conexiones.",
+      "runtime": "Necesita instancia y workflow activos; en local el computador y el servicio deben seguir disponibles.",
+      "verification": [
+        "Comprobá una ejecución controlada y su historial.",
+        "Verificá deduplicación, zona horaria, destino y regla de parada antes de activar recurrencia."
+      ],
+      "stop": "Desactivá el workflow y comprobá ejecuciones pendientes; detener la instancia es otra acción.",
+      "cost_check": "Comprobá plan Cloud, hosting y cobros de APIs antes de activar.",
+      "evidence_limit": "Automatizar un seguimiento no demuestra que alguien haya respondido o usado la idea.",
+      "docs": [
+        "https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose.md"
+      ]
+    },
+    {
+      "id": "make",
+      "name": "Make",
+      "phase": "automatizar",
+      "purpose": "Unir apps con un escenario visual y una frecuencia o disparador.",
+      "validation_example": "Convertir nuevas respuestas de una prueba en una lista de próximos pasos para revisar.",
+      "setup_kind": "saas",
+      "setup_steps": [
+        "Creá un escenario y conectá solo las apps de la rutina elegida.",
+        "Configurá módulos, mapeo y filtros usando datos ficticios.",
+        "Dejá la programación sin activar hasta revisar resultado, alcance y consumo."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta de Make y conexiones autorizadas dentro del servicio.",
+      "runtime": "La ejecución vive en Make si el escenario está activado; frecuencia y disparadores disponibles dependen del plan y del módulo.",
+      "verification": [
+        "Una ejecución manual puede producir efectos reales: elegí destino de prueba.",
+        "Comprobá historial, zona horaria, resultado y ausencia de duplicados."
+      ],
+      "stop": "Desactivá programación y revisá ejecuciones, webhooks y colas que sigan pendientes.",
+      "cost_check": "Verificá plan, frecuencia mínima y consumo del escenario o APIs conectadas.",
+      "evidence_limit": "Crear una fila o aviso no demuestra cumplimiento del compromiso.",
+      "docs": [
+        "https://help.make.com/create-your-first-scenario",
+        "https://help.make.com/schedule-a-scenario"
+      ]
+    },
+    {
+      "id": "zapier",
+      "name": "Zapier",
+      "phase": "automatizar",
+      "purpose": "Conectar un evento con acciones para dar seguimiento a una prueba o rutina.",
+      "validation_example": "Preparar un borrador de seguimiento después de una respuesta, sin enviarlo automáticamente.",
+      "setup_kind": "saas",
+      "setup_steps": [
+        "Elegí un trigger y una acción, y autorizá las apps necesarias.",
+        "Revisá campos y registros de prueba antes de ejecutar acciones.",
+        "Si la cuenta ofrece Next Gen Zaps o MCP, comprobá acceso y plan; no lo asumas universal."
+      ],
+      "installable_as_local_library": false,
+      "credentials": "Cuenta de Zapier y conexiones nativas; MCP requiere soporte real del asistente y acceso en la cuenta.",
+      "runtime": "Un Zap publicado y encendido corre en Zapier; preparar un borrador en el chat no lo activa.",
+      "verification": [
+        "Los tests de acciones pueden escribir en las apps: usá destino de prueba.",
+        "Revisá resultado, historial, publicación real, deduplicación y zona horaria."
+      ],
+      "stop": "Apagá el Zap y revisá runs pendientes o retenidos.",
+      "cost_check": "Comprobá tareas, plan, apps y acceso limitado a Next Gen antes de elegir esa modalidad.",
+      "evidence_limit": "Un envío o borrador no prueba que haya respuesta ni aprendizaje de mercado.",
+      "docs": [
+        "https://help.zapier.com/hc/en-us/articles/8496309697421-What-is-a-Zap",
+        "https://help.zapier.com/hc/en-us/articles/18811411817741-Test-Zap-steps",
+        "https://help.zapier.com/hc/en-us/articles/48391476448141-Get-started-with-Next-Gen-Zaps"
+      ]
+    }
+  ],
+  "authoring_status": "Fuentes oficiales revisadas; no se instalaron herramientas, crearon cuentas ni activaron servicios al elaborar este catálogo."
+}

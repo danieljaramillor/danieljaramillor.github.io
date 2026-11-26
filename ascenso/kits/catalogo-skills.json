@@ -1,0 +1,111 @@
+{
+  "version": 2,
+  "entrypoint": "AGENTS.md",
+  "skills": [
+    {
+      "name": "ascenso-automatizacion",
+      "description": "Revisar conexiones del asistente, descubrir pequeñas tareas repetidas y preparar o activar automatizaciones verificables de calendario, correo, envíos y compromisos, según las capacidades reales de la cuenta.",
+      "path": "ascenso-automatizacion/SKILL.md",
+      "url": "kits/ascenso-automatizacion/SKILL.md",
+      "sha256": "af732a9fe62c1e3b76694d14c04e23835ecc47867784591c97fe7f8c6413233d"
+    },
+    {
+      "name": "ascenso-negocio",
+      "description": "Ayuda a convertir una idea de negocio aplazada en una primera prueba pequeña con personas reales, explorando bloqueos y comparando opciones antes de construir.",
+      "path": "ascenso-negocio/SKILL.md",
+      "url": "kits/ascenso-negocio/SKILL.md",
+      "sha256": "ee798ed28ff515d01a648186bc0af24366166097baecc3579826693180095697"
+    },
+    {
+      "name": "ascenso-vida",
+      "description": "Ayuda a empezar un proyecto personal o hobby aplazado mediante brainstorming acotado y una experiencia pequeña, sin convertir el disfrute en una meta de negocio.",
+      "path": "ascenso-vida/SKILL.md",
+      "url": "kits/ascenso-vida/SKILL.md",
+      "sha256": "2c2c963ce2f954bd90e6516b4142084b6e704475238c183ee2e03368ed9fd85a"
+    },
+    {
+      "name": "ascenso-accountability",
+      "description": "Acompañar compromisos elegidos por la persona mediante revisiones breves, evidencia y próximos pasos; crear recordatorios solo con funciones nativas disponibles y autorización concreta.",
+      "path": "biblioteca/ascenso-accountability/SKILL.md",
+      "url": "kits/biblioteca/ascenso-accountability/SKILL.md",
+      "sha256": "9593ee4a69dd3b935bf4d6176dff65a7de5e7cc7552a8e31dc83aaf831e5fe5a"
+    },
+    {
+      "name": "ascenso-datos",
+      "description": "Definir y analizar evidencia de una prueba de idea o automatización, verificando fuentes, denominadores, calidad y límites; medir uso, aprendizaje o tiempo ahorrado sin inventar datos ni confundir simulación con observación.",
+      "path": "biblioteca/ascenso-datos/SKILL.md",
+      "url": "kits/biblioteca/ascenso-datos/SKILL.md",
+      "sha256": "89df87bf1c8e52681146f0f6e4428260e0d6fbf3824b390a430e35ec7ff60244"
+    },
+    {
+      "name": "ascenso-diseno",
+      "description": "Diseñar y revisar el recorrido de una primera prueba, prototipo o kit para que una persona sin experiencia entienda qué hacer, pueda completarlo en celular y reciba estados y errores claros.",
+      "path": "biblioteca/ascenso-diseno/SKILL.md",
+      "url": "kits/biblioteca/ascenso-diseno/SKILL.md",
+      "sha256": "147da7fcd7c1e674dfef9d9658ae14db6cab48bc630b7626c860767672ded33f"
+    },
+    {
+      "name": "ascenso-entrevistas",
+      "description": "Preparar y analizar entrevistas neutrales sobre experiencias reales, con consentimiento para registrar y separación entre declaraciones, conducta observada e hipótesis.",
+      "path": "biblioteca/ascenso-entrevistas/SKILL.md",
+      "url": "kits/biblioteca/ascenso-entrevistas/SKILL.md",
+      "sha256": "a2cb84a248fe83e6d4985fe7981d54c24d8a9d3f1c28d03fb688f13fea2edb08"
+    },
+    {
+      "name": "ascenso-experimentos",
+      "description": "Diseñar pruebas pequeñas con una hipótesis, observación y criterio previo; registrar resultados reales y límites para decidir si seguir, ajustar o parar.",
+      "path": "biblioteca/ascenso-experimentos/SKILL.md",
+      "url": "kits/biblioteca/ascenso-experimentos/SKILL.md",
+      "sha256": "f7d8b7fa1b1324d5fb521394cb004b1c3bf79683b55fdf2191d49f49bbf24406"
+    },
+    {
+      "name": "ascenso-frontend",
+      "description": "Construir o mejorar una interfaz web de prueba con jerarquía visual clara, comportamiento usable en celular, accesibilidad práctica y comprobaciones del recorrido; distinguir mockup, integración y operación real.",
+      "path": "biblioteca/ascenso-frontend/SKILL.md",
+      "url": "kits/biblioteca/ascenso-frontend/SKILL.md",
+      "sha256": "986e562310b4600f8a36c8895ca1779545103e3d5f89e989c3241a031eeed90f"
+    },
+    {
+      "name": "ascenso-integraciones",
+      "description": "Conectar una rutina autorizada con herramientas existentes, evaluar conectores, webhooks o flujos como n8n, Make y Zapier, y probar permisos, duplicados, fallos y parada antes de activarla.",
+      "path": "biblioteca/ascenso-integraciones/SKILL.md",
+      "url": "kits/biblioteca/ascenso-integraciones/SKILL.md",
+      "sha256": "46a6a8577564160b668670b0cb0609ecda98ada897bbc7b2d17b46e8bbe05bc9"
+    },
+    {
+      "name": "ascenso-investigacion",
+      "description": "Investigar un problema o decisión con fuentes verificables, separar hechos de inferencias y producir preguntas útiles para una prueba de negocio, personal o de automatización.",
+      "path": "biblioteca/ascenso-investigacion/SKILL.md",
+      "url": "kits/biblioteca/ascenso-investigacion/SKILL.md",
+      "sha256": "01decda0711b85680edf61fbab48c5c55518de9cfc56f1ea56014eb43e77bebf"
+    },
+    {
+      "name": "ascenso-mensaje",
+      "description": "Escribir una oferta, invitación o landing clara para una prueba, con un destinatario y una acción principal, sin testimonios, resultados ni urgencia inventados.",
+      "path": "biblioteca/ascenso-mensaje/SKILL.md",
+      "url": "kits/biblioteca/ascenso-mensaje/SKILL.md",
+      "sha256": "e11e7d30d7025322037836c0296d65501c5a11b2b7e2d537c03f4f728bd05d0c"
+    },
+    {
+      "name": "ascenso-producto",
+      "description": "Convertir una idea de negocio, una experiencia personal o una rutina repetida en un problema concreto, supuestos y una primera prueba con evidencia real antes de ampliar la solución.",
+      "path": "biblioteca/ascenso-producto/SKILL.md",
+      "url": "kits/biblioteca/ascenso-producto/SKILL.md",
+      "sha256": "38b109391b68ca7e3cd7cd41e4a654e2173595a85b33a4edc7031f46a3069e73"
+    },
+    {
+      "name": "ascenso-simulaciones",
+      "description": "Elegir y preparar MiroFish, TinyTroupe u OASIS para explorar hipótesis y objeciones, verificando requisitos y costos; convertir resultados sintéticos en cambios y pruebas con personas reales.",
+      "path": "biblioteca/ascenso-simulaciones/SKILL.md",
+      "url": "kits/biblioteca/ascenso-simulaciones/SKILL.md",
+      "sha256": "1f8fbcf4c8e3c4c76ddc6e3b66ca12fa6fead4f5c7242bcf5a8bf3580ba7c6b9"
+    },
+    {
+      "name": "ascenso-verificacion",
+      "description": "Comprobar un recorrido y sus resultados antes de entregarlos o publicarlos, contrastando afirmaciones con evidencia y diferenciando prueba local, despliegue, integración y ejecución real.",
+      "path": "biblioteca/ascenso-verificacion/SKILL.md",
+      "url": "kits/biblioteca/ascenso-verificacion/SKILL.md",
+      "sha256": "1b29d4be94ffac6af44c6606f5373bbd1d12680247cff5dd9076f8276c54ed7e"
+    }
+  ]
+}

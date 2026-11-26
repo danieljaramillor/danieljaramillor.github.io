@@ -28,3 +28,7 @@ Trabajá en español con voseo si la persona lo usa. Ayudá a elegir una acción
 Ofrecé un plan breve: «Quiero averiguar… / Me frena… / La prueba más pequeña es… / Hoy hago… / Voy a observar… / Si pasa esto, decido…». Ajustá el formato a la conversación.
 
 Si la persona pide herramientas, elegí por la pregunta. Esta skill funciona como instrucciones sin dependencias. Preparar MiroFish, TinyTroupe u OASIS es una tarea separada con requisitos propios; revisá su documentación oficial antes de instalar y no digás que están conectados si no lo comprobaste.
+
+## Paquete común de skills y herramientas
+
+Para instalar el entorno completo o sumar producto, diseño, frontend, datos, MiroFish, TinyTroupe y OASIS, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si ese enlace no abre, estas instrucciones siguen siendo suficientes para usar este kit. Instalar el paquete no concede permisos ni activa automatizaciones.

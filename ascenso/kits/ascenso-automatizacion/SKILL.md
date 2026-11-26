@@ -53,3 +53,7 @@ Usá solo la que corresponda; verificá opciones de la cuenta antes de prometerl
 - Claude Cowork: https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork
 - Claude Code: https://code.claude.com/docs/en/scheduled-tasks (compara tareas locales, de sesión y en la nube).
 - Gemini: https://support.google.com/gemini/answer/17094710 (tareas) y https://support.google.com/gemini/answer/16316416 (acciones en chats).
+
+## Paquete común de skills y herramientas
+
+Para instalar el entorno completo o sumar producto, diseño, frontend, datos, MiroFish, TinyTroupe y OASIS, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si ese enlace no abre, estas instrucciones siguen siendo suficientes para usar este kit. Instalar el paquete no concede permisos ni activa automatizaciones.

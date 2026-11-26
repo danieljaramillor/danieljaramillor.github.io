@@ -1,0 +1,30 @@
+---
+name: ascenso-frontend
+description: Construir o mejorar una interfaz web de prueba con jerarquía visual clara, comportamiento usable en celular, accesibilidad práctica y comprobaciones del recorrido; distinguir mockup, integración y operación real.
+---
+
+# Front-end: una prueba que se pueda tocar
+
+Leé las instrucciones del proyecto y entendé cómo se genera y publica antes de editar. Conservá el título, la voz y el sistema visual elegido. Implementá la tarea autorizada en sus fuentes, sin sobrescribir salidas generadas que otro proceso vaya a reemplazar.
+
+## Elegir una implementación proporcionada
+
+Buscá primero componentes y dependencias existentes. Una prueba sencilla puede resolverse con HTML, CSS y JavaScript; no introduzcas un framework, backend, registro o librería pesada sin una necesidad concreta. Si el producto ya usa una arquitectura, seguí sus convenciones.
+
+Construí una jerarquía visual intencional: título, contexto mínimo, acción principal y resultado. Usá variaciones de escala, espacio y composición para guiar, no una grilla uniforme por defecto. Conservá una experiencia funcional con movimiento reducido y contenido extenso.
+
+## Hacer visible el estado real
+
+Separá los datos de ejemplo de los datos conectados. Etiquetá rutas, usuarios, tiempos y resultados ficticios. Un mockup de mapa no calcula desvíos reales. Un formulario que prepara un prompt no ejecuta IA. Una copia al portapapeles no instala una skill. Mostrá éxito únicamente después de comprobar la operación correspondiente.
+
+Usá controles semánticos, etiquetas asociadas, foco visible y errores entendibles. Conservá la información al cambiar de paso. Para enlaces a asistentes externos, no metas las respuestas privadas del formulario en la URL. Evitá persistir datos sin necesidad y no pongas secretos en código enviado al navegador.
+
+## Comprobar la tarea completa
+
+Después de un cambio de lógica, verificá casos que puedan fallar: elección conservada, texto largo, URL de entrada directa, copia fallida, permisos pendientes, navegación atrás y funciones no disponibles. No escribas pruebas que solo repitan cadenas del código. Priorizá invariantes de comportamiento y las comprobaciones existentes.
+
+Revisá visualmente en celular y escritorio: sin desbordamiento horizontal, acciones encontrables, texto legible, contenido que no tape botones y navegación usable con teclado. Comprobá consola y recursos faltantes. Probá el recorrido desde la entrada hasta el destino externo dentro del alcance permitido; indicá qué parte depende de otra cuenta o servicio.
+
+Si hay generación de múltiples archivos, regenerá las salidas relacionadas y comprobá que correspondan a la misma fuente. Publicá solo dentro de la autorización del proyecto y verificá la versión pública después de hacerlo. Una compilación correcta no prueba que el despliegue esté visible.
+
+Entregá qué cambió, qué tarea ahora puede completarse, comprobaciones realizadas y límites materiales. Si no pudiste abrir el navegador, no presentes la inspección de código como revisión visual. Para aclarar el flujo, usá `ascenso-diseno` si está disponible; para definir qué medir sin inventar resultados, `ascenso-datos`.

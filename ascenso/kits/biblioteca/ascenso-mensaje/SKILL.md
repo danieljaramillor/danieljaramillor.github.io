@@ -1,0 +1,18 @@
+---
+name: ascenso-mensaje
+description: Escribir una oferta, invitación o landing clara para una prueba, con un destinatario y una acción principal, sin testimonios, resultados ni urgencia inventados.
+---
+
+# Decí qué problema ayudás a resolver
+
+Identificá para quién es el mensaje, en qué situación lo verá y qué acción querés que complete. Leé la evidencia y el estado real de la solución. Diferenciá una invitación a probar de una oferta disponible para comprar.
+
+Escribí primero el problema en palabras de la persona y el resultado que se busca. Explicá concretamente qué ofrece hoy la prueba, qué necesita aportar quien participa, cuánto esfuerzo implica y qué sucederá después. Si es beta gratuita, decilo; no uses eso como prueba de demanda comercial.
+
+Elegí una acción principal: pedir una prueba, abrir un prototipo, reservar una conversación o copiar un pedido. El texto del botón debe anticipar lo que ocurre al pulsarlo. Explicá registro, salida a otra herramienta o conexión de una cuenta antes del paso que los requiere. Conservá el voseo y la voz del proyecto.
+
+No inventes clientes, testimonios, cifras de uso, certificaciones ni minutos ahorrados. Si usás un ejemplo, etiquetalo. No presentes una estimación como resultado medido ni una función prevista como disponible. Evitá urgencia o escasez ficticias y promesas que el prototipo no pueda cumplir.
+
+Revisá título, explicación breve, ejemplo, acción y confirmación como un recorrido completo. Pedile a alguien que explique con sus palabras qué recibirá; si interpreta otra cosa, corregí el mensaje antes de atribuirlo a falta de atención. Una crítica de IA puede preparar variantes, pero no sustituye esa observación.
+
+Entregá una versión lista para usar y, cuando la duda lo justifique, una alternativa que cambie una hipótesis concreta. Indicá qué diferencia se quiere probar. Preparar el texto no publica, envía invitaciones ni habilita cobros por sí solo.

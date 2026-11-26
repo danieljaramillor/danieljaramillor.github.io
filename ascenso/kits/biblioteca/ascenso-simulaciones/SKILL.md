@@ -1,0 +1,18 @@
+---
+name: ascenso-simulaciones
+description: Elegir y preparar MiroFish, TinyTroupe u OASIS para explorar hipótesis y objeciones, verificando requisitos y costos; convertir resultados sintéticos en cambios y pruebas con personas reales.
+---
+
+# Simular para hacer mejores preguntas
+
+Empezá por una pregunta y una decisión que la simulación podría ayudar a preparar. Reuní materiales relevantes con autorización y quitá datos personales innecesarios. Separá evidencia conocida de supuestos usados para construir perfiles o escenarios.
+
+Revisá el catálogo y la documentación oficial de MiroFish, TinyTroupe u OASIS antes de elegir. Compará el tipo de escenario, entradas y salidas que admite la revisión instalada, requisitos, servicios de modelo y costo. No selecciones una herramienta solo porque ya está instalada ni ejecutes tres cuando una basta. Si ninguna responde la pregunta, proponé un ensayo conversacional explícitamente sintético o una prueba real más directa.
+
+Comprobá revisión del código y entorno aislado. Diferenciá descarga, dependencias instaladas, importación comprobada y simulación ejecutada. Una suscripción de chat no demuestra acceso a APIs. Configurá claves mediante el mecanismo local o gestor indicado; nunca las pidas en el chat ni las incluyas en reportes. Preparar el entorno no autoriza consumo de pago: concretá modelo, límite y alcance cuando haga falta.
+
+Registrá herramienta y revisión, materiales, supuestos, perfiles, configuración, costo disponible y salida obtenida. Si falta una credencial, terminá la preparación posible y dejá esa parte pendiente. No fabriques un reporte como si se hubiera ejecutado.
+
+Leé la salida como una colección de hipótesis y posibles objeciones. No cuentes agentes como clientes, votos como demanda ni escenarios como predicciones de personas reales. Identificá qué depende fuertemente de perfiles inventados.
+
+Elegí los hallazgos que cambien una pregunta, pantalla o procedimiento. Mostrá el cambio concreto y prepará una prueba con participantes reales. Al comparar, mantené separado lo que sugirió la simulación y lo observado después.

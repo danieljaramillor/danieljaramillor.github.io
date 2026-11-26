@@ -23,3 +23,7 @@ Ayudá a la persona a hacer algo que quiere vivir o aprender. Conservá sus moti
 Un plan breve: «Quiero intentar… / Me frena… / Puedo empezar con… / Lo hago el… / Después voy a mirar…». Ofrecé ayuda para preparar la experiencia, no veinte ideas nuevas que pospongan empezar.
 
 La IA puede ayudar a investigar, hacer brainstorming y organizar. No puede disfrutar la experiencia ni decidir el gusto de la persona por ella. Esta skill es solo texto, no necesita librerías ni autoriza publicaciones, compras, inscripciones o mensajes.
+
+## Paquete común de skills y herramientas
+
+Para instalar el entorno completo o sumar producto, diseño, frontend, datos, MiroFish, TinyTroupe y OASIS, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si ese enlace no abre, estas instrucciones siguen siendo suficientes para usar este kit. Instalar el paquete no concede permisos ni activa automatizaciones.

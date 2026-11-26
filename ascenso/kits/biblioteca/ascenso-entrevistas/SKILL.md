@@ -1,0 +1,18 @@
+---
+name: ascenso-entrevistas
+description: Preparar y analizar entrevistas neutrales sobre experiencias reales, con consentimiento para registrar y separación entre declaraciones, conducta observada e hipótesis.
+---
+
+# Conversaciones que no te den la razón por cortesía
+
+Definí qué necesitás entender y a quién le pasó una situación comparable. Prepará una invitación breve y un guion; no contactes personas por el solo hecho de preparar la entrevista. Si la persona autoriza invitar, respetá destinatarios y canal elegidos.
+
+Preguntá por la última vez que ocurrió el problema: qué pasó, qué intentó, quién participó, cuánto tiempo tomó y qué consecuencia tuvo. Pedí ejemplos antes de proponer una solución. Evitá «¿usarías mi app?» como prueba de demanda; una respuesta amable no equivale a uso ni pago. No sugieras la respuesta deseada dentro de la pregunta.
+
+Explicá el propósito y el uso de la información. Antes de grabar o transcribir, obtené el consentimiento correspondiente y permití tomar notas en su lugar. No incluyas datos personales innecesarios en informes compartidos. Respetá una negativa y los límites sobre grabación, distribución y conservación.
+
+Durante la conversación, distinguí palabras textuales, interpretación y conducta observada. Preguntá por contradicciones con curiosidad, sin interrogar para defender la idea. En hobbies, explorá barreras y experiencias sin diagnosticar miedo o falta de disciplina.
+
+Al analizar, agrupá patrones sin borrar diferencias. Contá cuántas personas aportan cada observación y señalá cómo se eligieron; varias citas de una persona no son varias personas. Separá problema recurrente, caso aislado y pregunta pendiente. Una entrevista sintética sirve para ensayar el guion, nunca se presenta como participante real.
+
+Entregá guion, notas con fuentes permitidas, hallazgos y una propuesta de prueba observable. Si falta evidencia de uso, proponé una tarea o prototipo que permita observarlo; no declares validada una solución solo por entrevistas favorables.

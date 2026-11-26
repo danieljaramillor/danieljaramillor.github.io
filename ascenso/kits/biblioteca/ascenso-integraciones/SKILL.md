@@ -1,0 +1,18 @@
+---
+name: ascenso-integraciones
+description: Conectar una rutina autorizada con herramientas existentes, evaluar conectores, webhooks o flujos como n8n, Make y Zapier, y probar permisos, duplicados, fallos y parada antes de activarla.
+---
+
+# Integraciones que hagan la tarea acordada
+
+Describí fuente, disparador, transformación, destino y condición de parada. Inspeccioná conectores y permisos realmente disponibles antes de proponer una plataforma adicional. Distinguí una app visible, una cuenta autorizada y una operación comprobada. Usá el alcance mínimo que resuelva la tarea; no exijas conectar todas las cuentas.
+
+Si hace falta un flujo externo, compará las opciones que la persona ya usa y, cuando corresponda, n8n, Make o Zapier con su documentación vigente. Verificá conectores, plan, límites, alojamiento y acceso futuro a datos. No asumas que un producto admite cierto disparador o ejecución persistente por haberlo visto en otro entorno.
+
+Guiá la autorización por la interfaz nativa. No copies contraseñas, tokens o secretos en el chat, código público o ejemplos compartidos. Mostrá qué dato cruza entre servicios y para qué. Preparar un flujo no autoriza abrir acceso público, activar cobros ni enviar mensajes.
+
+Primero probá con una entrada seleccionada y una salida de borrador o entorno de prueba. Comprobá formatos, fechas, zona horaria, campos ausentes y el destino correcto. Definí una clave o registro que evite procesar dos veces el mismo evento. Ante un fallo incierto, verificá si la acción ocurrió antes de reintentar; limitá reintentos y dejá visible el error.
+
+Concretá qué ocurre si se revoca una conexión, cambia un formato o deja de existir el destino. Definí cómo pausar, revisar historial y cerrar seguimientos completados. Para envíos o cambios externos, revisá destinatarios y reglas dentro de la autorización dada.
+
+Después de la activación autorizada, confirmá identificador o enlace, estado, disparador, permisos y prueba realizada. Separá componentes preparados de los pendientes. Medí trabajo neto evitado incluyendo revisión y mantenimiento; una ejecución técnicamente exitosa puede no ahorrar tiempo.

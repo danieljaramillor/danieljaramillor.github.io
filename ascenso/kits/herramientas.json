@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-11-25",
+  "guide": "HERRAMIENTAS.md",
+  "purpose": "Preparar herramientas de simulación para el kit Ascenso en entornos aislados.",
+  "default_prepare_all_when_terminal_available": true,
+  "default_run_simulations": false,
+  "default_paid_api_calls": false,
+  "source_policy": {
+    "official_repositories_only": true,
+    "requested_ref": "main",
+    "pinned_commit": null,
+    "resolve_and_record_commit_before_install": true,
+    "read_installation_files_before_execution": true,
+    "preserve_existing_work": true
+  },
+  "credential_policy": {
+    "never_request_values_in_chat": true,
+    "configure_locally_or_native_secret_manager": true,
+    "missing_credentials_block_only_dependent_steps": true
+  },
+  "commands_platform": "macOS/Linux; adaptar bin/python a Scripts/python.exe en Windows",
+  "tools": [
+    {
+      "id": "mirofish",
+      "name": "MiroFish",
+      "repository": "https://github.com/666ghj/MiroFish.git",
+      "readme": "https://github.com/666ghj/MiroFish/blob/main/README.md",
+      "review_files": [
+        "package.json",
+        "backend/pyproject.toml",
+        ".env.example"
+      ],
+      "directory": "mirofish",
+      "requirements": {
+        "node": ">=18; usar versión mantenida compatible",
+        "python": ">=3.11,<3.13",
+        "uv": true
+      },
+      "isolated_environment": "mirofish/backend/.venv",
+      "clone_command": "git clone https://github.com/666ghj/MiroFish.git mirofish",
+      "record_commit_command": "git rev-parse HEAD",
+      "install_commands": [
+        "npm run setup",
+        "uv sync --project backend --python 3.11"
+      ],
+      "checks_without_api": [
+        "npm run build",
+        "uv run --project backend python -c \"import flask, openai, zep_cloud; print('Dependencias importables')\"",
+        "uv run --project backend python -m compileall -q backend/app"
+      ],
+      "credential_names": [
+        "LLM_API_KEY",
+        "LLM_BASE_URL",
+        "LLM_MODEL_NAME",
+        "ZEP_API_KEY"
+      ],
+      "credential_location": ".env local, copiado de .env.example solo si no existe",
+      "optional_start_after_configuration": "npm run dev",
+      "documented_ports": [
+        3000,
+        5001
+      ],
+      "preparation_does_not_verify": "Conexión al proveedor, Zep o simulación con modelos"
+    },
+    {
+      "id": "tinytroupe",
+      "name": "TinyTroupe",
+      "repository": "https://github.com/microsoft/TinyTroupe.git",
+      "readme": "https://github.com/microsoft/TinyTroupe/blob/main/README.md",
+      "review_files": [
+        "pyproject.toml",
+        "config.ini",
+        ".env.example"
+      ],
+      "directory": "tinytroupe",
+      "requirements": {
+        "python": ">=3.10; receta 3.11",
+        "uv": true
+      },
+      "isolated_environment": "tinytroupe/.venv",
+      "clone_command": "git clone https://github.com/microsoft/TinyTroupe.git tinytroupe",
+      "record_commit_command": "git rev-parse HEAD",
+      "install_commands": [
+        "uv venv --python 3.11 .venv",
+        "uv pip install --python .venv/bin/python -e ."
+      ],
+      "checks_without_api": [
+        ".venv/bin/python -c \"import tinytroupe; print('TinyTroupe importable')\"",
+        ".venv/bin/python -m compileall -q tinytroupe"
+      ],
+      "credential_names": [
+        "OPENAI_API_KEY",
+        "AZURE_OPENAI_KEY",
+        "AZURE_OPENAI_ENDPOINT"
+      ],
+      "credential_alternatives": "OpenAI o Azure, según el proveedor elegido; no se requieren ambas opciones",
+      "credential_location": "Entorno local o gestor de secretos; config.ini para proveedor/modelo sin claves en el chat",
+      "preparation_does_not_verify": "API de modelos o notebooks; no ejecutar suite completa como smoke test"
+    },
+    {
+      "id": "oasis",
+      "name": "OASIS",
+      "repository": "https://github.com/camel-ai/oasis.git",
+      "readme": "https://github.com/camel-ai/oasis/blob/main/README.md",
+      "review_files": [
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "directory": "oasis",
+      "requirements": {
+        "python": ">=3.10,<3.15; receta 3.11",
+        "uv": true
+      },
+      "isolated_environment": "oasis/.venv",
+      "clone_command": "git clone https://github.com/camel-ai/oasis.git oasis",
+      "record_commit_command": "git rev-parse HEAD",
+      "install_commands": [
+        "uv venv --python 3.11 .venv",
+        "uv pip install --python .venv/bin/python -e ."
+      ],
+      "checks_without_api": [
+        ".venv/bin/python -c \"import oasis; print('OASIS importable')\"",
+        ".venv/bin/python -m compileall -q oasis"
+      ],
+      "credential_names": [
+        "OPENAI_API_KEY"
+      ],
+      "credential_location": "Entorno local o gestor de secretos para el proveedor elegido",
+      "preparation_does_not_verify": "Simulación, llamadas de modelos o base de datos; no ejecutar el ejemplo como smoke test"
+    }
+  ],
+  "report_fields": [
+    "repository",
+    "resolved_commit",
+    "environment_path",
+    "python_version",
+    "installed_versions",
+    "check_command_and_result",
+    "credentials_status_without_values",
+    "execution_status",
+    "next_step"
+  ],
+  "authoring_execution_status": "Guía investigada; no se instalaron herramientas ni se ejecutaron estas recetas al escribirla."
+}

@@ -1,0 +1,30 @@
+---
+name: ascenso-diseno
+description: Diseñar y revisar el recorrido de una primera prueba, prototipo o kit para que una persona sin experiencia entienda qué hacer, pueda completarlo en celular y reciba estados y errores claros.
+---
+
+# Diseño: que alguien pueda usarlo
+
+Diseñá alrededor de la tarea que una persona quiere completar. Antes de dibujar pantallas, describí dónde entra, qué necesita decidir, qué dato aporta y qué resultado espera. Aprovechá el contexto disponible y preguntá únicamente lo que cambie el recorrido.
+
+## Reducir el esfuerzo
+
+Elegí una acción principal por momento. Mostrá primero lo necesario para avanzar y dejá opciones avanzadas en un segundo nivel. Evitá pedir cuentas, conexiones o instalaciones antes de explicar para qué sirven. Conservá las decisiones al volver atrás. Si un paso abre otro producto, explicá qué debe hacer allí y cómo regresar.
+
+Usá palabras concretas: «Copiar el pedido», «Abrir mi asistente», «Revisar conexiones», «Preparar un borrador». Distinguí preparar, copiar, guardar, instalar y ejecutar. Un botón de copia no debe anunciar «instalado»; una recomendación de rutina no debe anunciar «activa».
+
+Para herramientas nuevas, explicá la primera acción sin depender de jerga. Mostrá un ejemplo completo y etiquetá datos ficticios o resultados simulados. En proyectos personales, conservá la intención de disfrutar o experimentar sin convertir cada paso en una métrica de productividad.
+
+## Diseñar el recorrido completo
+
+Incluí entrada por enlace o QR, pantalla inicial, decisiones, resultado, salida a otra herramienta y recuperación si algo falla. Especificá estados vacíos, carga, éxito, error, permisos pendientes y ausencia de una función. Si el portapapeles falla, ofrecé texto seleccionable y confirmación manual. Si un asistente no puede instalar, ofrecé usar las instrucciones en la conversación.
+
+Hacé que el contraste, la tipografía y el ritmo visual orienten. Una apariencia llamativa tiene que ayudar a encontrar la acción; no esconderla entre animaciones, tarjetas idénticas o explicaciones técnicas.
+
+## Revisar con una tarea realista
+
+Prepará un escenario y pedile a alguien que lo complete sin explicarle los pasos. Observá dónde se detiene, qué interpreta y si consigue el resultado. Registrá conducta y palabras; no sustituyas esa observación por una crítica generada por IA. Si solo podés hacer una revisión propia, declaralo.
+
+Comprobá celular estrecho, contenido largo, zoom, teclado, foco visible, etiquetas, botones táctiles y lectura sin depender solo del color. No ocultes errores lejos del campo que los provoca. Revisá navegación atrás y enlaces externos, especialmente después de copiar.
+
+Entregá flujo, contenido final de cada estado, una propuesta visual concreta y los problemas que más impedirían completar la tarea. Para implementar, usá `ascenso-frontend` si está disponible; para medir resultados, `ascenso-datos`. No afirmes accesibilidad certificada ni pruebas con personas si solo hiciste una inspección.
