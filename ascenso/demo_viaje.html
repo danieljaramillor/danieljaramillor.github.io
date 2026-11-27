@@ -1,16 +1,168 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#181b18"><title>Un viaje · Normandía a Icesi</title><link rel="stylesheet" href="demo_viaje.css"></head><body>
-<header class="app-header"><a href="./" class="brand">un viaje<span>.</span></a><span>MOCKUP INTERACTIVO</span><a href="./">El proceso y los kits</a></header>
-<main><div class="app-intro"><p class="eyebrow">UN JUEVES DE EJEMPLO</p><h1>La misma dirección.<br>Un puesto compartido.</h1><p>Normandía → Icesi. Para llegar a clase <strong>antes de las 7:00 a. m.</strong></p><p class="sample-note">Rutas, tiempos y perfiles ficticios. No registra viajes ni ubicaciones reales.</p></div>
-<div class="workspace"><section class="planner" aria-label="Configurar el viaje"><div class="step-heading"><span>01</span><h2>¿Cómo vas?</h2></div><div class="role-tabs" role="group" aria-label="Tu rol"><button type="button" id="driver" aria-pressed="true">Manejo y ofrezco un puesto</button><button type="button" id="passenger" aria-pressed="false">Busco quién me lleve</button></div>
-<div class="step-heading"><span>02</span><h2>Elegí un recorrido</h2></div><p class="hint">Así se ilustraría la selección de rutas de Google Maps. Este dibujo no usa sus datos ni calcula tráfico.</p><div class="route-options" id="routes" role="group" aria-label="Recorridos de ejemplo"></div>
-<div class="trip-fields"><label for="departure">Salida del conductor<input id="departure" type="time" value="06:00" min="00:00" max="23:59" required></label><label for="detour">Desvío que acepta<select id="detour"><option value="5">Hasta 5 min</option><option value="10" selected>Hasta 10 min</option><option value="15">Hasta 15 min</option></select></label><label for="seats">Puestos disponibles<select id="seats"><option value="0">Sin puestos</option><option value="1">1 puesto</option><option value="2" selected>2 puestos</option><option value="3">3 puestos</option></select></label></div>
-<div class="step-heading"><span>03</span><h2>¿Dónde te recogerían?</h2></div><p class="hint">Tocá un punto del mapa o elegilo acá. Todos los puntos son parte del ejemplo.</p><div id="pickups" class="pickup-options" role="group" aria-label="Puntos de recogida"></div></section>
-<section class="map-panel" aria-labelledby="map-heading"><div class="map-top"><h2 id="map-heading">Tu recorrido de ejemplo</h2><span class="map-badge">MAPA ILUSTRATIVO</span></div>
-<svg id="route-map" viewBox="0 0 660 510" role="group" aria-label="Esquema de rutas y puntos seleccionables entre Normandía e Icesi"><defs><pattern id="blocks" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M0 30H60M30 0V60" fill="none" stroke="#d8dfd5" stroke-width="13"/></pattern></defs><rect width="660" height="510" fill="#eef2e9"/><rect width="660" height="510" fill="url(#blocks)"/><path d="M-20 130Q170 80 235 230T700 360" fill="none" stroke="#c5dbde" stroke-width="23"/><path d="M40 30Q125 200 70 500" fill="none" stroke="#d5dfc5" stroke-width="70"/>
-<path id="map-a" class="route-path" d="M90 85L240 85 240 215 420 215 420 420 560 420"/><path id="map-b" class="route-path" d="M90 85L140 85 140 300 330 300 330 420 560 420"/><path id="map-c" class="route-path" d="M90 85L390 85 390 150 530 150 530 420 560 420"/>
-<path id="pickup-line" d="M240 215L290 260" fill="none" stroke="#ff5100" stroke-width="6" stroke-dasharray="9 8"/>
-<g class="map-label"><circle cx="90" cy="85" r="12"/><text x="66" y="52">NORMANDÍA</text><circle cx="560" cy="420" r="12"/><text x="476" y="465">ICESI · ANTES DE 7</text></g>
-<g id="map-points"></g><text x="22" y="491" class="map-disclaimer">Esquema: no representa geometría ni tráfico reales.</text></svg>
-<div class="trip-summary" aria-live="polite"><div class="summary-time"><span>LLEGADA ILUSTRATIVA</span><strong id="arrival">06:48</strong></div><div><span id="verdict" class="verdict">Esta combinación cabe</span><p id="explanation"></p></div><dl><div><dt>Recogida</dt><dd id="summary-pickup"></dd></div><div><dt>Desvío</dt><dd id="summary-detour"></dd></div><div><dt>Cupos</dt><dd id="summary-seats"></dd></div></dl><button id="next" class="primary">Preparar el siguiente paso</button><p id="next-step" class="next-step" hidden></p></div></section></div>
-<section class="try-note"><h2>Lo que querríamos averiguar</h2><div><p><b>Uso:</b> ¿podés encontrar una opción que llegue antes de las siete?</p><p><b>Interés:</b> ¿esa propuesta te serviría en tu vida real?</p><p><b>Siguiente paso:</b> ¿qué tendrías que acordar para coordinar?</p></div><button id="reset" type="button">Reiniciar el ejemplo</button></section></main>
-<footer>Hecho como ejemplo para Ascenso. No se guarda ni se envía información. Los minutos se eligieron para mostrar la lógica del prototipo.</footer><script src="demo_viaje.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#102c29">
+  <meta name="description" content="Ensayá un trayecto compartido de Normandía a la Universidad Icesi, en Cali.">
+  <title>Un viaje · Beta 1A en Cali</title>
+  <link rel="stylesheet" href="demo_viaje.css?v=5">
+  <script defer src="demo_viaje.js?v=6"></script>
+</head>
+<body>
+  <svg class="symbols" width="0" height="0" aria-hidden="true">
+    <symbol id="i-mark" viewBox="0 0 24 24"><path d="M6 18h.01M7 17l9-9m-1-1h5v5M5 11V7a2 2 0 0 1 2-2h4m2 14h4a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m11 5-7 7 7 7M4 12h16"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="m13 5 7 7-7 7m7-7H4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.3"/><path d="M5 21v-1a7 7 0 0 1 14 0v1"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 12l2-6h12l2 6M4 12h16v6H4zm2 6v2m12-2v2M7 15h1m8 0h1"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19.5 10c0 5-7.5 11-7.5 11S4.5 15 4.5 10a7.5 7.5 0 1 1 15 0Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.5V16m0-8h.01"/></symbol>
+  </svg>
+
+  <header class="app-header">
+    <a href="./" class="icon-link" aria-label="Volver a Ascenso"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg></a>
+    <div class="brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-mark"/></svg></span>un viaje<span class="brand-dot">.</span></div>
+    <a href="kits/BETA-1A.md" class="demo-badge" aria-label="Beta 1A, información de la demo"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg> Beta 1A</a>
+  </header>
+
+  <main class="app-shell">
+    <section class="map-panel" aria-label="Mapa de la ruta">
+      <div class="map-surface">
+        <svg id="route-map" viewBox="0 0 660 510" role="group" aria-label="Mapa ilustrativo de Normandía a Icesi. Tocá un punto para elegir la recogida.">
+          <defs>
+            <pattern id="blocks" width="36" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
+              <rect width="36" height="34" fill="#efeee8"/>
+              <path d="M0 0H36M0 0V34" fill="none" stroke="#fffefa" stroke-width="5"/>
+              <path d="M7 8h11v14H7zm13-1h8v7h-8m2 6h7v8h-7" fill="#eae7e0"/>
+            </pattern>
+            <pattern id="south-blocks" width="32" height="44" patternUnits="userSpaceOnUse" patternTransform="rotate(19)">
+              <rect width="32" height="44" fill="#eeede6"/>
+              <path d="M0 0H32M0 0V44" fill="none" stroke="#fffefa" stroke-width="5"/>
+            </pattern>
+          </defs>
+          <rect width="660" height="510" fill="url(#blocks)"/>
+          <path d="M416 312 560 246 660 256V510H255q5-120 161-198Z" fill="url(#south-blocks)"/>
+          <g fill="#dce9d6" stroke="#d4e3cf" stroke-width="2">
+            <path d="M0 0H142l-13 55-58 58-46 2L0 82Z"/>
+            <path d="M0 294 50 272 95 293l-10 53-43 38L0 365Z"/>
+            <path d="m84 411 47-24 48 9 34 45-20 69H101Z"/>
+            <path d="m483 380 73-39 59 4 45 22v143H492l-20-61Z"/>
+            <path d="m558 271 58-19 30 28-16 46-61-5-18-20Z"/>
+            <path d="m311 179 33-9 37 14-11 43-55 13-20-24Z"/>
+          </g>
+          <g class="local-roads">
+            <path d="M0 110 107 144l49 92 64 40 18 93 119 64 19 77M35 0l25 68-21 80 14 101 41 115 116 68 27 78M0 236l115 10 136-104 88-27 156 1 165 40M6 393l101-14 70-71 74-16 162 32 102-50 145-4M268 0l13 86 39 55 88 37 29 112 100 47 42 173M469 0l-10 90 36 82 92 66 73-1"/>
+          </g>
+          <path class="river-bank" d="M-15 187Q68 161 146 191t150 43 135-11Q485 196 502 146t53-39l120 7"/>
+          <path class="river" d="M-15 187Q68 161 146 191t150 43 135-11Q485 196 502 146t53-39l120 7"/>
+          <g class="map-roads">
+            <path d="M-10 280Q46 221 90 85M244 0Q193 101 240 215T420 420L660 468M660 211Q531 178 420 215T171 310L-5 337M341 510Q340 392 317 310L140 300M395 0Q371 100 400 154L556 181 675 238"/>
+            <path d="M0 91 151 89 240 85 393 85 533 83 660 118M154 0 140 180 140 300 218 409 228 510M556 0 530 150V420M0 421 330 420H660"/>
+          </g>
+          <g class="map-districts" aria-hidden="true">
+            <text x="290" y="55">CALI</text>
+            <text x="32" y="256">OESTE</text>
+            <text x="564" y="307">SUR</text>
+          </g>
+          <g aria-hidden="true">
+            <path id="map-b" class="route-path" d="M90 85H115Q140 85 140 110V272Q140 300 168 300H307Q330 300 330 324V394Q330 420 356 420H560"/>
+            <path id="map-c" class="route-path" d="M90 85H367Q390 85 390 105V129Q390 150 412 150H507Q530 150 530 173V395Q530 420 552 420H560"/>
+            <path id="map-a" class="route-path selected" d="M90 85H210Q240 85 240 115V187Q240 215 270 215H390Q420 215 420 245V390Q420 420 450 420H560"/>
+            <path id="pickup-line" d="M240 215L290 260"/>
+            <g class="destination-pin">
+              <path d="M560 421c-6-8-19-21-19-32a19 19 0 0 1 38 0c0 11-13 24-19 32Z"/>
+              <circle cx="560" cy="389" r="6"/>
+            </g>
+            <g class="map-names">
+              <rect x="37" y="26" width="146" height="36" rx="18"/>
+              <text x="110" y="50">Normandía</text>
+              <rect x="522" y="432" width="76" height="36" rx="18"/>
+              <text x="560" y="457">Icesi</text>
+            </g>
+          </g>
+          <g id="map-points"></g>
+        </svg>
+        <div class="map-status" aria-hidden="true"><span>Datos ficticios</span></div>
+        <div class="map-key" aria-hidden="true"><span><i></i> Ruta</span><span><i></i> Desvío</span></div>
+      </div>
+    </section>
+
+    <div class="ride-sheet">
+      <div class="sheet-top">
+        <div class="role-tabs" role="group" aria-label="Tu rol">
+          <button type="button" id="passenger" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg>Busco un puesto</button>
+          <button type="button" id="driver" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-car"/></svg>Ofrezco un puesto</button>
+        </div>
+        <div class="trip-heading">
+          <h1>Normandía <svg class="icon" aria-label="a" role="img"><use href="#i-next"/></svg> Icesi</h1>
+          <p><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> Jueves · Universidad Icesi antes de las 7:00 a. m.</p>
+        </div>
+      </div>
+
+      <section class="sheet-panel" id="route-step" aria-labelledby="route-heading">
+        <div class="panel-heading">
+          <h2 id="route-heading" tabindex="-1">Puestos disponibles</h2>
+          <span id="route-count">2 ofertas</span>
+        </div>
+        <div class="route-options" id="routes" role="group" aria-labelledby="route-heading"></div>
+      </section>
+
+      <section class="sheet-panel" id="pickup-step" aria-labelledby="pickup-heading" hidden>
+        <div class="panel-heading">
+          <h2 id="pickup-heading" tabindex="-1">¿Dónde te recogen?</h2>
+        </div>
+        <p class="panel-hint" id="pickup-hint">Elegí un punto y la hora a la que podés estar ahí.</p>
+        <div id="pickups" class="pickup-options" role="group" aria-labelledby="pickup-heading"></div>
+        <div id="driver-fields" class="trip-fields" hidden>
+          <label for="departure">Hora de salida<input id="departure" type="time" value="06:00" required></label>
+          <label for="detour">Desvío máximo<select id="detour"><option value="5">5 min</option><option value="10" selected>10 min</option><option value="15">15 min</option></select></label>
+          <label for="seats">Cupos libres<select id="seats"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+        </div>
+        <div id="passenger-fields" class="passenger-fields">
+          <label for="ready-at">Estoy en el punto a partir de<input id="ready-at" type="time" value="06:00"></label>
+          <p id="offer-facts" class="offer-facts"></p>
+        </div>
+        <div id="result" class="result" role="status" aria-atomic="true">
+          <strong id="verdict">Llegás a tiempo</strong>
+          <p id="explanation"></p>
+        </div>
+      </section>
+
+      <section class="sheet-panel" id="next-step" aria-labelledby="review-title" hidden>
+        <div class="panel-heading"><h2 id="review-title" tabindex="-1">Así quedaría tu solicitud</h2></div>
+        <ol class="ride-timeline">
+          <li><span class="timeline-mark"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span><div><span id="summary-pickup"></span><small>Recogida de ejemplo</small></div><strong id="pickup-time"></strong></li>
+          <li><span class="timeline-mark"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span><div><span>Universidad Icesi</span><small>Llegada al campus</small></div><strong id="review-arrival"></strong></li>
+        </ol>
+        <dl class="summary-facts">
+          <div><dt>Desvío</dt><dd id="summary-detour"></dd></div>
+          <div><dt>Cupos de la oferta</dt><dd id="summary-seats"></dd></div>
+        </dl>
+        <p id="review-note" class="review-note"></p>
+      </section>
+
+      <section class="sheet-panel completion" id="done-step" aria-labelledby="done-title" hidden>
+        <span class="done-icon"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+        <h2 id="done-title" tabindex="-1">Solicitud ensayada</h2>
+        <p id="simulation-status" role="status"></p>
+        <small>Simulación con datos ficticios. Esta acción queda en tu pantalla.</small>
+      </section>
+
+      <footer class="action-dock">
+        <div class="dock-detail">
+          <button id="back-step" class="dock-back" type="button" aria-label="Volver al paso anterior" hidden><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg></button>
+          <div class="dock-metric"><span id="arrival-label">Llegada al campus</span><strong id="arrival">06:48</strong></div>
+        </div>
+        <button id="route-next" class="primary" type="button"><span>Elegir recogida</span><svg class="icon" aria-hidden="true"><use href="#i-next"/></svg></button>
+        <button id="next" class="primary" type="button" hidden>Revisar mi solicitud</button>
+        <button id="simulate" class="primary" type="button" hidden>Simular solicitud de cupo</button>
+        <button id="reset" class="primary" type="button" hidden>Empezar de nuevo</button>
+      </footer>
+      <noscript><p class="noscript">Activá JavaScript para ensayar el trayecto.</p></noscript>
+    </div>
+  </main>
+</body>
+</html>

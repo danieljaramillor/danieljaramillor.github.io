@@ -4,24 +4,24 @@
   "skills": [
     {
       "name": "ascenso-automatizacion",
-      "description": "Revisar conexiones del asistente, descubrir pequeñas tareas repetidas y preparar o activar automatizaciones verificables de calendario, correo, envíos y compromisos, según las capacidades reales de la cuenta.",
+      "description": "Detecta tareas repetidas y prepara automatizaciones verificables de calendario, correo, envíos y reuniones según las conexiones y capacidades reales de la cuenta.",
       "path": "ascenso-automatizacion/SKILL.md",
       "url": "kits/ascenso-automatizacion/SKILL.txt",
-      "sha256": "af732a9fe62c1e3b76694d14c04e23835ecc47867784591c97fe7f8c6413233d"
+      "sha256": "eec0e5cbedda7843c22d9e0d2ec0557c0b411d060a2d0b580de777e7bfc41c43"
     },
     {
       "name": "ascenso-negocio",
-      "description": "Ayuda a convertir una idea de negocio aplazada en una primera prueba pequeña con personas reales, explorando bloqueos y comparando opciones antes de construir.",
+      "description": "Convertir una idea de negocio en una prueba pequeña con gente real, distinguir problema, uso y compromiso, y decidir el siguiente paso con evidencia.",
       "path": "ascenso-negocio/SKILL.md",
       "url": "kits/ascenso-negocio/SKILL.txt",
-      "sha256": "ee798ed28ff515d01a648186bc0af24366166097baecc3579826693180095697"
+      "sha256": "ab23893257039e0b575f571ec8eb27d83a20eb276896b12bd993d6d069df52c2"
     },
     {
       "name": "ascenso-vida",
-      "description": "Ayuda a empezar un proyecto personal o hobby aplazado mediante brainstorming acotado y una experiencia pequeña, sin convertir el disfrute en una meta de negocio.",
+      "description": "Empezar un hobby o proyecto personal con recursos y tiempo disponibles, superar un bloqueo concreto y revisar disfrute y aprendizaje sin convertirlo en negocio.",
       "path": "ascenso-vida/SKILL.md",
       "url": "kits/ascenso-vida/SKILL.txt",
-      "sha256": "2c2c963ce2f954bd90e6516b4142084b6e704475238c183ee2e03368ed9fd85a"
+      "sha256": "d356df55bc45eb25ab56c610df989bcd0504688c4276308dd2251a26c7003ff3"
     },
     {
       "name": "ascenso-accountability",
@@ -32,10 +32,10 @@
     },
     {
       "name": "ascenso-datos",
-      "description": "Definir y analizar evidencia de una prueba de idea o automatización, verificando fuentes, denominadores, calidad y límites; medir uso, aprendizaje o tiempo ahorrado sin inventar datos ni confundir simulación con observación.",
+      "description": "Definir y analizar evidencia para una prueba o automatización. Verifica fuentes, denominadores y límites, y mide uso o ahorro sin confundir simulación con observación.",
       "path": "biblioteca/ascenso-datos/SKILL.md",
       "url": "kits/biblioteca/ascenso-datos/SKILL.txt",
-      "sha256": "89df87bf1c8e52681146f0f6e4428260e0d6fbf3824b390a430e35ec7ff60244"
+      "sha256": "97b11546fce1e4ba7176672fd7e420e239f28430c7a0b6d3218f6876b904dabc"
     },
     {
       "name": "ascenso-diseno",
@@ -60,10 +60,10 @@
     },
     {
       "name": "ascenso-frontend",
-      "description": "Construir o mejorar una interfaz web de prueba con jerarquía visual clara, comportamiento usable en celular, accesibilidad práctica y comprobaciones del recorrido; distinguir mockup, integración y operación real.",
+      "description": "Construir o mejorar una web de prueba con jerarquía clara, diseño móvil y accesibilidad. Comprueba el recorrido y distingue mockup, integración y operación real.",
       "path": "biblioteca/ascenso-frontend/SKILL.md",
       "url": "kits/biblioteca/ascenso-frontend/SKILL.txt",
-      "sha256": "986e562310b4600f8a36c8895ca1779545103e3d5f89e989c3241a031eeed90f"
+      "sha256": "3a02f5ba30dba2c38aa78efea6740342b5fd426b6c3b9dad49de8fee9817205f"
     },
     {
       "name": "ascenso-integraciones",

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_on": "2026-11-25",
+  "reviewed_on": "2026-11-26",
   "guide": "HERRAMIENTAS.md",
   "purpose": "Preparar herramientas de simulación para el kit Ascenso en entornos aislados.",
   "default_prepare_all_when_terminal_available": true,
@@ -8,8 +8,8 @@
   "default_paid_api_calls": false,
   "source_policy": {
     "official_repositories_only": true,
-    "requested_ref": "main",
-    "pinned_commit": null,
+    "requested_ref": "Commit fijado por herramienta; volver a revisar antes de actualizar",
+    "pinned_commit": "Ver tools[].reviewed_commit",
     "resolve_and_record_commit_before_install": true,
     "read_installation_files_before_execution": true,
     "preserve_existing_work": true
@@ -25,15 +25,18 @@
       "id": "mirofish",
       "name": "MiroFish",
       "repository": "https://github.com/666ghj/MiroFish.git",
-      "readme": "https://github.com/666ghj/MiroFish/blob/main/README.md",
+      "readme": "https://github.com/666ghj/MiroFish/blob/7657031ac01184afe2cb220f5ee3545573b5e843/README.md",
       "review_files": [
         "package.json",
         "backend/pyproject.toml",
-        ".env.example"
+        ".env.example",
+        "frontend/package.json",
+        "frontend/vite.config.js",
+        "backend/run.py"
       ],
       "directory": "mirofish",
       "requirements": {
-        "node": ">=18; usar versión mantenida compatible",
+        "node": "22.12+ en una versión mantenida compatible; Vite 7.3.6 exige ^20.19.0 || >=22.12.0 aunque el README de MiroFish indique 18+",
         "python": ">=3.11,<3.13",
         "uv": true
       },
@@ -56,22 +59,40 @@
         "ZEP_API_KEY"
       ],
       "credential_location": ".env local, copiado de .env.example solo si no existe",
-      "optional_start_after_configuration": "npm run dev",
+      "optional_start_after_configuration": {
+        "backend_terminal": "FLASK_HOST=127.0.0.1 npm run backend",
+        "frontend_terminal_from_repository_root": [
+          "cd frontend",
+          "npm exec -- vite --host 127.0.0.1 --port 3000"
+        ]
+      },
       "documented_ports": [
         3000,
         5001
       ],
-      "preparation_does_not_verify": "Conexión al proveedor, Zep o simulación con modelos"
+      "preparation_does_not_verify": "Conexión al proveedor, Zep o simulación con modelos",
+      "reviewed_commit": "7657031ac01184afe2cb220f5ee3545573b5e843",
+      "checkout_command": "git checkout --detach 7657031ac01184afe2cb220f5ee3545573b5e843",
+      "review_status": "Fuentes inspeccionadas; no se instalaron ni ejecutaron recetas en esta auditoría.",
+      "requirements_sources": [
+        "https://github.com/666ghj/MiroFish/blob/7657031ac01184afe2cb220f5ee3545573b5e843/frontend/package.json",
+        "https://registry.npmjs.org/vite/7.3.6"
+      ],
+      "default_bindings_upstream": "npm run dev usa frontend --host y backend 0.0.0.0. No asumir acceso limitado a localhost.",
+      "outputs": "Proyecto con grafo, configuración de simulación, registros de agentes e informe; solo después de una ejecución real con proveedores configurados.",
+      "first_use": "Idea, hechos, supuestos y pregunta acotada → preparar escenario → revisar informe como hipótesis → contrastar con una persona real."
     },
     {
       "id": "tinytroupe",
       "name": "TinyTroupe",
       "repository": "https://github.com/microsoft/TinyTroupe.git",
-      "readme": "https://github.com/microsoft/TinyTroupe/blob/main/README.md",
+      "readme": "https://github.com/microsoft/TinyTroupe/blob/7ce8be378a37ee73f9745d6781452712318afa04/README.md",
       "review_files": [
         "pyproject.toml",
         "config.ini",
-        ".env.example"
+        ".env.example",
+        "tinytroupe/__init__.py",
+        "tinytroupe/config.ini"
       ],
       "directory": "tinytroupe",
       "requirements": {
@@ -86,7 +107,7 @@
         "uv pip install --python .venv/bin/python -e ."
       ],
       "checks_without_api": [
-        ".venv/bin/python -c \"import tinytroupe; print('TinyTroupe importable')\"",
+        ".venv/bin/python -c \"from importlib.metadata import version; print('TinyTroupe instalado:', version('tinytroupe'))\"",
         ".venv/bin/python -m compileall -q tinytroupe"
       ],
       "credential_names": [
@@ -96,16 +117,23 @@
       ],
       "credential_alternatives": "OpenAI o Azure, según el proveedor elegido; no se requieren ambas opciones",
       "credential_location": "Entorno local o gestor de secretos; config.ini para proveedor/modelo sin claves en el chat",
-      "preparation_does_not_verify": "API de modelos o notebooks; no ejecutar suite completa como smoke test"
+      "preparation_does_not_verify": "API de modelos o notebooks; no ejecutar suite completa como smoke test",
+      "reviewed_commit": "7ce8be378a37ee73f9745d6781452712318afa04",
+      "checkout_command": "git checkout --detach 7ce8be378a37ee73f9745d6781452712318afa04",
+      "review_status": "Fuentes inspeccionadas; no se instalaron ni ejecutaron recetas en esta auditoría.",
+      "optional_import_check": ".venv/bin/python -c \"import tinytroupe; print('TinyTroupe importable')\"",
+      "import_check_caveat": "El import completo lee e imprime configuración, configura logger e instancia OpenAIEmbedding/AzureOpenAIEmbedding; puede exigir credenciales antes de la simulación. No mostrar valores de configuración o claves. Metadata y compileall no verifican import completo.",
+      "outputs": "Transcripciones y análisis de personajes sintéticos; no son entrevistas ni respuestas de clientes reales.",
+      "first_use": "Definir dos o tres perfiles y una pregunta → ejecutar un ejemplo acotado autorizado → extraer dudas para entrevistar personas."
     },
     {
       "id": "oasis",
       "name": "OASIS",
       "repository": "https://github.com/camel-ai/oasis.git",
-      "readme": "https://github.com/camel-ai/oasis/blob/main/README.md",
+      "readme": "https://github.com/camel-ai/oasis/blob/2ebf95cc615a9468d97c8dc8eef4ec97a0cec884/README.md",
       "review_files": [
         "pyproject.toml",
-        "uv.lock"
+        "oasis/__init__.py"
       ],
       "directory": "oasis",
       "requirements": {
@@ -127,7 +155,13 @@
         "OPENAI_API_KEY"
       ],
       "credential_location": "Entorno local o gestor de secretos para el proveedor elegido",
-      "preparation_does_not_verify": "Simulación, llamadas de modelos o base de datos; no ejecutar el ejemplo como smoke test"
+      "preparation_does_not_verify": "Simulación, llamadas de modelos o base de datos; no ejecutar el ejemplo como smoke test",
+      "reviewed_commit": "2ebf95cc615a9468d97c8dc8eef4ec97a0cec884",
+      "checkout_command": "git checkout --detach 2ebf95cc615a9468d97c8dc8eef4ec97a0cec884",
+      "review_status": "Fuentes inspeccionadas; no se instalaron ni ejecutaron recetas en esta auditoría.",
+      "outputs": "Acciones e interacciones de agentes en una plataforma social simulada, con base de datos y registros; no publicaciones reales en redes.",
+      "first_use": "Preparar perfiles y pocas acciones/pasos → guardar en una base nueva → revisar patrones como posibilidades, no predicciones humanas.",
+      "import_check_caveat": "El import carga CAMEL y componentes de plataformas; puede fallar por dependencias nativas como Cairo. Registrá el error real. No equivale a conexión del modelo."
     }
   ],
   "report_fields": [
@@ -141,5 +175,5 @@
     "execution_status",
     "next_step"
   ],
-  "authoring_execution_status": "Guía investigada; no se instalaron herramientas ni se ejecutaron estas recetas al escribirla."
+  "authoring_execution_status": "Auditoría de fuentes oficiales del 26 de noviembre de 2026: commits, scripts, requirements e imports inspeccionados; sin instalar herramientas, ejecutar recetas ni consumir APIs."
 }

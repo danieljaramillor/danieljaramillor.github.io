@@ -51,3 +51,13 @@ body{overflow-x:clip}[aria-disabled=true]{opacity:.45;pointer-events:none}.open-
   padding: 0;
 }
 .native-import-links a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Plan and runtime expectations remain visible when entering from a kit link. */
+.setup-expectations{margin:20px 0 0;padding:10px 16px;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:9px;background:var(--sheet)}
+.setup-expectations p{margin:0;font-size:14px;line-height:1.55}
+.setup-expectations a{white-space:nowrap;text-decoration:underline;text-underline-offset:3px}
+.provider-readiness{border:1px solid #ffffff38;border-left:3px solid var(--orange);border-radius:9px;padding:14px 16px;margin:0 0 24px;background:#ffffff06}
+.provider-readiness h3{font-size:15px;line-height:1.4;letter-spacing:-.015em;margin:0 0 8px;color:#ffad94}
+.provider-readiness p{font-size:13px;line-height:1.6;color:#d9ddce;margin:0}
+.provider-readiness a{display:inline-flex;align-items:center;min-height:44px;color:#ffad94;font-size:12px;margin-top:4px}
+@media(max-width:760px){.setup-expectations{margin-top:12px}.provider-readiness{padding:13px 14px;margin-bottom:20px}.provider-readiness p{font-size:14px}}

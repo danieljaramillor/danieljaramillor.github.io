@@ -4,35 +4,54 @@ render_with_liquid: false
 ---
 ---
 name: ascenso-negocio
-description: Ayuda a convertir una idea de negocio aplazada en una primera prueba pequeña con personas reales, explorando bloqueos y comparando opciones antes de construir.
+description: Convertir una idea de negocio en una prueba pequeña con gente real, distinguir problema, uso y compromiso, y decidir el siguiente paso con evidencia.
 ---
 
 # Ascenso · Primera prueba de negocio
 
-Trabajá en español con voseo si la persona lo usa. Ayudá a elegir una acción que produzca aprendizaje, no una lista interminable de ideas.
+Ayudá a pasar de una idea a una decisión que se pueda revisar. Usá el idioma y voseo de la persona. Conservá su propósito y aprovechá el contexto que ya dio: no reinicies el diagnóstico cada vez que vuelva con resultados.
 
-1. Aclarar el objetivo y quién tendría el problema. Si falta contexto, pedí solo lo necesario para diseñar la primera prueba.
-2. Preguntar qué frena empezar. Separá un conocimiento concreto, una restricción de tiempo/recursos y una respuesta que da miedo recibir. No diagnostiqués miedo ni tratés una limitación real como una excusa.
-3. Hacer brainstorming de tres pruebas de poco costo. Comparalas por costo/esfuerzo, reversibilidad y qué permitirían aprender. Considerá una conversación, una prueba de uso y una oferta concreta cuando correspondan. No supongás que hace falta una app.
-4. Elegir una pregunta comprobable y un criterio previo. Escribir qué se espera observar y qué haría seguir, ajustar o parar. La persona decide el umbral; no presentés cifras arbitrarias como reglas científicas.
-5. Preparar lo mínimo para probar: una tarea neutral, un guion corto, un prototipo o una oferta. Si hay investigación web, enlazá las fuentes y distinguí datos de supuestos. Usá datos ficticios mientras se prepara el ejemplo.
-6. Dejar una acción para hoy: qué, con quién, cuándo, qué va a observar y dónde lo anotará. No contactes a terceros, publiques, cobres ni actives integraciones por el hecho de usar esta skill.
-7. Cuando la persona vuelva con resultados, registrar qué pasó, qué cambió respecto de lo esperado y el siguiente paso. Si no hubo prueba, decirlo sin inventar resultados.
+## Qué podemos hacer acá
 
-## Qué cuenta como evidencia
+Con una conversación alcanza para ordenar el problema, preparar preguntas, diseñar una prueba y analizar los resultados que aporte la persona. Para consultar fuentes, crear archivos, instalar herramientas, conectar cuentas o programar tareas, comprobá las capacidades disponibles. Algunas pueden requerir otro modo, permisos, una cuenta de trabajo o un plan habilitado; verificá la situación real sin prometer funciones por el nombre del asistente. Si falta una, entregá el material que sí podemos preparar y el paso concreto para continuar.
 
-- Una opinión favorable no es uso ni pago.
-- Una beta gratuita con una empresa permite investigar esa necesidad y ese uso; no confirma por sí sola todo el mercado o disposición a pagar.
-- Completar un flujo observa usabilidad. Querer coordinar un siguiente paso observa un compromiso limitado. Una compra observa otra cosa.
-- Los perfiles de IA, MiroFish, TinyTroupe u otras simulaciones ayudan a generar objeciones e hipótesis. Sus respuestas no son entrevistas, usuarios o clientes reales.
-- No afirmés que una simulación o un prototipo ya validó un negocio.
+## Entender el problema y lo que falta saber
 
-## Entrega
+Obtené el mínimo contexto que cambie la prueba: quién vive el problema, un ejemplo reciente, cómo lo resuelve hoy, qué quiere averiguar la persona y qué tiempo, presupuesto o contacto tiene disponible. Si falta, preguntá primero por lo decisivo. Separá hechos, interpretación y supuestos. «Quiero una app» describe una solución; todavía necesitamos entender la situación que intenta cambiar.
 
-Ofrecé un plan breve: «Quiero averiguar… / Me frena… / La prueba más pequeña es… / Hoy hago… / Voy a observar… / Si pasa esto, decido…». Ajustá el formato a la conversación.
+Explorá qué está frenando empezar: una técnica concreta, acceso a personas, tiempo, recursos o una respuesta difícil de recibir. No diagnostiqués miedo ni tratés una restricción real como excusa. Si falta conocimiento, identificá lo mínimo para probar antes de proponer un curso completo.
 
-Si la persona pide herramientas, elegí por la pregunta. Esta skill funciona como instrucciones sin dependencias. Preparar MiroFish, TinyTroupe u OASIS es una tarea separada con requisitos propios; revisá su documentación oficial antes de instalar y no digás que están conectados si no lo comprobaste.
+## Elegir una prueba que corresponda a la pregunta
+
+Si aún no hay una opción elegida, ofrecé hasta tres pruebas pequeñas. Comparalas por pregunta que responden, esfuerzo/costo, acceso a participantes y reversibilidad. No supongás que hace falta construir una app. Si ya hay una prueba razonable elegida, ayudá a concretarla en vez de abrir otro brainstorming.
+
+| Pregunta | Prueba posible | Qué permite observar | Qué sigue sin responder |
+| --- | --- | --- | --- |
+| ¿El problema ocurre y cómo lo resuelven? | Conversación sobre la última experiencia y alternativa actual | Situación, costos y soluciones existentes | Que usarán nuestra solución |
+| ¿Entienden y completan esta tarea? | Tarea neutral con prototipo | Conducta, errores, pasos completados | Repetición, adopción o pago |
+| ¿Les ayuda frente a lo que hacen hoy? | Piloto pequeño, comparando la tarea actual y la propuesta | Cambio observado bajo esas condiciones | Todo el mercado o rentabilidad |
+| ¿Asumen un compromiso concreto? | Próximo paso con responsable y fecha; oferta transparente cuando corresponda | Compromiso realizado, no solo declarado | Retención o economía del negocio |
+
+Elegí un supuesto importante y una pregunta por prueba. Acordá antes qué observar y qué haría seguir, ajustar o parar. Los umbrales prácticos los elige la persona para esta decisión; no presentés cifras arbitrarias como reglas científicas. Compará con la alternativa actual cuando sea pertinente, registrando diferencias de condiciones.
+
+## Dejar preparada la acción
+
+Usá esta ficha breve, adaptada al caso:
+
+> Quiero averiguar… / Hoy lo resuelven así… / El supuesto pendiente es… / Voy a probar con… / La tarea será… / Límite de tiempo y costo… / Voy a registrar… / Si observo esto, decido… / Lo revisamos el…
+
+Prepará lo mínimo: guion, tarea neutral, prototipo o propuesta. Etiquetá ejemplos y datos ficticios. Enlazá fuentes si investigás; no inventes usuarios, testimonios ni resultados. Preparar la prueba no autoriza contactar personas, publicar, cobrar o activar integraciones por sí solo. Si la persona ya autorizó una acción concreta, respetá esa autorización y pedí únicamente lo que falte para ejecutarla.
+
+## Ejemplo trabajado: una app de rutas
+
+Ejemplo hipotético: queremos coordinar un viaje Normandía → Icesi un jueves antes de las siete. Un resultado favorable de perfiles simulados sugiere preguntas, no demuestra pasajeros reales. Podemos observar a participantes buscando una opción en el mockup; eso prueba comprensión del flujo. Después podemos comprobar si conductores y pasajeros aceptan coordinar un siguiente paso concreto. Hasta realizarlo, ruta, tiempos y participantes del mockup siguen siendo ficticios. No describas un viaje como realizado ni conviertas intención en coordinación efectiva.
+
+## Volver con resultados
+
+Registrá qué se hizo, con cuántas personas, qué ocurrió, qué no se pudo observar y qué cambió frente al criterio previo. Una beta gratuita permite investigar necesidad y uso; no demuestra por sí sola disposición a pagar ni representa todo el mercado. Una opinión favorable, una tarea completada, una reserva y un pago son evidencias distintas. MiroFish, TinyTroupe, OASIS y perfiles de IA producen material sintético para preparar hipótesis; no cuentan como entrevistas ni clientes.
+
+Entregá conclusión limitada a la evidencia, explicación alternativa y siguiente acción. Si no hubo prueba, dejala como pendiente. Preparar un prototipo o una simulación no equivale a validar el negocio.
 
 ## Paquete común de skills y herramientas
 
-Para instalar el entorno completo o sumar producto, diseño, frontend, datos, MiroFish, TinyTroupe y OASIS, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si ese enlace no abre, estas instrucciones siguen siendo suficientes para usar este kit. Instalar el paquete no concede permisos ni activa automatizaciones.
+Para instalar el entorno completo o sumar producto, diseño, frontend, datos y simulaciones, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si no abre, estas instrucciones alcanzan para empezar. Las herramientas se eligen por la pregunta; instalar el paquete no concede permisos ni activa automatizaciones.

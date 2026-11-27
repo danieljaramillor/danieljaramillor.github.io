@@ -36,8 +36,18 @@ def install(source, project, kit, dry_run=False, biblioteca=False, assistant="co
             if source not in file.resolve().parents: raise ValueError('Un recurso sale del paquete.')
             dest=target.parent/file.relative_to(src.parent)
             if project not in dest.resolve().parents: raise ValueError('Un recurso sale del proyecto.')
-            if dest.exists() and dest.read_bytes()!=file.read_bytes():
-                raise ValueError('Ya hay una versión distinta en '+str(dest)+'. No se sobrescribió.')
+            # Revisar todos los padres antes de escribir cualquier skill. Un
+            # archivo que ocupa una carpeta posterior también es una colisión.
+            for parent in dest.parents:
+                if parent.exists() and not parent.is_dir():
+                    raise ValueError('Una carpeta de destino está ocupada por un archivo: '+str(parent)+'. No se escribió nada.')
+                if parent == project: break
+            if dest.exists():
+                if not dest.is_file():
+                    raise ValueError('El destino no es un archivo: '+str(dest)+'. No se escribió nada.')
+                if dest.read_bytes()!=file.read_bytes():
+                    raise ValueError('Ya hay una versión distinta en '+str(dest)+'. No se sobrescribió.')
+                continue  # Repetir la instalación no vuelve a escribir lo idéntico.
             operations.append((file,dest))
         results.append(str(target))
     if not dry_run:

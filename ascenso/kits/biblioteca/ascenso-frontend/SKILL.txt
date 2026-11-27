@@ -4,7 +4,7 @@ render_with_liquid: false
 ---
 ---
 name: ascenso-frontend
-description: Construir o mejorar una interfaz web de prueba con jerarquía visual clara, comportamiento usable en celular, accesibilidad práctica y comprobaciones del recorrido; distinguir mockup, integración y operación real.
+description: Construir o mejorar una web de prueba con jerarquía clara, diseño móvil y accesibilidad. Comprueba el recorrido y distingue mockup, integración y operación real.
 ---
 
 # Front-end: una prueba que se pueda tocar

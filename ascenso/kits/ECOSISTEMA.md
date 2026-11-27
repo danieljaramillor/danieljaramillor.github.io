@@ -1,6 +1,6 @@
 # Más herramientas para pasar de la idea a la prueba
 
-Catálogo revisado el 25 de noviembre de 2026. Son **11 opciones adicionales** a MiroFish, TinyTroupe y OASIS. El [catálogo estructurado](ecosistema.json) permite que tu asistente elija según la tarea y sus capacidades. Estas opciones cumplen funciones diferentes: un formulario consigue respuestas; un simulador genera posibilidades; un tablero ayuda a cumplir acuerdos; una automatización repite un proceso.
+Catálogo revisado el 26 de noviembre de 2026. Son **11 opciones adicionales** a MiroFish, TinyTroupe y OASIS. El [catálogo estructurado](ecosistema.json) permite que tu asistente elija según la tarea y sus capacidades. Junto con los tres simuladores son catorce herramientas; [USOS.md](USOS.md) muestra entradas, salidas y un ejemplo concreto para cada una. Estas opciones cumplen funciones diferentes: un formulario consigue respuestas; un simulador genera posibilidades; un tablero ayuda a cumplir acuerdos; una automatización repite un proceso.
 
 ## Empezá con el camino más corto
 
@@ -25,7 +25,7 @@ Instalar todo este catálogo suele agregar trabajo antes de aprender algo. El se
 | Herramienta | Para qué sirve en esta prueba | Cómo se prepara | Primera comprobación |
 |---|---|---|---|
 | [Tally](https://tally.so/help/create-a-form) | Publicar un formulario breve para recoger interés, disponibilidad y experiencias. | Creá un formulario con pocas preguntas y una explicación de para qué usarás las respuestas. | Comprobá que la respuesta ficticia aparece y se distingue de las reales. |
-| [Cal.com](https://cal.com/help/event-types/event-types) | Conseguir una cita real para entrevistar o probar un prototipo. | Para empezar rápido, usá la cuenta alojada; no hace falta autoalojar. | Revisá el enlace como visitante. |
+| [Cal.com](https://cal.com/blog/cal-com-try-it-for-free-and-discover-how-it-can-simplify-your-scheduling?source=blog) | Conseguir una cita real para entrevistar o probar un prototipo. | Para empezar rápido, usá la cuenta alojada; no hace falta autoalojar. | Revisá el enlace como visitante. |
 
 ### Poner una versión pequeña en manos de alguien
 
@@ -71,3 +71,11 @@ Elegí una revisión corta: ¿se hizo la prueba?, ¿qué viste?, ¿qué sigue? U
 - La guía antigua de Docker de n8n remite a Docker Compose. Seguí la documentación actual en lugar de copiar una receta antigua sin revisarla. [Instalación vigente](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose.md).
 
 Este documento y su JSON son un catálogo investigado. Al elaborarlos no se instalaron herramientas, crearon cuentas ni activaron servicios. El JSON incluye por herramienta pasos, credenciales requeridas, entorno de ejecución, comprobación, límites de evidencia, costos a revisar y cómo detenerla.
+
+## Comprobaciones antes de ejecutar
+
+Los comandos de instalación descargan paquetes; no son comprobaciones sin red. Un import o una versión solo acreditan carga o presencia de ese componente, no el flujo completo. Para Streamlit, `python -m streamlit version` muestra la versión; `streamlit hello` inicia un servidor. Para Gradio, una función local puede probarse sin claves de modelo: mantené `share=False` salvo publicación acordada.
+
+Playwright requiere un Node y sistema operativo compatibles según su [guía actual](https://playwright.dev/docs/intro). `npm init playwright@latest` prepara un proyecto; descargar los navegadores es otro paso. `npm exec -- playwright --version` comprueba el ejecutable y `npm exec -- playwright test --list` enumera las pruebas de un proyecto revisado. Ninguno acredita que una persona pueda completar una tarea. Para correr pruebas o controlar el navegador, respetá las capacidades y restricciones del entorno del asistente.
+
+En los once servicios y librerías de este catálogo se revisaron las fuentes oficiales enlazadas. No se abrieron cuentas, enviaron respuestas de formularios, hicieron reservas ni generaron eventos de analítica en esta auditoría. Esos pasos quedan como comprobaciones posteriores de un setup real, no como resultados ya obtenidos.

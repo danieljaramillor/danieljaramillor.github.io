@@ -1,29 +1,44 @@
 ---
 name: ascenso-vida
-description: Ayuda a empezar un proyecto personal o hobby aplazado mediante brainstorming acotado y una experiencia pequeña, sin convertir el disfrute en una meta de negocio.
+description: Empezar un hobby o proyecto personal con recursos y tiempo disponibles, superar un bloqueo concreto y revisar disfrute y aprendizaje sin convertirlo en negocio.
 ---
 
 # Ascenso · Una primera experiencia para vos
 
-Ayudá a la persona a hacer algo que quiere vivir o aprender. Conservá sus motivos: un hobby puede valer por el disfrute, la curiosidad o compartir tiempo. No lo conviertas en una empresa ni en una obligación de productividad.
+Ayudá a la persona a hacer algo que quiere vivir, explorar o aprender. El resultado puede ser disfrutar un rato, compartirlo con alguien o descubrir que no le interesa. No lo conviertas en una empresa ni en una obligación de productividad.
 
-1. Identificá qué quiere intentar y por qué le interesa. Preguntá lo mínimo si falta contexto: tiempo disponible, recursos que ya tiene y si quiere hacerlo sola o con alguien.
-2. Explorá el bloqueo sin diagnosticarlo. ¿Falta una técnica, un recurso, una hora en el calendario o da miedo que salga mal? Una limitación real no es necesariamente miedo.
-3. Proponé tres primeras experiencias pequeñas. Compará esfuerzo/costo, reversibilidad y qué podría descubrir de sí misma. Priorizá lo que puede hacer con sus recursos actuales.
-4. Elegí una experiencia y definí qué mirará después: si disfrutó, si le interesa repetir, qué le costó o qué cambiaría. No hacen falta ventas, métricas de negocio ni demostrar que será excelente.
-5. Dejá una acción concreta para hoy y una fecha para experimentar. La persona elige el siguiente paso y cuánto tiempo quiere dedicarle.
-6. Después de la experiencia, ayudá a decidir repetir, modificar, pedir ayuda o dejarlo ahí. No inventés que ocurrió si la persona solo armó el plan.
+## Empezar con lo que hay
 
-## Ejemplo orientador
+Una conversación alcanza para preparar la experiencia y revisar lo que la persona cuente después. Antes de ofrecer búsquedas, archivos, conexiones, compras o recordatorios, comprobá las capacidades reales. Una función puede depender del modo, permisos o cuenta; no atribuyas funciones al asistente por su nombre. Si falta, dejá una alternativa manual útil. Instalar instrucciones no crea accesos ni un acompañante que vuelva automáticamente.
 
-«Quiero hacer pasta fresca, pero no tengo máquina y no sé por dónde empezar». Preguntá qué utensilios tiene, para cuántas personas quiere cocinar y qué tiempo desea dedicar. Proponé una receta inicial compatible con eso, una lista corta de lo que falta y una cena con fecha. La pregunta puede ser «¿Disfruté prepararla?», no «¿Puedo abrir un restaurante?». Si necesita una receta, adaptala a los ingredientes y preferencias que indique sin inventar técnicas o cantidades que no sepas justificar.
+Usá el contexto disponible. Preguntá solo lo que cambie el primer intento: qué quiere hacer y por qué, cuánto tiempo y energía tiene, recursos o presupuesto, preferencias relevantes y si quiere hacerlo a solas o acompañada. Adaptá el plan a movilidad, condiciones sensoriales, espacio y otros límites que indique, sin asumirlos. No hace falta explicar su historia personal para empezar.
 
-## Entrega
+## Entender el bloqueo sin diagnosticar
 
-Un plan breve: «Quiero intentar… / Me frena… / Puedo empezar con… / Lo hago el… / Después voy a mirar…». Ofrecé ayuda para preparar la experiencia, no veinte ideas nuevas que pospongan empezar.
+Separá una duda concreta, una restricción práctica y una respuesta que cuesta recibir. No toda postergación es miedo. «Necesito aprender» puede resolverse con una sola técnica; también puede describir una necesidad real. Preguntá qué permitiría hacer el primer intento, no qué demostraría que ya domina el hobby.
 
-La IA puede ayudar a investigar, hacer brainstorming y organizar. No puede disfrutar la experiencia ni decidir el gusto de la persona por ella. Esta skill es solo texto, no necesita librerías ni autoriza publicaciones, compras, inscripciones o mensajes.
+Cuando todavía no haya una experiencia elegida, proponé hasta tres versiones pequeñas y comparalas por tiempo, gasto, preparación y qué podría descubrir. Priorizá lo que ya tiene y permití una versión de menor esfuerzo. Si ya eligió qué hacer, ayudá a prepararlo sin volver a abrir veinte posibilidades.
+
+La actividad debe caber en el tiempo disponible, incluyendo preparar y recoger. Si una receta o técnica no entra, reducí el alcance o proponé otra experiencia que conserve el propósito; no prometas tiempos imposibles para principiantes. Si necesita instrucciones técnicas, usá fuentes o conocimientos que puedas justificar y adaptá cantidades o materiales al contexto. No inventes una receta para llenar el plan.
+
+## Una ficha que se pueda usar hoy
+
+> Quiero intentar… porque… / Hoy tengo… / Me frena esto concreto… / La versión más pequeña será… / La hago el… durante… / Necesito preparar… / Después voy a mirar…
+
+Elegí una observación amable: si disfrutó, qué le dio curiosidad, qué parte costó o si querría repetir. Una foto, una frase o el relato posterior pueden ayudar si la persona quiere; no exijas registro ni puntuación como condición de éxito. Dejá una próxima acción concreta y distinguí proponer una hora de haber creado un evento.
+
+## Ejemplo trabajado: dibujar con quince minutos
+
+Ejemplo hipotético: «Quiero dibujar, tengo lápiz y papel y quince minutos». Tres opciones son dibujar una taza presente, hacer bocetos breves de un objeto o dibujar algo de memoria. Una primera propuesta: diez minutos con la taza y cinco para recoger y mirar qué le gustó. No hace falta comprar materiales ni dominar perspectiva. La persona elige la versión; después puede repetir, simplificar, pedir una técnica o dejarlo ahí.
+
+Si en cambio quiere cocinar con una amiga, prepará la experiencia y, si ayuda, un borrador de invitación. Una amiga que podría ayudar todavía no aceptó un compromiso. Enviar un mensaje necesita canal y destinatario concretos dentro de lo autorizado; la skill por sí sola no los autoriza.
+
+## Acompañar sin prometer lo que no existe
+
+Cuando vuelva, preguntá qué pasó, qué aprendió y qué cambiaría. Si no lo intentó, ayudá a reducir o replantear sin diagnosticar ni culpabilizar. No inventes que ocurrió ni conviertas el disfrute en una meta comercial.
+
+Para seguimiento, acordá la revisión que quiera. Si hay programación nativa disponible y autorización concreta, comprobá el recordatorio creado, su horario/zona y cómo pausarlo. Si no, dejá texto para guardarlo o un pedido reutilizable. Una compra requiere productos, tienda, presupuesto total y acción concreta; planear la experiencia no compra materiales ni crea pagos recurrentes.
 
 ## Paquete común de skills y herramientas
 
-Para instalar el entorno completo o sumar producto, diseño, frontend, datos, MiroFish, TinyTroupe y OASIS, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si ese enlace no abre, estas instrucciones siguen siendo suficientes para usar este kit. Instalar el paquete no concede permisos ni activa automatizaciones.
+Para preparar otras skills, herramientas o acompañamiento, seguí https://danieljaramillor.com/ascenso/AGENTS.md. Si no abre, estas instrucciones alcanzan para empezar. El paquete es opcional: una primera experiencia personal puede hacerse sin instalar herramientas ni conectar cuentas.

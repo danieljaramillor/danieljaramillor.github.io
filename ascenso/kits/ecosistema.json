@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_on": "2026-11-25",
+  "reviewed_on": "2026-11-26",
   "guide": "ECOSISTEMA.md",
   "scope": "11 herramientas adicionales a MiroFish, TinyTroupe y OASIS, para validación rápida y seguimiento.",
   "default_install_all": false,
@@ -100,7 +100,12 @@
       "evidence_limit": "Un tablero completo no demuestra que se realizaron las entrevistas.",
       "docs": [
         "https://www.notion.com/help/guides/getting-started-with-projects-and-tasks"
-      ]
+      ],
+      "expected_input": "Una pregunta, acciones, responsables y fechas.",
+      "expected_output": "Una página o tablero con tareas, estado y enlaces a evidencias.",
+      "verification_boundary": "El tablero registra acuerdos; comprobar la tarea ficticia no comprueba entrevistas realizadas.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "tally",
@@ -127,7 +132,12 @@
       "docs": [
         "https://tally.so/help/create-a-form",
         "https://tally.so/help/form-submissions"
-      ]
+      ],
+      "expected_input": "Tres o cuatro preguntas concretas y una invitación a la prueba.",
+      "expected_output": "Formulario y respuestas que se pueden revisar, separando las ficticias.",
+      "verification_boundary": "La prueba usa una respuesta ficticia; no contar esa respuesta como interés real.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "cal-com",
@@ -152,8 +162,14 @@
       "cost_check": "Comprobá el plan para funciones de equipo, integraciones o servicios adicionales.",
       "evidence_limit": "Reservar no demuestra asistencia, satisfacción ni compra.",
       "docs": [
-        "https://cal.com/help/event-types/event-types"
-      ]
+        "https://cal.com/help/event-types/event-types",
+        "https://cal.com/blog/cal-com-try-it-for-free-and-discover-how-it-can-simplify-your-scheduling?source=blog"
+      ],
+      "expected_input": "Duración, disponibilidad, zona horaria y calendario elegido.",
+      "expected_output": "Enlace de reserva con horarios revisados.",
+      "verification_boundary": "Abrir como visitante no crea una reserva; una reserva ficticia puede escribir un evento real y necesita autorización.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "streamlit",
@@ -173,7 +189,8 @@
       "runtime": "El servidor local debe estar ejecutándose; compartir una app duradera requiere un despliegue adecuado.",
       "verification": [
         "Importá streamlit desde el entorno.",
-        "Al iniciar una prueba local autorizada, completá el flujo con datos ficticios y observá el resultado."
+        "Al iniciar una prueba local autorizada, completá el flujo con datos ficticios y observá el resultado.",
+        "Comprobación de versión: python -m streamlit version. El comando streamlit hello inicia un servidor de ejemplo: no es un mero chequeo de importación."
       ],
       "stop": "Detené el proceso local o el despliegue elegido; revisá trabajos externos si los agregaste.",
       "cost_check": "Comprobá costos del hosting, base de datos o APIs antes de conectarlos.",
@@ -181,7 +198,12 @@
       "docs": [
         "https://docs.streamlit.io/get-started/installation",
         "https://docs.streamlit.io/get-started/installation/command-line"
-      ]
+      ],
+      "expected_input": "Una tarea, datos ficticios y una función Python pequeña.",
+      "expected_output": "App de una pantalla con entradas, filtros y un resultado.",
+      "verification_boundary": "Un import verifica carga de la librería, no que el servidor o el flujo completo funcionen.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "gradio",
@@ -207,8 +229,14 @@
       "cost_check": "Acordá consumo si la función llama modelos o servicios de pago.",
       "evidence_limit": "Una demo convincente no sustituye observar a personas intentando resolver su problema.",
       "docs": [
-        "https://github.com/gradio-app/gradio#installation"
-      ]
+        "https://github.com/gradio-app/gradio#installation",
+        "https://github.com/gradio-app/gradio"
+      ],
+      "expected_input": "Una función local con entradas y salidas definidas.",
+      "expected_output": "Demo interactiva para probar ejemplos y errores.",
+      "verification_boundary": "No usar share=True por defecto. Una función local puede probarse sin llamar modelos.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "replit",
@@ -234,7 +262,12 @@
       "evidence_limit": "El agente construye el prototipo; no aporta por sí solo participantes reales.",
       "docs": [
         "https://docs.replit.com/features/agent/overview"
-      ]
+      ],
+      "expected_input": "Persona, tarea, alcance, datos ficticios y comportamiento esperado.",
+      "expected_output": "Proyecto y preview del prototipo; publicación solo si se decidió.",
+      "verification_boundary": "Preview accesible en la sesión no acredita una URL pública ni continuidad al cerrar el entorno.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "posthog",
@@ -246,7 +279,8 @@
       "setup_steps": [
         "Definí dos o tres eventos necesarios antes de instrumentar.",
         "Elegí la integración de tu app y un proyecto de PostHog.",
-        "Revisá autocaptura, datos sensibles y controles de consentimiento antes de habilitar la recolección."
+        "Revisá autocaptura, datos sensibles y controles de consentimiento antes de habilitar la recolección.",
+        "Si solo querés comprobar el SDK, usá un stub o proyecto de pruebas antes de habilitar emisión a un proyecto real."
       ],
       "installable_as_local_library": true,
       "credentials": "Proyecto y configuración del SDK; claves personales y de administración permanecen privadas.",
@@ -261,7 +295,12 @@
       "docs": [
         "https://posthog.com/docs/product-analytics/installation",
         "https://posthog.com/docs/privacy/data-collection"
-      ]
+      ],
+      "expected_input": "Dos o tres eventos definidos y un proyecto autorizado.",
+      "expected_output": "Eventos y embudo revisables para el caso observado.",
+      "verification_boundary": "Un evento de prueba debe identificarse y excluirse del resultado; no activar captura masiva como primer paso.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "playwright",
@@ -281,14 +320,21 @@
       "runtime": "Corre localmente o en CI cuando se ejecuta; no observa personas reales.",
       "verification": [
         "Revisá el test antes de correrlo: completar un formulario puede escribir datos.",
-        "Comprobá aserciones del flujo y el informe de errores."
+        "Comprobá aserciones del flujo y el informe de errores.",
+        "Para preparar sin abrir el navegador: npm exec -- playwright --version y listar tests de un proyecto revisado con npm exec -- playwright test --list. No ejecutar tests ajenos sin revisar sus efectos."
       ],
       "stop": "Terminá la ejecución y desactivá jobs de CI si se programaron.",
       "cost_check": "Revisá consumo de CI o navegadores alojados si se eligieron.",
       "evidence_limit": "Que un test pase demuestra funcionamiento del caso probado, no demanda ni facilidad para una persona nueva.",
       "docs": [
         "https://playwright.dev/docs/intro"
-      ]
+      ],
+      "expected_input": "Una copia de pruebas y criterios observables del flujo.",
+      "expected_output": "Test, aserciones e informe con resultado o error.",
+      "verification_boundary": "Una ejecución solo demuestra el caso cubierto. En este entorno, respetá las herramientas autorizadas para controlar el navegador.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false,
+      "requirements_note": "La guía actual requiere Node en ramas mantenidas 22.x, 24.x o 26.x y sistema operativo compatible; leer requisitos al instalar. Descargar navegadores es un paso separado."
     },
     {
       "id": "n8n",
@@ -314,7 +360,12 @@
       "evidence_limit": "Automatizar un seguimiento no demuestra que alguien haya respondido o usado la idea.",
       "docs": [
         "https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose.md"
-      ]
+      ],
+      "expected_input": "Fuente, condición, acción, destino y regla para evitar duplicados.",
+      "expected_output": "Workflow revisable y registro de una ejecución controlada.",
+      "verification_boundary": "Un workflow guardado o una instancia en marcha no demuestran que la recurrencia elegida esté activa.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "make",
@@ -341,7 +392,12 @@
       "docs": [
         "https://help.make.com/create-your-first-scenario",
         "https://help.make.com/schedule-a-scenario"
-      ]
+      ],
+      "expected_input": "Apps elegidas, campos, filtro y frecuencia o disparador.",
+      "expected_output": "Escenario y resultado verificable de una ejecución de prueba.",
+      "verification_boundary": "Run once puede escribir en servicios conectados; usá registros y destinos de prueba.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     },
     {
       "id": "zapier",
@@ -369,8 +425,15 @@
         "https://help.zapier.com/hc/en-us/articles/8496309697421-What-is-a-Zap",
         "https://help.zapier.com/hc/en-us/articles/18811411817741-Test-Zap-steps",
         "https://help.zapier.com/hc/en-us/articles/48391476448141-Get-started-with-Next-Gen-Zaps"
-      ]
+      ],
+      "expected_input": "Evento, acción, campos y un registro de prueba identificable.",
+      "expected_output": "Zap revisable, historial y resultado de la acción de prueba.",
+      "verification_boundary": "Probar una acción puede escribir datos; publicar y encender el Zap deben verificarse por separado.",
+      "documentation_reviewed_on": "2026-11-26",
+      "authoring_runtime_verified": false
     }
   ],
-  "authoring_status": "Fuentes oficiales revisadas; no se instalaron herramientas, crearon cuentas ni activaron servicios al elaborar este catálogo."
+  "authoring_status": "Fuentes oficiales revisadas el 26 de noviembre de 2026; no se instalaron herramientas, crearon cuentas ni activaron servicios al elaborar esta revisión. Los chequeos indicados son recetas, no resultados ejecutados.",
+  "usage_guide": "USOS.md",
+  "combined_tool_count_with_simulators": 14
 }

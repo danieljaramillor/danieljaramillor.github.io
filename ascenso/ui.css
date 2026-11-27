@@ -84,6 +84,14 @@ body{overflow-x:clip}.hero-start{display:inline-flex;align-items:center;gap:20px
 .kit-options strong { font-size: clamp(17px, 1.7vw, 24px); }
 .kit-options span { font-size: 14px; margin-top: 4px; }
 .kit-picker-install { display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; font-size: 14px; }
+.kit-picker > .kit-access {
+  margin: 7px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #ffffff45;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.kit-access a { text-decoration: underline; text-underline-offset: 3px; }
 .optional-workshop { max-width: 1700px; margin: auto; padding: 0 var(--gutter) clamp(24px, 3vw, 55px); }
 .optional-workshop > details { border-block: 1px solid var(--line); }
 .optional-workshop > details > summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 0; }

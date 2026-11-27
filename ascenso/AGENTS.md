@@ -4,7 +4,15 @@ Entrada pública: https://danieljaramillor.com/ascenso/AGENTS.md
 
 Ayudá a la persona a probar una idea o recuperar tiempo. Conservá su asistente y su proyecto. Este documento coordina un paquete; no sustituye las instrucciones AGENTS.md que ya tenga el proyecto. No lo copies encima de ellas.
 
+## Elegí qué necesitás
+
+- **Usar un kit hoy.** Abrí [el selector](https://danieljaramillor.com/ascenso/#kits), elegí tu asistente y pegá el pedido.
+- **Guardar un kit o instalar el paquete.** Empezá por la guía de [primeros pasos](https://danieljaramillor.com/ascenso/kits/PRIMEROS-PASOS.md). En el ZIP es `PRIMEROS-PASOS.md`.
+- **Ver qué hace cada herramienta.** Consultá la [guía de usos y ejemplos](https://danieljaramillor.com/ascenso/kits/USOS.md). En el ZIP es `USOS.md`.
+
 ## Empezá por el entorno
+
+Para la experiencia completa en ChatGPT, indicá un plan pago compatible y **Work** habilitado. El plan por sí solo no confirma herramientas, permisos ni programación. Si hay chat de solo texto, entregá preguntas, un plan o un borrador listo para usar. Si hay un proyecto con archivos y terminal, podés preparar los componentes compatibles. Para tareas con cuentas o en segundo plano, comprobá por separado las conexiones, permisos y acceso durante la ejecución.
 
 Identificá asistente, acceso a archivos/terminal/red, funciones de skills y conexiones. Mostrá un plan breve y avanzá con lo autorizado: preparar este paquete permite instalar sus instrucciones en el proyecto elegido; no implica publicar, contactar personas, conceder acceso, activar automatizaciones ni consumir APIs de pago. No pidas confirmaciones repetidas para pasos ya autorizados.
 
@@ -22,7 +30,7 @@ Descargá el ZIP, compará su SHA-256 con el manifiesto y revisá los archivos a
 
 ## Instalar las 27 skills
 
-El paquete incluye 15 skills originales Ascenso y 12 públicas de Anthropic, OpenAI y Notion Labs con recursos, licencias y revisión fijada. Las 12 públicas y sus necesidades están en `kits/FUENTES-SKILLS.md`.
+El paquete incluye 15 skills originales Ascenso y 12 públicas de Anthropic, OpenAI y Notion Labs con recursos, licencias y revisión fijada. Consultá `FUENTES-SKILLS.md` dentro del ZIP para conocer las 12 públicas y sus requisitos.
 
 | Skill | Para qué se usa | Archivo dentro del paquete |
 | --- | --- | --- |
@@ -42,20 +50,20 @@ El paquete incluye 15 skills originales Ascenso y 12 públicas de Anthropic, Ope
 | ascenso-integraciones | Conectores, eventos y flujos reales | biblioteca/ascenso-integraciones/SKILL.md |
 | ascenso-verificacion | Comprobar recorrido, resultados y afirmaciones | biblioteca/ascenso-verificacion/SKILL.md |
 
-Las skills de apoyo son instrucciones originales de Ascenso, incluidas completas; no son copias ni instalaciones oficiales de plugins comerciales. No requieren librerías. El catálogo es la lista vigente: instalá todas si se pidió el paquete completo, y cargá solo las relevantes para cada tarea.
+Las 15 skills de Ascenso son instrucciones originales y funcionan como texto. Las 12 externas incluyen los recursos y licencias de sus fuentes. El catálogo indica qué incluye el paquete completo. Usá las skills relevantes para la tarea que la persona eligió.
 
 Desde la carpeta descomprimida, con Codex y Python:
 
 ```sh
-python3 instalar_kits.py --kit todos --biblioteca --externas --assistant codex --proyecto /ruta/al/proyecto --dry-run
-python3 instalar_kits.py --kit todos --biblioteca --externas --assistant codex --proyecto /ruta/al/proyecto
+python3 instalar_kits.py --kit todos --biblioteca --externas --assistant codex --proyecto "/ruta/al/proyecto" --dry-run
+python3 instalar_kits.py --kit todos --biblioteca --externas --assistant codex --proyecto "/ruta/al/proyecto"
 ```
 
 El instalador escribe las instrucciones y, para las skills externas, todos sus recursos y licencias dentro de `.agents/skills/<nombre>/`. No ejecuta sus scripts. Conserva archivos diferentes existentes y rechaza destinos que salgan del proyecto por enlaces simbólicos. Revisá los destinos del dry-run antes de escribir. En Claude Code, copiá todas las skills a `.claude/skills/<nombre>/SKILL.md` o usá el mismo instalador con `--assistant claude-code` tras revisar esa versión. El pedido simple puede preferir copia de texto sin ejecutar Python. No cambies configuración global ni otros proyectos. Comprobá que cada archivo coincide con su origen y que el asistente lo reconoce; si hace falta recargar, indicá ese paso.
 
 ## Preparar MiroFish, TinyTroupe y OASIS
 
-Seguí `kits/HERRAMIENTAS.md` y el catálogo. Prepará las tres cuando la persona pida el entorno completo y haya terminal, red y espacio; si pidió solo usar un kit, no conviertas esas herramientas en requisito para empezar. Mostrá progreso por herramienta. Leé documentación y dependencias de su fuente oficial, elegí una revisión concreta y registrala; usá entornos separados y conservá los archivos existentes. No ejecutes una instalación de origen desconocido ni un script que no revisaste.
+Seguí `HERRAMIENTAS.md` y el catálogo `herramientas.json` dentro del ZIP. Prepará las tres cuando la persona pida el entorno completo y haya terminal, red y espacio; si pidió solo usar un kit, no conviertas esas herramientas en requisito para empezar. Mostrá progreso por herramienta. Leé documentación y dependencias de su fuente oficial, elegí una revisión concreta y registrala; usá entornos separados y conservá los archivos existentes. No ejecutes una instalación de origen desconocido ni un script que no revisaste.
 
 Cada herramienta puede tener requisitos distintos de Python, Node y servicios de modelo. Una suscripción de chat no prueba que haya una API habilitada. Pedí configurar credenciales en el gestor o archivo local que corresponda, nunca en el chat ni dentro del paquete. Preparar dependencias y probar imports no autoriza simulaciones de pago. No abras un servicio local a internet ni levantes procesos persistentes por instalar.
 
@@ -82,5 +90,7 @@ Guardá, dentro del espacio elegido y si hay archivos, un registro breve con pre
 La biblioteca original viene completa en el ZIP. Las doce skills externas se incluyen con sus carpetas completas, licencias y ORIGEN.md; revisá su fuente, revisión, modificaciones de rutas y compatibilidad. Instalar instrucciones no instala todos los plugins ni conecta las cuentas que mencionan. Si ya hay una skill equivalente instalada, usala sin duplicarla. Para nuevas herramientas, elegí por la necesidad, no por el tamaño del catálogo. Primero una ruta mínima que permita aprender; prepará el resto si la persona pidió explícitamente el entorno completo. SaaS, cuentas y conectores se configuran en su interfaz nativa, no se instalan con pip.
 
 ## Entrega al terminar
+
+Cuando se trate de una primera prueba, devolvé un paso de tamaño razonable y una comprobación observable. Para una prueba de producto, diferenciar interés simulado, uso y acuerdo real es parte del resultado. Para una rutina, hacé explícita la diferencia entre una lectura hecha ahora, un pedido preparado y una ejecución activa.
 
 Mostrá una tabla por componente: instalado y comprobado / preparado sin ejecutar / pendiente / no compatible. Agregá ruta o revisión, prueba realizada y siguiente paso concreto. No afirmes que algo está funcionando sin comprobarlo. Decí cómo invocar el kit elegido y proponé una primera acción corta; guardá el estado técnico local sin secretos para poder continuar.

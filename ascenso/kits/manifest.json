@@ -1,43 +1,43 @@
 {
   "negocio": {
     "file": "kit-negocio.zip",
-    "sha256": "85b4a1ff9ae9ba67d5c3bf32d1c99e264e94cfbc05d37dcbaff4bd3c1f392f57",
+    "sha256": "ad62c65fcde8f1a2399881f174f84d0774c65a7e4afa55c19c8b6d93ab0002fe",
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
     "skill": "kits/ascenso-negocio/SKILL.txt",
     "claude": {
       "file": "kit-negocio-claude.zip",
-      "sha256": "2bf2b805480e5087761b7f6b7eb657ff0af78e89b4a36ff0fd26c360f9dd3e30"
+      "sha256": "102a18f804b9fd11289e37fbc2acc175e5c0cb97bb58002313b75f521df5be28"
     }
   },
   "vida": {
     "file": "kit-vida.zip",
-    "sha256": "85b4a1ff9ae9ba67d5c3bf32d1c99e264e94cfbc05d37dcbaff4bd3c1f392f57",
+    "sha256": "ad62c65fcde8f1a2399881f174f84d0774c65a7e4afa55c19c8b6d93ab0002fe",
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
     "skill": "kits/ascenso-vida/SKILL.txt",
     "claude": {
       "file": "kit-vida-claude.zip",
-      "sha256": "0f647d4919a6a4de4ae7f1b599c8b965e98dabb386774f9e8423773404a02892"
+      "sha256": "9e80c40216f7cba1155437bd654bc2749132aab07328825635b292c97a5154ac"
     }
   },
   "automatizacion": {
     "file": "kit-automatizacion.zip",
-    "sha256": "85b4a1ff9ae9ba67d5c3bf32d1c99e264e94cfbc05d37dcbaff4bd3c1f392f57",
+    "sha256": "ad62c65fcde8f1a2399881f174f84d0774c65a7e4afa55c19c8b6d93ab0002fe",
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12,
     "skill": "kits/ascenso-automatizacion/SKILL.txt",
     "claude": {
       "file": "kit-automatizacion-claude.zip",
-      "sha256": "4e8ddd9e7ea2b4370151a029b6f5a66e1dfa6b17fabd264c835979d113df8687"
+      "sha256": "952c00cc0652d501f02ba2bb2a9c94c30214bea4c1240e6e6e4784058866cf15"
     }
   },
   "completo": {
     "file": "kit-completo.zip",
-    "sha256": "85b4a1ff9ae9ba67d5c3bf32d1c99e264e94cfbc05d37dcbaff4bd3c1f392f57",
+    "sha256": "ad62c65fcde8f1a2399881f174f84d0774c65a7e4afa55c19c8b6d93ab0002fe",
     "entrypoint": "AGENTS.md",
     "skills": 15,
     "external_skills": 12
